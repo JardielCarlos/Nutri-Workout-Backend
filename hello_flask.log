@@ -1,0 +1,14 @@
+2023-09-19 10:38:28,442 WARNING _internal _log  * Debugger is active!
+2023-09-19 10:38:28,445 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-09-19 10:39:56,853 INFO usuarios delete Usuario de id: 9 deletado com sucesso
+2023-09-19 10:39:56,854 INFO _internal _log 127.0.0.1 - - [19/Sep/2023 10:39:56] "DELETE /usuarios/9 HTTP/1.1" 200 -
+2023-09-19 10:40:07,722 INFO usuarios post Usuario de id: 11 criado com sucesso
+2023-09-19 10:40:07,724 INFO _internal _log 127.0.0.1 - - [19/Sep/2023 10:40:07] "[35m[1mPOST /usuarios HTTP/1.1[0m" 201 -
+2023-09-19 10:40:13,410 INFO _internal _log 127.0.0.1 - - [19/Sep/2023 10:40:13] "[31m[1mPATCH /usuarios/11 HTTP/1.1[0m" 400 -
+2023-09-19 10:40:20,303 INFO usuarios patch Senha alterada com sucesso
+2023-09-19 10:40:20,305 INFO _internal _log 127.0.0.1 - - [19/Sep/2023 10:40:20] "PATCH /usuarios/11 HTTP/1.1" 200 -
+2023-09-19 10:41:26,024 INFO usuarios post Nome não informado
+2023-09-19 10:41:26,025 INFO _internal _log 127.0.0.1 - - [19/Sep/2023 10:41:26] "[31m[1mPOST /usuarios HTTP/1.1[0m" 400 -
+2023-09-19 10:41:30,771 INFO _internal _log 127.0.0.1 - - [19/Sep/2023 10:41:30] "[31m[1mPOST /usuarios HTTP/1.1[0m" 400 -
+2023-09-19 10:41:37,324 INFO _internal _log 127.0.0.1 - - [19/Sep/2023 10:41:37] "[31m[1mPOST /usuarios HTTP/1.1[0m" 400 -
+2023-09-19 10:41:52,794 INFO _internal _log 127.0.0.1 - - [19/Sep/2023 10:41:52] "GET /usuarios HTTP/1.1" 200 -
