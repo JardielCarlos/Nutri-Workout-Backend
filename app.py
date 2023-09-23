@@ -2,8 +2,8 @@ from flask import Flask
 from flask_restful import Api
 from helpers.database import db, migrate
 from helpers.configCORS import cors
-
-from resources.usuarios import Usuarios, UsuarioId
+from resources.atletas import Atletas, AtletaId
+from resources.PersonaisTrainer import PersonaisTrainer
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:senhasecreta@localhost:5432/NutriWorkout"
@@ -14,8 +14,9 @@ cors.init_app(app)
 migrate.__init__(app, db)
 api = Api(app)
 
-api.add_resource(Usuarios, '/usuarios')
-api.add_resource(UsuarioId, '/usuarios/<int:id>')
+api.add_resource(Atletas, '/atletas')
+api.add_resource(AtletaId, '/atletas/<int:id>')
+api.add_resource(PersonaisTrainer, '/personalTrainer')
 
 if __name__ == '__main__':
   app.run(debug=True)
