@@ -234,3 +234,10 @@ class AtletaId(Resource):
 
     logger.info(f"Atleta de id: {id} deletado com sucesso")
     return {}, 200
+  
+class AtletaNome(Resource):
+  def get(self, nome):
+    atletaNome = Atleta.query.filter(Atleta.nome.ilike(f"%{nome}%")).all()
+    logger.info(f"Atletas com nomes: {nome} listados com sucesso")
+
+    return marshal(atletaNome, atletaFields), 200
