@@ -36,6 +36,7 @@ cpfValidate = CPF()
 
 class Atletas(Resource):
   def get(self):
+    logger.info("Atletas listados com sucesso")
     return marshal(Atleta.query.all(), atletaFields), 200
   
   def post(self):
@@ -201,10 +202,6 @@ class AtletaId(Resource):
         codigo = Message(1, "nova senha não informada")
         return marshal(codigo, msgFields), 400
       
-      verifySenha = policy.test(args['novaSenha'])
-      if len(verifySenha) != 0:
-        codigo = Message(1, "Senha no formato errado")
-        return marshal(codigo, msgFields), 400
     
       atleta.senha = generate_password_hash(args["novaSenha"])
 
@@ -218,7 +215,6 @@ class AtletaId(Resource):
       logger.error("Erro ao atualizar a senha do atleta")
       codigo = Message(2, "Erro ao atualizar a senha do atleta")
       return marshal(codigo, msgFields), 400
-
 
   def delete(self, id):
     atleta = Atleta.query.get(id)

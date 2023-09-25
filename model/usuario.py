@@ -6,13 +6,8 @@ userFields = {
   "id": fields.Integer,
   "nome": fields.String,
   "email": fields.String,
+  "cpf": fields.String,
   "tipo": fields.String,
-  "massaMagra": fields.Float,
-  "massaGorda": fields.Float,
-  "altura": fields.Float,
-  "peso": fields.Float,
-  "imc": fields.Float,
-  "statusPagamento": fields.Boolean
 }
 
 class Usuario(db.Model):
