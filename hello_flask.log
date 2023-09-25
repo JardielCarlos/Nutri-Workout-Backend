@@ -1,20 +1,20 @@
-2023-09-25 11:04:06,362 WARNING _internal _log  * Debugger is active!
-2023-09-25 11:04:06,365 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-09-25 11:04:30,959 INFO administradores get Administradores listado com sucesso
-2023-09-25 11:04:31,012 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 11:04:31] "GET /administradores HTTP/1.1" 200 -
-2023-09-25 11:05:03,259 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 11:05:03] "[33mPUT /administradores/ HTTP/1.1[0m" 404 -
-2023-09-25 11:05:07,581 INFO administradores put Administrador de id: 13 atualizado com sucesso
-2023-09-25 11:05:07,586 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 11:05:07] "PUT /administradores/13 HTTP/1.1" 200 -
-2023-09-25 11:05:11,041 INFO administradores get Administradores listado com sucesso
-2023-09-25 11:05:11,043 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 11:05:11] "GET /administradores HTTP/1.1" 200 -
-2023-09-25 11:10:20,328 INFO administradores patch Senha alterada com sucesso
-2023-09-25 11:10:20,329 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 11:10:20] "PATCH /administradores/13 HTTP/1.1" 200 -
-2023-09-25 11:10:21,609 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 11:10:21] "[33mPATCH /administradores/13 HTTP/1.1[0m" 404 -
-2023-09-25 11:10:30,717 INFO administradores patch Senha alterada com sucesso
-2023-09-25 11:10:30,718 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 11:10:30] "PATCH /administradores/13 HTTP/1.1" 200 -
-2023-09-25 11:10:52,142 INFO administradores get Administradores listado com sucesso
-2023-09-25 11:10:52,144 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 11:10:52] "GET /administradores HTTP/1.1" 200 -
-2023-09-25 11:11:00,551 INFO administradores get Administrador de id: 13 listado com sucesso
-2023-09-25 11:11:00,552 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 11:11:00] "GET /administradores/13 HTTP/1.1" 200 -
-2023-09-25 11:11:04,701 INFO administradores get Administrador com nomes: euri listado com sucesso
-2023-09-25 11:11:04,703 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 11:11:04] "GET /administradores/euri HTTP/1.1" 200 -
+2023-09-25 12:15:02,773 WARNING _internal _log  * Debugger is active!
+2023-09-25 12:15:02,776 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-09-25 12:15:03,080 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:15:03] "[31m[1mGET /administradores HTTP/1.1[0m" 401 -
+2023-09-25 12:15:12,514 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:15:12] "POST /login HTTP/1.1" 200 -
+2023-09-25 12:15:26,860 INFO administradores get Administradores listado com sucesso
+2023-09-25 12:15:26,864 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:15:26] "GET /administradores HTTP/1.1" 200 -
+2023-09-25 12:15:30,756 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:15:30] "[31m[1mPOST /logout HTTP/1.1[0m" 401 -
+2023-09-25 12:15:35,571 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:15:35] "[35m[1mPOST /logout HTTP/1.1[0m" 204 -
+2023-09-25 12:15:38,546 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:15:38] "[31m[1mGET /administradores HTTP/1.1[0m" 401 -
+2023-09-25 12:15:53,394 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:15:53] "POST /login HTTP/1.1" 200 -
+2023-09-25 12:16:02,183 INFO administradores get Administradores listado com sucesso
+2023-09-25 12:16:02,185 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:16:02] "GET /administradores HTTP/1.1" 200 -
+2023-09-25 12:16:30,186 INFO PersonaisTrainer get Personais Trainer listados com sucesso
+2023-09-25 12:16:30,192 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:16:30] "GET /personalTrainer HTTP/1.1" 200 -
+2023-09-25 12:16:40,207 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:16:40] "POST /login HTTP/1.1" 200 -
+2023-09-25 12:16:54,389 ERROR administradores get Usuario sem autorizacao para acessar os gestores
+2023-09-25 12:16:54,390 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:16:54] "[31m[1mGET /administradores HTTP/1.1[0m" 403 -
+2023-09-25 12:18:01,208 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:18:01] "POST /login HTTP/1.1" 200 -
+2023-09-25 12:18:32,997 INFO administradores get Administradores listado com sucesso
+2023-09-25 12:18:32,999 INFO _internal _log 127.0.0.1 - - [25/Sep/2023 12:18:32] "GET /administradores HTTP/1.1" 200 -

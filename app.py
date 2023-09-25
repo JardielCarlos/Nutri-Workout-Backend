@@ -7,6 +7,8 @@ from resources.atletas import Atletas, AtletaId, AtletaNome
 from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome
 from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome
 from resources.administradores import Administradores, AdministradorId, AdministradorNome
+from resources.login import Login
+from resources.logout import Logout
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:senhasecreta@localhost:5432/NutriWorkout"
@@ -32,6 +34,10 @@ api.add_resource(NutricionistaNome, '/nutricionista/<string:nome>')
 api.add_resource(Administradores, '/administradores')
 api.add_resource(AdministradorId, '/administradores/<int:id>')
 api.add_resource(AdministradorNome, '/administradores/<string:nome>')
+
+api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
+
 
 if __name__ == '__main__':
   app.run(debug=True)

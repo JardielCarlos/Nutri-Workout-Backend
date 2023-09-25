@@ -2,6 +2,7 @@ from flask_restful import Resource, marshal, reqparse
 from helpers.logger import logger
 from helpers.database import db
 from werkzeug.security import generate_password_hash
+from helpers.auth.token_verifier import token_verify
 from sqlalchemy.exc import IntegrityError
 from password_strength import PasswordPolicy
 from validate_docbr import CPF
@@ -35,7 +36,14 @@ cpfValidate = CPF()
 "677.986.197-98"
 
 class Administradores(Resource):
-  def get(self):
+  @token_verify
+  def get(self, tipo, refreshToken):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os gestores")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
     logger.info("Administradores listado com sucesso")
     return marshal(Administrador.query.all(), administradorFields), 200
   
