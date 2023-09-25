@@ -194,7 +194,7 @@ class AtletaId(Resource):
         return marshal(codigo, msgFields), 404
 
       if not atleta.verify_password(args["senha"]):
-        codigo = Message(1, "Senha Incorreta ou inexistente")
+        codigo = Message(1, "Senha incorreta ou inexistente")
         return marshal(codigo, msgFields), 404
       
       if not args['novaSenha']:

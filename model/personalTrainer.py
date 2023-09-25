@@ -18,7 +18,7 @@ class PersonalTrainer(Usuario):
   usuario_id = db.Column(db.Integer ,db.ForeignKey("tb_usuario.id"), primary_key=True)
   cref = db.Column(db.String, nullable=False, unique=True)
 
-  __mapper_args__ = {"polymorphic_identity": "PersonalTrainer"}
+  __mapper_args__ = {"polymorphic_identity": "Personal Trainer"}
 
 
   def __init__(self, nome, email, senha, cpf, cref):

@@ -27,7 +27,7 @@ class Atleta(Usuario):
   imc = db.Column(db.Float, nullable=True)
   statusPagamento = db.Column(db.Boolean, nullable=False, default=True)
   
-  __mapper_args__ = {"polymorphic_identity": "atleta"}
+  __mapper_args__ = {"polymorphic_identity": "Atleta"}
 
   def __init__(self, nome, email, senha, cpf):
     super().__init__(nome, email, senha, cpf)
