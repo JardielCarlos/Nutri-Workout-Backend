@@ -29,4 +29,4 @@ class Login(Resource):
     token = token_creator.create(user.tipo)
 
 
-    return {"token": token, "tipo":user.tipo}, 200
+    return {"token": token, "tipo":user.tipo, "user_id": user.id}, 200

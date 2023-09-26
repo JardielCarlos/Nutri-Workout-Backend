@@ -11,6 +11,11 @@ administradorFields = {
   "tipo": fields.String,
 }
 
+administradorFieldsToken = {
+  "administrador": fields.Nested(administradorFields),
+  "token": fields.String
+}
+
 class Administrador(Usuario):
   __tablename__= "tb_administrador"
 

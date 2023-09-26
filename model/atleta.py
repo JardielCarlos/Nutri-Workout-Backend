@@ -16,6 +16,11 @@ atletaFields = {
   "statusPagamento": fields.Boolean
 }
 
+atletaFieldsToken = {
+  "atleta": fields.Nested(atletaFields),
+  "token": fields.String
+}
+
 class Atleta(Usuario):
   __tablename__ = 'tb_atleta'
   

@@ -12,6 +12,11 @@ nutricionistaFields = {
   "crn": fields.String
 }
 
+nutricionistaFieldsToken = {
+  "nutricionista": fields.Nested(nutricionistaFields),
+  "token": fields.String
+}
+
 class Nutricionista(Usuario):
   __tablename__= "tb_nutricionista"
 

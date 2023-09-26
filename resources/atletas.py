@@ -2,13 +2,14 @@ from flask_restful import Resource, marshal, reqparse
 from helpers.logger import logger
 from helpers.database import db
 from werkzeug.security import generate_password_hash
+from helpers.auth.token_verifier import token_verify
 from sqlalchemy.exc import IntegrityError
 from password_strength import PasswordPolicy
 from validate_docbr import CPF
 import re
 
-from model.atleta import Atleta, atletaFields
-from model.mensagem import Message, msgFields
+from model.atleta import Atleta, atletaFieldsToken
+from model.mensagem import Message, msgFields, msgFieldsToken
 
 parser = reqparse.RequestParser()
 
@@ -35,11 +36,26 @@ cpfValidate = CPF()
 "677.986.197-98"
 
 class Atletas(Resource):
-  def get(self):
+  @token_verify
+  def get(self, tipo, refreshToken):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os atletas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    atleta = Atleta.query.all()
+    data = {"atleta": atleta, "token": refreshToken}
     logger.info("Atletas listados com sucesso")
-    return marshal(Atleta.query.all(), atletaFields), 200
+    return marshal(data, atletaFieldsToken), 200
   
-  def post(self):
+  @token_verify
+  def post(self, tipo, refreshToken):
+    if tipo != 'Administrador' and tipo != 'Atleta':
+      logger.error("Usuario sem autorizacao para acessar os atletas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     args = parser.parse_args()
 
     try:
@@ -87,8 +103,10 @@ class Atletas(Resource):
       db.session.add(atleta)
       db.session.commit()
 
+      data = {"atleta": atleta, "token": refreshToken}
+
       logger.info(f"Atleta de id: {atleta.id} criado com sucesso")
-      return marshal(atleta, atletaFields), 201
+      return marshal(data, atletaFieldsToken), 201
     
     except IntegrityError as e:
       if 'cpf' in str(e.orig):
@@ -106,7 +124,14 @@ class Atletas(Resource):
       return marshal(codigo, msgFields), 400
     
 class AtletaId(Resource):
-  def get(self, id):
+  @token_verify
+  def get(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' and tipo != 'Atleta':
+      logger.error("Usuario sem autorizacao para acessar os atletas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
     atleta = Atleta.query.get(id)
 
     if atleta is None:
@@ -115,10 +140,19 @@ class AtletaId(Resource):
       codigo = Message(1, f"Atleta de id: {id} não encontrado")
       return marshal(codigo, msgFields), 404
     
+    data = {"atleta": atleta, "token": refreshToken}
+
     logger.info(f"Atleta de id: {id} listado com sucesso")
-    return marshal(atleta, atletaFields), 200
+    return marshal(data, atletaFieldsToken), 200
   
-  def put(self, id):
+  @token_verify
+  def put(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' or tipo != 'Atleta':
+      logger.error("Usuario sem autorizacao para acessar os atletas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
     args = parser.parse_args()
 
     try:
@@ -166,8 +200,10 @@ class AtletaId(Resource):
       db.session.add(atletaBD)
       db.session.commit()
       
+      data = {"atleta": atletaBD, "token": refreshToken}
+
       logger.info(f"Atleta de id: {id} atualizado com sucesso")
-      return marshal(atletaBD, atletaFields), 200
+      return marshal(data, atletaFieldsToken), 200
     
     except IntegrityError as e:
       if 'cpf' in str(e.orig):
@@ -183,7 +219,14 @@ class AtletaId(Resource):
       codigo = Message(2, "Erro ao atualizar o atleta")
       return marshal(codigo, msgFields), 400
     
-  def patch(self, id):
+  @token_verify
+  def patch(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' or tipo != 'Atleta':
+      logger.error("Usuario sem autorizacao para acessar os atletas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
     args = parser.parse_args()
     
     try:
@@ -210,13 +253,20 @@ class AtletaId(Resource):
 
       logger.info("Senha alterada com sucesso")
       codigo = Message(0, "Senha alterada com sucesso")
-      return marshal(codigo, msgFields), 200
+      data = {"msg": codigo, "token": refreshToken}
+      return marshal(data, msgFieldsToken), 200
     except:
       logger.error("Erro ao atualizar a senha do atleta")
       codigo = Message(2, "Erro ao atualizar a senha do atleta")
       return marshal(codigo, msgFields), 400
 
-  def delete(self, id):
+  @token_verify
+  def delete(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' and tipo != 'Atleta':
+      logger.error("Usuario sem autorizacao para acessar os atletas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     atleta = Atleta.query.get(id)
 
     if atleta is None:
@@ -229,11 +279,20 @@ class AtletaId(Resource):
     db.session.commit()
 
     logger.info(f"Atleta de id: {id} deletado com sucesso")
-    return {}, 200
+    return {"token": refreshToken}, 200
   
 class AtletaNome(Resource):
-  def get(self, nome):
-    atletaNome = Atleta.query.filter(Atleta.nome.ilike(f"%{nome}%")).all()
-    logger.info(f"Atletas com nomes: {nome} listados com sucesso")
+  @token_verify
+  def get(self, tipo, refreshToken, nome):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os atletas")
 
-    return marshal(atletaNome, atletaFields), 200
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    atletaNome = Atleta.query.filter(Atleta.nome.ilike(f"%{nome}%")).all()
+
+    data = {"atleta": atletaNome, "token": refreshToken}
+
+    logger.info(f"Atletas com nomes: {nome} listados com sucesso")
+    return marshal(data, atletaFieldsToken), 200

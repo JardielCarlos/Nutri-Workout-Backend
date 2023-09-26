@@ -8,8 +8,8 @@ from password_strength import PasswordPolicy
 from validate_docbr import CPF
 import re
 
-from model.mensagem import Message, msgFields
-from model.administrador import Administrador, administradorFields
+from model.mensagem import Message, msgFields, msgFieldsToken
+from model.administrador import Administrador, administradorFieldsToken
 
 parser = reqparse.RequestParser()
 
@@ -39,15 +39,24 @@ class Administradores(Resource):
   @token_verify
   def get(self, tipo, refreshToken):
     if tipo != 'Administrador':
-      logger.error("Usuario sem autorizacao para acessar os gestores")
+      logger.error("Usuario sem autorizacao para acessar os administradores")
 
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
     
+    administrador = Administrador.query.all()
+    data = {"administrador": administrador, "token": refreshToken}
+
     logger.info("Administradores listado com sucesso")
-    return marshal(Administrador.query.all(), administradorFields), 200
+    return marshal(data, administradorFieldsToken), 200
   
-  def post(self):
+  @token_verify
+  def post(self, tipo, refreshToken):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os administ")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     args = parser.parse_args()
 
     try:
@@ -95,8 +104,10 @@ class Administradores(Resource):
       db.session.add(administrador)
       db.session.commit()
 
+      data = {"administrador": administrador, "token": refreshToken}
+
       logger.info(f"Administrador de id: {administrador.id} criado com sucesso")
-      return marshal(administrador, administradorFields), 201
+      return marshal(data, administradorFieldsToken), 201
     except IntegrityError as e:
       if 'cpf' in str(e.orig):
         codigo = Message(1, "CPF já cadastrado no sistema")
@@ -113,7 +124,14 @@ class Administradores(Resource):
       return marshal(codigo, msgFields), 400
 
 class AdministradorId(Resource):
-  def get(self, id):
+  @token_verify
+  def get(self, tipo, refreshToken, id):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os administ")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
     administrador = Administrador.query.get(id)
 
     if administrador is None:
@@ -122,10 +140,18 @@ class AdministradorId(Resource):
       codigo = Message(1, f"Administrador de id: {id} nao encontrado")
       return marshal(codigo, msgFields), 400
     
-    logger.info(f"Administrador de id: {id} listado com sucesso")
-    return marshal(administrador, administradorFields), 200
+    data = {"administrador": administrador, "token": refreshToken}
 
-  def put(self, id):
+    logger.info(f"Administrador de id: {id} listado com sucesso")
+    return marshal(data, administradorFieldsToken), 200
+
+  @token_verify
+  def put(self, tipo, refreshToken, id):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os administ")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     args = parser.parse_args()
 
     try:
@@ -173,9 +199,11 @@ class AdministradorId(Resource):
 
       db.session.add(administradorBD)
       db.session.commit()
-      
+
+      data = {"administrador": administradorBD, "token": refreshToken}
       logger.info(f"Administrador de id: {id} atualizado com sucesso")
-      return marshal(administradorBD, administradorFields), 200
+
+      return marshal(data, administradorFieldsToken), 200
     
     except IntegrityError as e:
       if 'cpf' in str(e.orig):
@@ -189,8 +217,13 @@ class AdministradorId(Resource):
       logger.error("Erro ao atulizar o Administrador")
       codigo = Message(2, "Erro ao atualizar o Administrador")
       return marshal(codigo, msgFields), 400
-    
-  def patch(self, id):
+  @token_verify
+  def patch(self, tipo, refreshToken, id):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os administ")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     args = parser.parse_args()
     try:
       administrador = Administrador.query.get(id)
@@ -220,13 +253,20 @@ class AdministradorId(Resource):
 
       logger.info("Senha alterada com sucesso")
       codigo = Message(0, "Senha alterada com sucesso")
-      return marshal(codigo, msgFields), 200
+
+      data = {"msg": codigo, "token": refreshToken}
+      return marshal(data, msgFieldsToken), 200
     except:
       logger.error("Erro ao atualizar a senha do Administrador")
       codigo = Message(2, "Erro ao atualizar a senha do Administrador")
-      return marshal(codigo, msgFields), 400
+      return marshal(codigo, msgFieldsToken), 400
+  @token_verify
+  def delete(self, tipo, refreshToken, id):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os administ")
 
-  def delete(self, id):
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     administrador = Administrador.query.get(id)
 
     if administrador is None:
@@ -239,10 +279,18 @@ class AdministradorId(Resource):
     db.session.commit()
     
     logger.info(f"Administrador de id: {id} deletado com sucesso")
-    return {}, 200
+    return {'token': refreshToken}, 200
 
 class AdministradorNome(Resource):
-  def get(self, nome):
+  @token_verify
+  def get(self, tipo, refreshToken, nome):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os administ")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     administradorNome = Administrador.query.filter(Administrador.nome.ilike(f"%{nome}%")).all()
+
+    data = {"administrador": administradorNome, "token": refreshToken}
     logger.info(f"Administrador com nomes: {nome} listado com sucesso")
-    return marshal(administradorNome, administradorFields), 200
+    return marshal(data, administradorFieldsToken), 200

@@ -5,6 +5,11 @@ msgFields = {
   "descricao": fields.String
 }
 
+msgFieldsToken = {
+  "msg": fields.Nested(msgFields),
+  "token": fields.String
+}
+
 class Message:
   def __init__(self, codigo, descricao):
     self.codigo = codigo

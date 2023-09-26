@@ -12,6 +12,11 @@ personalTrainerFields = {
   "cref": fields.String
 }
 
+personalTrainerFieldsToken = {
+  "personal": fields.Nested(personalTrainerFields),
+  "token": fields.String
+}
+
 class PersonalTrainer(Usuario):
   __tablename__="tb_personalTrainer"
 

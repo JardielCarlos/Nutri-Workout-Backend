@@ -1,14 +1,15 @@
 from flask_restful import marshal, Resource, reqparse
 from helpers.logger import logger
 from helpers.database import db
+from helpers.auth.token_verifier import token_verify
 from password_strength import PasswordPolicy
 from validate_docbr import CPF
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 import re
 
-from model.mensagem import Message, msgFields
-from model.personalTrainer import PersonalTrainer, personalTrainerFields
+from model.mensagem import Message, msgFields, msgFieldsToken
+from model.personalTrainer import PersonalTrainer, personalTrainerFieldsToken
 
 parser = reqparse.RequestParser()
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
@@ -42,13 +43,30 @@ cpfValidate = CPF()
 "CREF 876543-P/SC"
 
 class PersonaisTrainer(Resource):
-  def get(self):
-    logger.info("Personais Trainer listados com sucesso")
-    return marshal(PersonalTrainer.query.all(), personalTrainerFields), 200
-  
-  def post(self):
-    args = parser.parse_args()
+  @token_verify
+  def get(self, tipo, refreshToken):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os Personais Trainer")
 
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    logger.info("Personais Trainer listados com sucesso")
+
+    personalTrainer = PersonalTrainer.query.all()
+    data = {"personal": personalTrainer, "token": refreshToken}
+
+    return marshal(data, personalTrainerFieldsToken), 200
+  
+  @token_verify
+  def post(self, tipo, refreshToken):
+    if tipo != 'Administrador' and tipo != 'Personal Trainer':
+      logger.error("Usuario sem autorizacao para acessar os Personais Trainer")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    args = parser.parse_args()
     try:
       if len(args["nome"]) == 0:
         logger.info("Nome não informado")
@@ -102,8 +120,10 @@ class PersonaisTrainer(Resource):
       db.session.add(personalTrainer)
       db.session.commit()
 
+      data = {"personal": personalTrainer, "token": refreshToken}
+
       logger.info(f"Personal Trainer de id: {personalTrainer.id} criado com sucesso")
-      return marshal(personalTrainer, personalTrainerFields), 201
+      return marshal(data, personalTrainerFieldsToken), 201
     
     except IntegrityError as e:
       if "cpf" in str(e.orig):
@@ -124,7 +144,14 @@ class PersonaisTrainer(Resource):
       return marshal(codigo, msgFields), 400
     
 class PersonalTrainerId(Resource):
-  def get(self, id):
+  @token_verify
+  def get(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' and tipo != 'Personal Trainer':
+      logger.error("Usuario sem autorizacao para acessar os Personais Trainer")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
     personalTrainer = PersonalTrainer.query.get(id)
 
     if personalTrainer is None:
@@ -133,12 +160,18 @@ class PersonalTrainerId(Resource):
       codigo = Message(1, f"Personal Trainer de id: {id} não encontrado")
       return marshal(codigo, msgFields), 404
     
+    data = {"personal": personalTrainer, "token": refreshToken}
     logger.info(f"Personal Trainer de id: {id} listado com sucesso")
-    return marshal(personalTrainer, personalTrainerFields), 200
-  
-  def put(self, id):
-    args = parser.parse_args()
+    return marshal(data, personalTrainerFieldsToken), 200
+  @token_verify
+  def put(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' and tipo != 'Personal Trainer':
+      logger.error("Usuario sem autorizacao para acessar os Personais Trainer")
 
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    args = parser.parse_args()
     try:
       personalTrainerBD = PersonalTrainer.query.get(id)
 
@@ -194,8 +227,10 @@ class PersonalTrainerId(Resource):
       db.session.add(personalTrainerBD)
       db.session.commit()
 
+      data = {"personal": personalTrainerBD, "token": refreshToken}
+
       logger.info(f"Personal Trainer de id: {id} atualizado com sucesso")
-      return marshal(personalTrainerBD, personalTrainerFields), 200
+      return marshal(data, personalTrainerFieldsToken), 200
     
     except IntegrityError as e:
       if "cpf" in str(e.orig):
@@ -209,15 +244,22 @@ class PersonalTrainerId(Resource):
       elif "cref" in str(e.orig):
         codigo = Message(1, "CREF já cadastrado no sistema")
         return marshal(codigo, msgFields), 400
+      
     except:
       logger.error("Erro ao cadastrar o Personal Trainer")
 
       codigo = Message(2, "Erro ao cadastrar o Personal Trainer")
       return marshal(codigo, msgFields), 400
     
-  def patch(self, id):
-    args = parser.parse_args()
+  @token_verify
+  def patch(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' and tipo != 'Personal Trainer':
+      logger.error("Usuario sem autorizacao para acessar os Personais Trainer")
 
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    args = parser.parse_args()
     try:
       personalTrainerBD = PersonalTrainer.query.get(id)
 
@@ -247,14 +289,24 @@ class PersonalTrainerId(Resource):
       
       logger.info("Senha alterada com sucesso")
       codigo = Message(0, "Senha alterada com sucesso")
-      return marshal(codigo, msgFields), 200
+
+      data = {"msg": codigo, "token": refreshToken}
+
+      return marshal(data, msgFieldsToken), 200
     
     except:
       logger.error("Erro ao atualizar a senha do Personal Trainer")
       codigo = Message(2, "Erro ao atualizar a senha do Personal Trainer")
       return marshal(codigo, msgFields), 400
       
-  def delete(self, id):
+  @token_verify
+  def delete(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' and tipo != 'Personal Trainer':
+      logger.error("Usuario sem autorizacao para acessar os Personais Trainer")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
     personalTrainer = PersonalTrainer.query.get(id)
 
     if personalTrainer is None:
@@ -267,11 +319,19 @@ class PersonalTrainerId(Resource):
     db.session.commit()
 
     logger.info(f"Personal Trainer de id: {id} deletado com sucesso")
-    return {}, 200
+    return {"token": refreshToken}, 200
   
 class PersonalTrainerNome(Resource):
-  def get(self, nome):
-    personalTrainer = PersonalTrainer.query.filter(PersonalTrainer.nome.ilike(f"%{nome}%")).all()
-    logger.info(f"Personais Trainer com nomes: {nome} listados com sucesso")
+  @token_verify
+  def get(self, tipo, refreshToken, nome):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os Personais Trainer")
 
-    return marshal(personalTrainer, personalTrainerFields), 200
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    personalTrainer = PersonalTrainer.query.filter(PersonalTrainer.nome.ilike(f"%{nome}%")).all()
+
+    data = {"personal": personalTrainer, "token": refreshToken}
+    logger.info(f"Personais Trainer com nomes: {nome} listados com sucesso")
+    return marshal(data, personalTrainerFieldsToken), 200

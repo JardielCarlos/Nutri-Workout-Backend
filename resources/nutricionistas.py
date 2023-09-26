@@ -5,10 +5,11 @@ from password_strength import PasswordPolicy
 from validate_docbr import CPF
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
+from helpers.auth.token_verifier import token_verify
 import re
 
-from model.mensagem import Message, msgFields
-from model.nutricionista import Nutricionista, nutricionistaFields
+from model.mensagem import Message, msgFields, msgFieldsToken
+from model.nutricionista import Nutricionista, nutricionistaFieldsToken
 
 parser = reqparse.RequestParser()
 
@@ -43,11 +44,27 @@ policy = PasswordPolicy.from_names(
 )
 
 class Nutricionistas(Resource):
-  def get(self):
+  @token_verify
+  def get(self, tipo, refreshToken):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os nutricionistas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
     logger.info("Nutricionistas listados com sucesso")
-    return marshal(Nutricionista.query.all(), nutricionistaFields), 200
+    nutricionista = Nutricionista.query.all()
+    data = {"nutricionista": nutricionista, "token": refreshToken}
+
+    return marshal(data, nutricionistaFieldsToken), 200
   
-  def post(self):
+  @token_verify
+  def post(self, tipo, refreshToken):
+    if tipo != 'Administrador' and tipo != 'Nutricionista':
+      logger.error("Usuario sem autorizacao para acessar os nutricionistas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     args = parser.parse_args()
 
     try:
@@ -103,8 +120,10 @@ class Nutricionistas(Resource):
       db.session.add(nutricionista)
       db.session.commit()
 
+      data = {"nutricionista":nutricionista, "token": refreshToken}
+
       logger.info(f"Nutricionista de id: {nutricionista.id} criado com sucesso")
-      return marshal(nutricionista, nutricionistaFields), 201
+      return marshal(data, nutricionistaFieldsToken), 201
     
     except IntegrityError as e:
       if "cpf" in str(e.orig):
@@ -125,7 +144,15 @@ class Nutricionistas(Resource):
       return marshal(codigo, msgFields), 400
   
 class NutricionistaId(Resource):
-  def get(self, id):
+  @token_verify
+  def get(self, tipo, refreshToken, id):
+    print(tipo)
+    if tipo != 'Administrador' and tipo != 'Nutricionista':
+      logger.error("Usuario sem autorizacao para acessar os nutricionistas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
     nutricionista = Nutricionista.query.get(id)
 
     if nutricionista is None:
@@ -134,10 +161,19 @@ class NutricionistaId(Resource):
       codigo = Message(1, f"Nutricionista de id: {id} não encontrado")
       return marshal(codigo, msgFields), 404
     
+    data = {"nutricionista": nutricionista, "token": refreshToken}
+    
     logger.info(f"Nutricionista de id: {id} listado com sucesso")
-    return marshal(nutricionista, nutricionistaFields), 200
+    return marshal(data, nutricionistaFieldsToken), 200
   
-  def put(self, id):
+  @token_verify
+  def put(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' and tipo != 'Nutricionista':
+      logger.error("Usuario sem autorizacao para acessar os nutricionistas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
     args = parser.parse_args()
 
     try:
@@ -194,8 +230,10 @@ class NutricionistaId(Resource):
       db.session.add(nutricionistaBD)
       db.session.commit()
 
+      data = {"nutrcionista": nutricionistaBD, "token": refreshToken}
+
       logger.info(f"Nutricionista de id: {id} atualizado com sucesso")
-      return marshal(nutricionistaBD, nutricionistaFields), 200
+      return marshal(data, nutricionistaFieldsToken), 200
 
     except IntegrityError as e:
       if "cpf" in str(e.orig):
@@ -215,7 +253,14 @@ class NutricionistaId(Resource):
       codigo = Message(2, "Erro ao cadastrar o Nutricionista")
       return marshal(codigo, msgFields), 400
 
-  def patch(self, id):
+  @token_verify
+  def patch(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' and tipo != 'Nutricionista':
+      logger.error("Usuario sem autorizacao para acessar os nutricionistas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+        
     args = parser.parse_args()
     try:
       nutricionistaBD = Nutricionista.query.get(id)
@@ -246,14 +291,22 @@ class NutricionistaId(Resource):
 
       logger.info("Senha alterada com sucesso")
       codigo = Message(0, "Senha alterada com sucesso")
-      return marshal(codigo, msgFields), 200
+
+      data = {"msg": codigo, "token": refreshToken}
+      return marshal(data, msgFieldsToken), 200
     
     except:
       logger.error("Erro ao atualizar a senha do Personal Trainer")
       codigo = Message(2, "Erro ao atualizar a senha do Personal Trainer")
       return marshal(codigo, msgFields), 400
+  @token_verify
+  def delete(self, tipo, refreshToken, id):
+    if tipo != 'Administrador' and tipo != 'Nutricionista':
+      logger.error("Usuario sem autorizacao para acessar os nutricionistas")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     
-  def delete(self, id):
     nutricionista = Nutricionista.query.get(id)
 
     if nutricionista is None:
@@ -269,8 +322,17 @@ class NutricionistaId(Resource):
     return {}, 200
   
 class NutricionistaNome(Resource):
-  def get(self, nome):
-    nutricionista = Nutricionista.query.filter(Nutricionista.nome.ilike(f"%{nome}%")).all()
-    logger.info(f"Nutricionista como nomes: {nome} listado com sucesso")
+  @token_verify
+  def get(self, tipo, refreshToken, nome):
+    if tipo != 'Administrador':
+      logger.error("Usuario sem autorizacao para acessar os nutricionistas")
 
-    return marshal(nutricionista, nutricionistaFields), 200
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    nutricionista = Nutricionista.query.filter(Nutricionista.nome.ilike(f"%{nome}%")).all()
+
+    data = {"nutricionista": nutricionista, "token": refreshToken}
+
+    logger.info(f"Nutricionista como nomes: {nome} listado com sucesso")
+    return marshal(data, nutricionistaFieldsToken), 200
