@@ -36,26 +36,26 @@ cpfValidate = CPF()
 "677.986.197-98"
 
 class Atletas(Resource):
-  @token_verify
-  def get(self, tipo, refreshToken):
-    if tipo != 'Administrador':
-      logger.error("Usuario sem autorizacao para acessar os atletas")
+  # @token_verify
+  def get(self):
+    # if tipo != 'Administrador':
+    #   logger.error("Usuario sem autorizacao para acessar os atletas")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     
     atleta = Atleta.query.all()
-    data = {"atleta": atleta, "token": refreshToken}
+    data = {"atleta": atleta, "token": None}
     logger.info("Atletas listados com sucesso")
     return marshal(data, atletaFieldsToken), 200
   
-  @token_verify
-  def post(self, tipo, refreshToken):
-    if tipo != 'Administrador' and tipo != 'Atleta':
-      logger.error("Usuario sem autorizacao para acessar os atletas")
+  # @token_verify
+  def post(self):
+    # if tipo != 'Administrador' and tipo != 'Atleta':
+    #   logger.error("Usuario sem autorizacao para acessar os atletas")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     args = parser.parse_args()
 
     try:
@@ -103,7 +103,7 @@ class Atletas(Resource):
       db.session.add(atleta)
       db.session.commit()
 
-      data = {"atleta": atleta, "token": refreshToken}
+      data = {"atleta": atleta, "token": None}
 
       logger.info(f"Atleta de id: {atleta.id} criado com sucesso")
       return marshal(data, atletaFieldsToken), 201
@@ -124,13 +124,13 @@ class Atletas(Resource):
       return marshal(codigo, msgFields), 400
     
 class AtletaId(Resource):
-  @token_verify
-  def get(self, tipo, refreshToken, id):
-    if tipo != 'Administrador' and tipo != 'Atleta':
-      logger.error("Usuario sem autorizacao para acessar os atletas")
+  # @token_verify
+  def get(self, id):
+    # if tipo != 'Administrador' and tipo != 'Atleta':
+    #   logger.error("Usuario sem autorizacao para acessar os atletas")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     
     atleta = Atleta.query.get(id)
 
@@ -140,18 +140,18 @@ class AtletaId(Resource):
       codigo = Message(1, f"Atleta de id: {id} não encontrado")
       return marshal(codigo, msgFields), 404
     
-    data = {"atleta": atleta, "token": refreshToken}
+    data = {"atleta": atleta, "token": None}
 
     logger.info(f"Atleta de id: {id} listado com sucesso")
     return marshal(data, atletaFieldsToken), 200
   
-  @token_verify
-  def put(self, tipo, refreshToken, id):
-    if tipo != 'Administrador' or tipo != 'Atleta':
-      logger.error("Usuario sem autorizacao para acessar os atletas")
+  # @token_verify
+  def put(self, id):
+    # if tipo != 'Administrador' or tipo != 'Atleta':
+    #   logger.error("Usuario sem autorizacao para acessar os atletas")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     
     args = parser.parse_args()
 
@@ -200,7 +200,7 @@ class AtletaId(Resource):
       db.session.add(atletaBD)
       db.session.commit()
       
-      data = {"atleta": atletaBD, "token": refreshToken}
+      data = {"atleta": atletaBD, "token": None}
 
       logger.info(f"Atleta de id: {id} atualizado com sucesso")
       return marshal(data, atletaFieldsToken), 200
@@ -219,13 +219,13 @@ class AtletaId(Resource):
       codigo = Message(2, "Erro ao atualizar o atleta")
       return marshal(codigo, msgFields), 400
     
-  @token_verify
-  def patch(self, tipo, refreshToken, id):
-    if tipo != 'Administrador' or tipo != 'Atleta':
-      logger.error("Usuario sem autorizacao para acessar os atletas")
+  # @token_verify
+  def patch(self, id):
+    # if tipo != 'Administrador' or tipo != 'Atleta':
+    #   logger.error("Usuario sem autorizacao para acessar os atletas")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     
     args = parser.parse_args()
     
@@ -253,20 +253,20 @@ class AtletaId(Resource):
 
       logger.info("Senha alterada com sucesso")
       codigo = Message(0, "Senha alterada com sucesso")
-      data = {"msg": codigo, "token": refreshToken}
+      data = {"msg": codigo, "token": None}
       return marshal(data, msgFieldsToken), 200
     except:
       logger.error("Erro ao atualizar a senha do atleta")
       codigo = Message(2, "Erro ao atualizar a senha do atleta")
       return marshal(codigo, msgFields), 400
 
-  @token_verify
-  def delete(self, tipo, refreshToken, id):
-    if tipo != 'Administrador' and tipo != 'Atleta':
-      logger.error("Usuario sem autorizacao para acessar os atletas")
+  # @token_verify
+  def delete(self, id):
+    # if tipo != 'Administrador' and tipo != 'Atleta':
+    #   logger.error("Usuario sem autorizacao para acessar os atletas")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     atleta = Atleta.query.get(id)
 
     if atleta is None:
@@ -279,20 +279,20 @@ class AtletaId(Resource):
     db.session.commit()
 
     logger.info(f"Atleta de id: {id} deletado com sucesso")
-    return {"token": refreshToken}, 200
+    return {"token": None}, 200
   
 class AtletaNome(Resource):
-  @token_verify
-  def get(self, tipo, refreshToken, nome):
-    if tipo != 'Administrador':
-      logger.error("Usuario sem autorizacao para acessar os atletas")
+  # @token_verify
+  def get(self, nome):
+    # if tipo != 'Administrador':
+    #   logger.error("Usuario sem autorizacao para acessar os atletas")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     
     atletaNome = Atleta.query.filter(Atleta.nome.ilike(f"%{nome}%")).all()
 
-    data = {"atleta": atletaNome, "token": refreshToken}
+    data = {"atleta": atletaNome, "token": None}
 
     logger.info(f"Atletas com nomes: {nome} listados com sucesso")
     return marshal(data, atletaFieldsToken), 200

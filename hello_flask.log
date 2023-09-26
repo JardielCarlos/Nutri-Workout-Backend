@@ -1,0 +1,7 @@
+2023-09-26 11:53:22,992 WARNING _internal _log  * Debugger is active!
+2023-09-26 11:53:22,995 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-09-26 11:53:27,554 INFO _internal _log 127.0.0.1 - - [26/Sep/2023 11:53:27] "[31m[1mPOST /atletas HTTP/1.1[0m" 400 -
+2023-09-26 11:53:48,052 INFO atletas post Atleta de id: 21 criado com sucesso
+2023-09-26 11:53:48,053 INFO _internal _log 127.0.0.1 - - [26/Sep/2023 11:53:48] "[35m[1mPOST /atletas HTTP/1.1[0m" 201 -
+2023-09-26 11:53:59,926 INFO atletas get Atletas listados com sucesso
+2023-09-26 11:53:59,927 INFO _internal _log 127.0.0.1 - - [26/Sep/2023 11:53:59] "GET /atletas HTTP/1.1" 200 -

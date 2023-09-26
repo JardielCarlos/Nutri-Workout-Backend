@@ -36,27 +36,27 @@ cpfValidate = CPF()
 "677.986.197-98"
 
 class Administradores(Resource):
-  @token_verify
-  def get(self, tipo, refreshToken):
-    if tipo != 'Administrador':
-      logger.error("Usuario sem autorizacao para acessar os administradores")
+  # @token_verify
+  def get(self): #tipo, refreshToken
+    # if tipo != 'Administrador':
+    #   logger.error("Usuario sem autorizacao para acessar os administradores")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     
     administrador = Administrador.query.all()
-    data = {"administrador": administrador, "token": refreshToken}
+    data = {"administrador": administrador, "token": None}
 
     logger.info("Administradores listado com sucesso")
     return marshal(data, administradorFieldsToken), 200
   
-  @token_verify
-  def post(self, tipo, refreshToken):
-    if tipo != 'Administrador':
-      logger.error("Usuario sem autorizacao para acessar os administ")
+  # @token_verify
+  def post(self):
+    # if tipo != 'Administrador':
+    #   logger.error("Usuario sem autorizacao para acessar os administ")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     args = parser.parse_args()
 
     try:
@@ -104,7 +104,7 @@ class Administradores(Resource):
       db.session.add(administrador)
       db.session.commit()
 
-      data = {"administrador": administrador, "token": refreshToken}
+      data = {"administrador": administrador, "token": None}
 
       logger.info(f"Administrador de id: {administrador.id} criado com sucesso")
       return marshal(data, administradorFieldsToken), 201
@@ -124,13 +124,13 @@ class Administradores(Resource):
       return marshal(codigo, msgFields), 400
 
 class AdministradorId(Resource):
-  @token_verify
-  def get(self, tipo, refreshToken, id):
-    if tipo != 'Administrador':
-      logger.error("Usuario sem autorizacao para acessar os administ")
+  # @token_verify
+  def get(self, id): #tipo, refreshToken, id
+    # if tipo != 'Administrador':
+    #   logger.error("Usuario sem autorizacao para acessar os administ")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     
     administrador = Administrador.query.get(id)
 
@@ -140,20 +140,20 @@ class AdministradorId(Resource):
       codigo = Message(1, f"Administrador de id: {id} nao encontrado")
       return marshal(codigo, msgFields), 400
     
-    data = {"administrador": administrador, "token": refreshToken}
+    data = {"administrador": administrador, "token": None}
 
     logger.info(f"Administrador de id: {id} listado com sucesso")
     return marshal(data, administradorFieldsToken), 200
 
-  @token_verify
-  def put(self, tipo, refreshToken, id):
-    if tipo != 'Administrador':
-      logger.error("Usuario sem autorizacao para acessar os administ")
+  # @token_verify
+  def put(self, id):
+    # if tipo != 'Administrador':
+    #   logger.error("Usuario sem autorizacao para acessar os administ")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
+
     args = parser.parse_args()
-
     try:
       administradorBD = Administrador.query.get(id)
 
@@ -200,11 +200,10 @@ class AdministradorId(Resource):
       db.session.add(administradorBD)
       db.session.commit()
 
-      data = {"administrador": administradorBD, "token": refreshToken}
+      data = {"administrador": administradorBD, "token": None}
       logger.info(f"Administrador de id: {id} atualizado com sucesso")
 
       return marshal(data, administradorFieldsToken), 200
-    
     except IntegrityError as e:
       if 'cpf' in str(e.orig):
         codigo = Message(1, "CPF já cadastrado no sistema")
@@ -217,13 +216,14 @@ class AdministradorId(Resource):
       logger.error("Erro ao atulizar o Administrador")
       codigo = Message(2, "Erro ao atualizar o Administrador")
       return marshal(codigo, msgFields), 400
-  @token_verify
-  def patch(self, tipo, refreshToken, id):
-    if tipo != 'Administrador':
-      logger.error("Usuario sem autorizacao para acessar os administ")
+  # @token_verify
+  def patch(self, id):
+    # if tipo != 'Administrador':
+    #   logger.error("Usuario sem autorizacao para acessar os administ")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
+
     args = parser.parse_args()
     try:
       administrador = Administrador.query.get(id)
@@ -254,21 +254,22 @@ class AdministradorId(Resource):
       logger.info("Senha alterada com sucesso")
       codigo = Message(0, "Senha alterada com sucesso")
 
-      data = {"msg": codigo, "token": refreshToken}
+      data = {"msg": codigo, "token": None}
       return marshal(data, msgFieldsToken), 200
     except:
       logger.error("Erro ao atualizar a senha do Administrador")
       codigo = Message(2, "Erro ao atualizar a senha do Administrador")
       return marshal(codigo, msgFieldsToken), 400
-  @token_verify
-  def delete(self, tipo, refreshToken, id):
-    if tipo != 'Administrador':
-      logger.error("Usuario sem autorizacao para acessar os administ")
+  
+  # @token_verify
+  def delete(self, id):
+    # if tipo != 'Administrador':
+    #   logger.error("Usuario sem autorizacao para acessar os administ")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
+
     administrador = Administrador.query.get(id)
-
     if administrador is None:
       logger.error(f"Administrador de id: {id} nao encotrado")
 
@@ -279,18 +280,18 @@ class AdministradorId(Resource):
     db.session.commit()
     
     logger.info(f"Administrador de id: {id} deletado com sucesso")
-    return {'token': refreshToken}, 200
+    return {'token': None}, 200
 
 class AdministradorNome(Resource):
-  @token_verify
-  def get(self, tipo, refreshToken, nome):
-    if tipo != 'Administrador':
-      logger.error("Usuario sem autorizacao para acessar os administ")
+  # @token_verify
+  def get(self, nome):
+    # if tipo != 'Administrador':
+    #   logger.error("Usuario sem autorizacao para acessar os administ")
 
-      codigo = Message(1, "Usuario sem autorização suficiente!")
-      return marshal(codigo, msgFields), 403
+    #   codigo = Message(1, "Usuario sem autorização suficiente!")
+    #   return marshal(codigo, msgFields), 403
     administradorNome = Administrador.query.filter(Administrador.nome.ilike(f"%{nome}%")).all()
 
-    data = {"administrador": administradorNome, "token": refreshToken}
+    data = {"administrador": administradorNome, "token": None}
     logger.info(f"Administrador com nomes: {nome} listado com sucesso")
     return marshal(data, administradorFieldsToken), 200
