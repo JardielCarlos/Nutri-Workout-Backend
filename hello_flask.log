@@ -1,7 +1,18 @@
-2023-09-26 11:53:22,992 WARNING _internal _log  * Debugger is active!
-2023-09-26 11:53:22,995 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-09-26 11:53:27,554 INFO _internal _log 127.0.0.1 - - [26/Sep/2023 11:53:27] "[31m[1mPOST /atletas HTTP/1.1[0m" 400 -
-2023-09-26 11:53:48,052 INFO atletas post Atleta de id: 21 criado com sucesso
-2023-09-26 11:53:48,053 INFO _internal _log 127.0.0.1 - - [26/Sep/2023 11:53:48] "[35m[1mPOST /atletas HTTP/1.1[0m" 201 -
-2023-09-26 11:53:59,926 INFO atletas get Atletas listados com sucesso
-2023-09-26 11:53:59,927 INFO _internal _log 127.0.0.1 - - [26/Sep/2023 11:53:59] "GET /atletas HTTP/1.1" 200 -
+2023-10-03 11:50:04,845 INFO connection_workflow start Pika version 1.3.2 connecting to ('::1', 5672, 0, 0)
+2023-10-03 11:50:04,847 INFO io_services_utils _on_writable Socket connected: <socket.socket fd=488, family=23, type=1, proto=6, laddr=('::1', 51001, 0, 0), raddr=('::1', 5672, 0, 0)>
+2023-10-03 11:50:04,848 INFO connection_workflow _on_transport_establishment_done Streaming transport linked up: (<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x0000019C16812BD0>, _StreamingProtocolShim: <SelectConnection PROTOCOL transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x0000019C16812BD0> params=<ConnectionParameters host=localhost port=5672 virtual_host=/ ssl=False>>).
+2023-10-03 11:50:04,896 INFO connection_workflow _report_completion_and_cleanup AMQPConnector - reporting success: <SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x0000019C16812BD0> params=<ConnectionParameters host=localhost port=5672 virtual_host=/ ssl=False>>
+2023-10-03 11:50:04,898 INFO connection_workflow _report_completion_and_cleanup AMQPConnectionWorkflow - reporting success: <SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x0000019C16812BD0> params=<ConnectionParameters host=localhost port=5672 virtual_host=/ ssl=False>>
+2023-10-03 11:50:04,898 INFO blocking_connection _create_connection Connection workflow succeeded: <SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x0000019C16812BD0> params=<ConnectionParameters host=localhost port=5672 virtual_host=/ ssl=False>>
+2023-10-03 11:50:04,899 INFO blocking_connection __init__ Created channel=1
+2023-10-03 11:50:04,936 INFO connection_workflow start Pika version 1.3.2 connecting to ('::1', 5672, 0, 0)
+2023-10-03 11:50:04,937 INFO io_services_utils _on_writable Socket connected: <socket.socket fd=828, family=23, type=1, proto=6, laddr=('::1', 51004, 0, 0), raddr=('::1', 5672, 0, 0)>
+2023-10-03 11:50:04,938 INFO connection_workflow _on_transport_establishment_done Streaming transport linked up: (<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x0000019C16C47F10>, _StreamingProtocolShim: <SelectConnection PROTOCOL transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x0000019C16C47F10> params=<ConnectionParameters host=localhost port=5672 virtual_host=/ ssl=False>>).
+2023-10-03 11:50:04,995 INFO connection_workflow _report_completion_and_cleanup AMQPConnector - reporting success: <SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x0000019C16C47F10> params=<ConnectionParameters host=localhost port=5672 virtual_host=/ ssl=False>>
+2023-10-03 11:50:04,997 INFO connection_workflow _report_completion_and_cleanup AMQPConnectionWorkflow - reporting success: <SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x0000019C16C47F10> params=<ConnectionParameters host=localhost port=5672 virtual_host=/ ssl=False>>
+2023-10-03 11:50:04,997 INFO blocking_connection _create_connection Connection workflow succeeded: <SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x0000019C16C47F10> params=<ConnectionParameters host=localhost port=5672 virtual_host=/ ssl=False>>
+2023-10-03 11:50:04,998 INFO blocking_connection __init__ Created channel=1
+2023-10-03 11:50:05,010 WARNING _internal _log  * Debugger is active!
+2023-10-03 11:50:05,013 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-10-03 11:50:05,324 INFO _internal _log 127.0.0.1 - - [03/Oct/2023 11:50:05] "[31m[1mPOST /nutricionista HTTP/1.1[0m" 400 -
+2023-10-03 11:50:13,685 INFO _internal _log 127.0.0.1 - - [03/Oct/2023 11:50:13] "[31m[1mPOST /nutricionista HTTP/1.1[0m" 400 -

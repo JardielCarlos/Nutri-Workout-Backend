@@ -6,10 +6,13 @@ from password_strength import PasswordPolicy
 from validate_docbr import CPF
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
+from model.consumerRabbitmq import RabbitmqConsumer
+from json import loads
 import re
 
 from model.mensagem import Message, msgFields, msgFieldsToken
 from model.personalTrainer import PersonalTrainer, personalTrainerFieldsToken
+from model.notificacaoPersonal import NotificacaoPersonal, notificacaoPersonalFields
 
 parser = reqparse.RequestParser()
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
@@ -30,10 +33,10 @@ policy = PasswordPolicy.from_names(
 cpfValidate = CPF()
 
 "056.998.308-80"
-"290.297.910-04"
-"607.298.816-44"
-"167.167.991-17"
-"677.986.197-98"
+"290.297.910-04" #
+"607.298.816-44"#
+"167.167.991-17" #
+"677.986.197-98"#
 
 "CREF 123456-G/SP"
 "CREF 654321-G/RJ"
@@ -111,7 +114,7 @@ class PersonaisTrainer(Resource):
         codigo = Message(1, "CREF não informada")
         return marshal(codigo, msgFields), 400
       
-      if not re.match(r'CREF \d{6}-G\/[A-Z]{2}', args['cref']):
+      if not re.match(r'\d{6}-G\/[A-Z]{2}', args['cref']):
         codigo = Message(1, "CREF no formato errado")
         return marshal(codigo, msgFields), 400
 
@@ -215,7 +218,7 @@ class PersonalTrainerId(Resource):
         codigo = Message(1, "cref não informado")
         return marshal(codigo, msgFields), 400
       
-      if not re.match(r'CREF \d{6}-G\/[A-Z]{2}', args['cref']):
+      if not re.match(r'\d{6}-G\/[A-Z]{2}', args['cref']):
         codigo = Message(1, "CREF no formato errado")
         return marshal(codigo, msgFields), 400
 
@@ -335,3 +338,10 @@ class PersonalTrainerNome(Resource):
     data = {"personal": personalTrainer, "token": None}
     logger.info(f"Personais Trainer com nomes: {nome} listados com sucesso")
     return marshal(data, personalTrainerFieldsToken), 200
+  
+class PersonalNotificacoes(Resource):
+  def get(self):
+    notificacoes = NotificacaoPersonal.query.filter_by(solicitacao=False).all()
+
+    logger.info(f"Notificacoes dos personais listadas com sucesso")
+    return marshal(notificacoes, notificacaoPersonalFields)

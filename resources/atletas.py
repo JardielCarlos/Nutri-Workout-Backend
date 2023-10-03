@@ -1,17 +1,22 @@
 from flask_restful import Resource, marshal, reqparse
+from sqlalchemy.exc import IntegrityError
 from helpers.logger import logger
 from helpers.database import db
-from werkzeug.security import generate_password_hash
+
 from helpers.auth.token_verifier import token_verify
-from sqlalchemy.exc import IntegrityError
+from werkzeug.security import generate_password_hash
+
 from password_strength import PasswordPolicy
 from validate_docbr import CPF
 import re
+
+from model.publisherRabbitmq import RabbitmqPublisher
 
 from model.atleta import Atleta, atletaFieldsToken
 from model.mensagem import Message, msgFields, msgFieldsToken
 
 parser = reqparse.RequestParser()
+rabbitmqPublisher = RabbitmqPublisher()
 
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
 parser.add_argument("email", type=str, help="email não informado", required=False)
@@ -296,3 +301,24 @@ class AtletaNome(Resource):
 
     logger.info(f"Atletas com nomes: {nome} listados com sucesso")
     return marshal(data, atletaFieldsToken), 200
+  
+class RequestPersonal(Resource):
+  def post(self, id):
+    atleta = Atleta.query.get(id)
+
+    if atleta is None:
+      logger.error(f"Atleta de id: {id} nao encotrado")
+
+      codigo = Message(1, f"Atleta de id: {id} não encontrado")
+      return marshal(codigo, msgFields), 404
+    
+    rabbitmqPublisher.send_message({
+      "nome": atleta.nome,
+      "email": atleta.email,
+      "mensagem": f"O atleta {atleta.nome} esta solicitando um personal trainer, você gostaria de aceitar?"
+    })
+
+    logger.info(f"Solicitação de personal realizada com sucesso pelo usuario de id: {id} ")
+    codigo = Message(0, "Solicitação realizada com sucesso")
+    return marshal(codigo, msgFields), 201
+

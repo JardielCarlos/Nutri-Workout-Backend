@@ -111,8 +111,8 @@ class Nutricionistas(Resource):
         codigo = Message(1, "CRN não informada")
         return marshal(codigo, msgFields), 400
       
-      if not re.match(r'^CRN[1-9][0-9]*-[0-9]+$', args['crn']):
-        codigo = Message(1, "CRN no formato errado")
+      if int(len((args['crn']))) <= 3:
+        codigo = Message(1, "CRN invalido")
         return marshal(codigo, msgFields), 400
       
       nutricionista = Nutricionista(args["nome"], args["email"], args["senha"], args["cpf"], args["crn"])
@@ -137,11 +137,11 @@ class Nutricionistas(Resource):
       elif "crn" in str(e.orig):
         codigo = Message(1, "CRN já cadastrado no sistema")
         return marshal(codigo, msgFields), 400
-    except:
-      logger.error("Erro ao cadastrar o Nutricionista")
+    # except:
+    #   logger.error("Erro ao cadastrar o Nutricionista")
 
-      codigo = Message(2, "Erro ao cadastrar o Nutricionista")
-      return marshal(codigo, msgFields), 400
+    #   codigo = Message(2, "Erro ao cadastrar o Nutricionista")
+    #   return marshal(codigo, msgFields), 400
   
 class NutricionistaId(Resource):
   # @token_verify
