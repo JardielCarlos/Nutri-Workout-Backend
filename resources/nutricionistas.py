@@ -217,8 +217,8 @@ class NutricionistaId(Resource):
         codigo = Message(1, "CRN não informada")
         return marshal(codigo, msgFields), 400
       
-      if not re.match(r'^CRN[1-9][0-9]*-[0-9]+$', args['crn']):
-        codigo = Message(1, "CRN no formato errado")
+      if int(len((args['crn']))) <= 3:
+        codigo = Message(1, "CRN invalido")
         return marshal(codigo, msgFields), 400
       
       nutricionistaBD.nome = args["nome"]

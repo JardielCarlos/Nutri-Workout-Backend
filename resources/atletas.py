@@ -331,6 +331,6 @@ class RequestPersonal(Resource):
   
 class AtletaPagination(Resource):
   def get(self, id):
-    ingredientes = Atletas.query.paginate(page=id, per_page=10, error_out=False)
-    data = {}
+    atletas = Atletas.query.paginate(page=id, per_page=10, error_out=False)
+    data = {"atletas": atletas.items}
 
