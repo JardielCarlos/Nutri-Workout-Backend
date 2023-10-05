@@ -23,6 +23,7 @@ def token_verify(function: callable) -> callable:
         token = rawToken.split()[1]
         informationToken = decode(token, key="1234", algorithms="HS256")
         tipo = informationToken['tipo']
+        id = informationToken['id']
         
     except InvalidSignatureError:
       token = Token("Token invalido")
@@ -50,6 +51,6 @@ def token_verify(function: callable) -> callable:
       return marshal(token, tokenFields), 401
 
     next_token = token_creator.refresh(token)
-    return function(*args, tipo, next_token, **kwargs)
+    return function(*args, tipo, next_token, id, **kwargs)
 
   return decorated

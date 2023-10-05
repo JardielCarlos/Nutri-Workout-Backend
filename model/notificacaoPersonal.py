@@ -3,6 +3,7 @@ from helpers.database import db
 
 notificacaoPersonalFields = {
   "id": fields.Integer,
+  "atleta_id": fields.Integer,
   "nome": fields.String,
   "email": fields.String,
   "mensagem": fields.String
@@ -19,12 +20,15 @@ class NotificacaoPersonal(db.Model):
 
   personal_id = db.Column(db.Integer, db.ForeignKey('tb_personalTrainer.usuario_id'), nullable=True)
   personal = db.relationship('PersonalTrainer', backref='notificacoes')
-
   
-  def __init__(self, nome, email, mensagem):
+  atleta_id = db.Column(db.Integer, db.ForeignKey('tb_atleta.usuario_id'), unique=True) 
+  atleta = db.relationship('Atleta') 
+
+  def __init__(self, nome, email, mensagem, atleta):
     self.nome = nome
     self.email = email
     self.mensagem = mensagem
+    self.atleta = atleta
   
   def __repr__(self):
     return "<NotificacaoPersonal>"

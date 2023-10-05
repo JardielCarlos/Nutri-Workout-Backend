@@ -7,12 +7,14 @@ from validate_docbr import CPF
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 from model.consumerRabbitmq import RabbitmqConsumer
+from helpers.auth.token_verifier import token_verify
 from json import loads
 import re
 
 from model.mensagem import Message, msgFields, msgFieldsToken
 from model.personalTrainer import PersonalTrainer, personalTrainerFieldsToken
 from model.notificacaoPersonal import NotificacaoPersonal, notificacaoPersonalFields
+from model.atleta import Atleta
 
 parser = reqparse.RequestParser()
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
@@ -38,12 +40,12 @@ cpfValidate = CPF()
 "167.167.991-17" #
 "677.986.197-98"#
 
-"CREF 123456-G/SP"
-"CREF 654321-G/RJ"
-"CREF 789012-G/ES"
-"CREF 210987-G/BA"
-"CREF 345678-P/RS"
-"CREF 876543-P/SC"
+"123456-G/SP"
+"654321-G/RJ"
+"789012-G/ES"
+"210987-G/BA"
+"345678-P/RS"
+"876543-P/SC"
 
 class PersonaisTrainer(Resource):
   # @token_verify
@@ -345,3 +347,56 @@ class PersonalNotificacoes(Resource):
 
     logger.info(f"Notificacoes dos personais listadas com sucesso")
     return marshal(notificacoes, notificacaoPersonalFields)
+  
+class PersonalNotificacoesId(Resource):
+  def get(self, id):
+    notificacao = NotificacaoPersonal.query.filter_by(solicitacao=False, id=id).first()
+
+    if notificacao is None:
+      logger.error(f"Notificacao de id: {id} nao encontrada")
+
+      codigo = Message(1, f"Notificacao de id: {id} nao encontrada")
+      return marshal(codigo, msgFields), 404
+
+    logger.info(f"Notificacao de id: {id} listado com sucesso")
+    return marshal(notificacao, notificacaoPersonalFields)
+  @token_verify
+  def patch(self, tipo, refreshToken, user_id, id):
+    notificacao = NotificacaoPersonal.query.filter_by(solicitacao=False, id=id).first()
+    if notificacao is None:
+      logger.error(f"Notificacao de id: {id} nao encontrada")
+
+      codigo = Message(1, f"Notificacao de id: {id} nao encontrada")
+      return marshal(codigo, msgFields), 404
+    
+    personal = PersonalTrainer.query.get(user_id)
+    atleta = Atleta.query.get(notificacao.atleta_id)
+
+    personal.atletas.append(atleta)
+    atleta.personal_trainer_id = personal.usuario_id
+    notificacao.solicitacao = True
+
+    db.session.add(notificacao)
+    db.session.add(personal)
+    db.session.add(atleta)
+    db.session.commit()
+
+    logger.info(f"O personal aceitou o atleta: {notificacao.nome} como seu aluno")
+    codigo = Message(0, f"Voce aceitou o atleta: {notificacao.nome} como seu aluno")
+    return marshal(codigo, msgFields), 200
+  
+  def delete(self, id):
+    notificacao = NotificacaoPersonal.query.get(id)
+
+    if notificacao is None:
+      logger.error(f"Notificacao de id: {id} nao encontrada")
+
+      codigo = Message(1, f"Notificacao de id: {id} nao encontrada")
+      return marshal(codigo, msgFields), 404
+    
+    db.session.delete(notificacao)
+    db.session.commit()
+
+    logger.info(f"Notificacao de id: {id} deletado com sucesso")
+    return {}, 200
+    

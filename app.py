@@ -7,9 +7,10 @@ from json import loads
 from flask_socketio import SocketIO, emit
 
 from model.notificacaoPersonal import NotificacaoPersonal
+from model.atleta import Atleta
 
 from resources.atletas import Atletas, AtletaId, AtletaNome, RequestPersonal
-from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes
+from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes, PersonalNotificacoesId
 from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome
 from resources.administradores import Administradores, AdministradorId, AdministradorNome
 from resources.login import Login
@@ -30,17 +31,18 @@ api = Api(app)
 # def test_connect():
 #   emit('after connect',  {'data':'Lets dance'})
 
-def minha_callback(ch, method, properties, body):
-  with app.app_context():
-    msg = loads(body.decode('utf-8'))
-    notificacao = NotificacaoPersonal(msg["nome"], msg["email"], msg["mensagem"])
+# def minha_callback(ch, method, properties, body):
+#   with app.app_context():
+#     msg = loads(body.decode('utf-8'))
+#     atleta = Atleta.query.get(msg["id"])
+#     notificacao = NotificacaoPersonal(msg["nome"], msg["email"], msg["mensagem"], atleta)
     
-    db.session.add(notificacao)
-    db.session.commit()
-  # socketio.emit('notification', {'data': loads(body.decode('utf-8'))})
+#     db.session.add(notificacao)
+#     db.session.commit()
+#   # socketio.emit('notification', {'data': loads(body.decode('utf-8'))})
 
-rabbitmqConsumer = RabbitmqConsumer("solicitacao_personal", minha_callback)
-rabbitmqConsumer.start()
+# rabbitmqConsumer = RabbitmqConsumer("solicitacao_personal", minha_callback)
+# rabbitmqConsumer.start()
 
 api.add_resource(Atletas, '/atletas')
 api.add_resource(AtletaId, '/atletas/<int:id>')
@@ -50,7 +52,8 @@ api.add_resource(RequestPersonal, '/atleta/solicitar-personal/<int:id>')
 api.add_resource(PersonaisTrainer, '/personalTrainer')
 api.add_resource(PersonalTrainerId, '/personalTrainer/<int:id>')
 api.add_resource(PersonalTrainerNome, '/personalTrainer/<string:nome>')
-api.add_resource(PersonalNotificacoes, "/personalTrainer/notificacoes")
+api.add_resource(PersonalNotificacoes, '/personalTrainer/notificacoes')
+api.add_resource(PersonalNotificacoesId, '/personalTrainer/notificacoes/<int:id>')
 
 api.add_resource(Nutricionistas, '/nutricionista')
 api.add_resource(NutricionistaId, '/nutricionista/<int:id>')

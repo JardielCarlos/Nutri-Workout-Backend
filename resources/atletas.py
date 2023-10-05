@@ -12,11 +12,12 @@ import re
 
 from model.publisherRabbitmq import RabbitmqPublisher
 
+from model.notificacaoPersonal import NotificacaoPersonal
 from model.atleta import Atleta, atletaFieldsToken
 from model.mensagem import Message, msgFields, msgFieldsToken
 
 parser = reqparse.RequestParser()
-rabbitmqPublisher = RabbitmqPublisher()
+# rabbitmqPublisher = RabbitmqPublisher()
 
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
 parser.add_argument("email", type=str, help="email não informado", required=False)
@@ -307,18 +308,29 @@ class RequestPersonal(Resource):
     atleta = Atleta.query.get(id)
 
     if atleta is None:
-      logger.error(f"Atleta de id: {id} nao encotrado")
+      logger.error(f"Atleta de id: {id} nao encontrado")
 
       codigo = Message(1, f"Atleta de id: {id} não encontrado")
       return marshal(codigo, msgFields), 404
     
-    rabbitmqPublisher.send_message({
-      "nome": atleta.nome,
-      "email": atleta.email,
-      "mensagem": f"O atleta {atleta.nome} esta solicitando um personal trainer, você gostaria de aceitar?"
-    })
+    msg = f"O atleta {atleta.nome} esta solicitando um personal trainer, você gostaria de aceitar?"
+
+    notificacao = NotificacaoPersonal(atleta.nome, atleta.email, msg, atleta)
+    # rabbitmqPublisher.send_message({
+    #   "id": atleta.id,
+    #   "nome": atleta.nome,
+    #   "email": atleta.email,
+    #   "mensagem": f"O atleta {atleta.nome} esta solicitando um personal trainer, você gostaria de aceitar?"
+    # })
+    db.session.add(notificacao)
+    db.session.commit()
 
     logger.info(f"Solicitação de personal realizada com sucesso pelo usuario de id: {id} ")
     codigo = Message(0, "Solicitação realizada com sucesso")
     return marshal(codigo, msgFields), 201
+  
+class AtletaPagination(Resource):
+  def get(self, id):
+    ingredientes = Atletas.query.paginate(page=id, per_page=10, error_out=False)
+    data = {}
 

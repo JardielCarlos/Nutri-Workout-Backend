@@ -2,6 +2,7 @@ from helpers.database import db
 from flask_restful import fields
 
 from model.usuario import Usuario
+from model.atleta import Atleta
 
 personalTrainerFields = {
   "id": fields.Integer,
@@ -22,6 +23,8 @@ class PersonalTrainer(Usuario):
 
   usuario_id = db.Column(db.Integer ,db.ForeignKey("tb_usuario.id"), primary_key=True)
   cref = db.Column(db.String, nullable=False, unique=True)
+
+  atletas = db.relationship("Atleta", backref="personal_trainer", foreign_keys=[Atleta.usuario_id])
 
   __mapper_args__ = {"polymorphic_identity": "Personal Trainer"}
 
