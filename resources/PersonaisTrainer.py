@@ -12,7 +12,7 @@ from json import loads
 import re
 
 from model.mensagem import Message, msgFields, msgFieldsToken
-from model.personalTrainer import PersonalTrainer, personalTrainerFieldsToken
+from model.personalTrainer import PersonalTrainer, personalTrainerFieldsToken, personalTrainerPagination
 from model.notificacaoPersonal import NotificacaoPersonal, notificacaoPersonalFields
 from model.atleta import Atleta
 
@@ -399,4 +399,12 @@ class PersonalNotificacoesId(Resource):
 
     logger.info(f"Notificacao de id: {id} deletado com sucesso")
     return {}, 200
-    
+  
+class PersonalTrainerPagination(Resource):
+  def get(self, id):
+    personais = PersonalTrainer.query.all()
+    personaisPagination = PersonalTrainer.query.paginate(page=id, per_page=10, error_out=False)
+
+    data = {"personais": personaisPagination.items, "totalPersonais": len(personais)}
+    logger.info("Personais listados com sucesso")
+    return marshal(data, personalTrainerPagination), 200

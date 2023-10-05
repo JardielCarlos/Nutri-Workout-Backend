@@ -18,6 +18,11 @@ personalTrainerFieldsToken = {
   "token": fields.String
 }
 
+personalTrainerPagination = {
+  "personais": fields.Nested(personalTrainerFields),
+  "totalPersonais": fields.Integer
+}
+
 class PersonalTrainer(Usuario):
   __tablename__="tb_personalTrainer"
 

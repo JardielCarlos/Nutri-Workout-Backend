@@ -9,9 +9,9 @@ from flask_socketio import SocketIO, emit
 from model.notificacaoPersonal import NotificacaoPersonal
 from model.atleta import Atleta
 
-from resources.atletas import Atletas, AtletaId, AtletaNome, RequestPersonal
-from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes, PersonalNotificacoesId
-from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome
+from resources.atletas import Atletas, AtletaId, AtletaNome, RequestPersonal, AtletaPagination
+from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerPagination
+from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome, NutricionistaPagination
 from resources.administradores import Administradores, AdministradorId, AdministradorNome
 from resources.login import Login
 from resources.logout import Logout
@@ -48,16 +48,20 @@ api.add_resource(Atletas, '/atletas')
 api.add_resource(AtletaId, '/atletas/<int:id>')
 api.add_resource(AtletaNome, '/atletas/<string:nome>')
 api.add_resource(RequestPersonal, '/atleta/solicitar-personal/<int:id>')
+api.add_resource(AtletaPagination, '/atletasp/<int:id>')
 
 api.add_resource(PersonaisTrainer, '/personalTrainer')
 api.add_resource(PersonalTrainerId, '/personalTrainer/<int:id>')
 api.add_resource(PersonalTrainerNome, '/personalTrainer/<string:nome>')
 api.add_resource(PersonalNotificacoes, '/personalTrainer/notificacoes')
 api.add_resource(PersonalNotificacoesId, '/personalTrainer/notificacoes/<int:id>')
+api.add_resource(PersonalTrainerPagination, '/personalTraineres/<int:id>')
+
 
 api.add_resource(Nutricionistas, '/nutricionista')
 api.add_resource(NutricionistaId, '/nutricionista/<int:id>')
 api.add_resource(NutricionistaNome, '/nutricionista/<string:nome>')
+api.add_resource(NutricionistaPagination, "/nutricionistas/<int:id>")
 
 api.add_resource(Administradores, '/administradores')
 api.add_resource(AdministradorId, '/administradores/<int:id>')

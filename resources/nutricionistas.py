@@ -9,7 +9,7 @@ from helpers.auth.token_verifier import token_verify
 import re
 
 from model.mensagem import Message, msgFields, msgFieldsToken
-from model.nutricionista import Nutricionista, nutricionistaFieldsToken
+from model.nutricionista import Nutricionista, nutricionistaFieldsToken, nutricionistaPagination
 
 parser = reqparse.RequestParser()
 
@@ -298,7 +298,7 @@ class NutricionistaId(Resource):
       logger.error("Erro ao atualizar a senha do Personal Trainer")
       codigo = Message(2, "Erro ao atualizar a senha do Personal Trainer")
       return marshal(codigo, msgFields), 400
-  @token_verify
+  # @token_verify
   def delete(self, id):
     # if tipo != 'Administrador' and tipo != 'Nutricionista':
     #   logger.error("Usuario sem autorizacao para acessar os nutricionistas")
@@ -335,3 +335,18 @@ class NutricionistaNome(Resource):
 
     logger.info(f"Nutricionista como nomes: {nome} listado com sucesso")
     return marshal(data, nutricionistaFieldsToken), 200
+  
+class NutricionistaPagination(Resource):
+  def get(self, id):
+    nutricionistas = Nutricionista.query.all()
+    nutricionistasPagination = Nutricionista.query.paginate(page=id, per_page=10, error_out=False)
+
+    data = {"nutricionistas":nutricionistasPagination.items, "totalNutricionistas": len(nutricionistas)}
+
+    logger.info("Nutricionistas listados com sucesso")
+    return marshal(data, nutricionistaPagination), 200
+
+
+
+
+

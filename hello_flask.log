@@ -1,11 +1,6 @@
-2023-10-04 21:40:03,324 WARNING _internal _log  * Debugger is active!
-2023-10-04 21:40:03,331 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-10-04 21:40:08,715 INFO PersonaisTrainer delete Notificacao de id: 12 deletado com sucesso
-2023-10-04 21:40:08,716 INFO _internal _log 127.0.0.1 - - [04/Oct/2023 21:40:08] "DELETE /personalTrainer/notificaco2023-10-04 21:43:02,778 INFO _internal _log  * Restarting with stat
- delete Notificacao de id: 12 nao encontrada
-2023-10-04 21:40:09,907 INFO _internal _log 127.0.0.1 - - [04/Oct/2023 21:40:09] "[33mDELETE /personalTrainer/notificacoes/12 HTTP/1.1[0m" 404 -
-2023-10-04 21:40:14,942 INFO atletas post Solicitação de personal realizada com sucesso pelo usuario de id: 21 
-2023-10-04 21:40:14,946 INFO _internal _log 127.0.0.1 - - [04/Oct/2023 21:40:14] "[35m[1mPOST /atleta/solicitar-personal/21 HTTP/1.1[0m" 201 -
-2023-10-04 21:40:19,324 INFO PersonaisTrainer get Notificacoes dos personais listadas com sucesso
-2023-10-04 21:40:19,328 INFO _internal _log 127.0.0.1 - - [04/Oct/2023 21:40:19] "GET /personalTrainer/notificacoes HTTP/1.1" 200 -
-2023-10-04 21:43:02,560 INFO _internal _log  * Detected change in 'c:\\Users\\Jardi\\Repositorios\\Nutri-Workout-Backend\\resources\\atletas.py', reloading
+2023-10-04 22:52:46,007 WARNING _internal _log  * Debugger is active!
+2023-10-04 22:52:46,012 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-10-04 22:52:48,409 ERROR nutricionistas get Nutricionista de id: 1 nao encotrado
+2023-10-04 22:52:48,411 INFO _internal _log 127.0.0.1 - - [04/Oct/2023 22:52:48] "[33mGET /nutricionista/1 HTTP/1.1[0m" 404 -
+2023-10-04 22:52:52,487 INFO nutricionistas get Nutricionistas listados com sucesso
+2023-10-04 22:52:52,490 INFO _internal _log 127.0.0.1 - - [04/Oct/2023 22:52:52] "GET /nutricionistas/1 HTTP/1.1" 200 -

@@ -17,6 +17,11 @@ nutricionistaFieldsToken = {
   "token": fields.String
 }
 
+nutricionistaPagination = {
+  "nutricionistas": fields.Nested(nutricionistaFields),
+  "totalNutricionistas": fields.Integer
+}
+
 class Nutricionista(Usuario):
   __tablename__= "tb_nutricionista"
 

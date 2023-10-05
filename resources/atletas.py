@@ -13,7 +13,7 @@ import re
 from model.publisherRabbitmq import RabbitmqPublisher
 
 from model.notificacaoPersonal import NotificacaoPersonal
-from model.atleta import Atleta, atletaFieldsToken
+from model.atleta import Atleta, atletaFieldsToken, atletasFieldsPagination
 from model.mensagem import Message, msgFields, msgFieldsToken
 
 parser = reqparse.RequestParser()
@@ -331,6 +331,11 @@ class RequestPersonal(Resource):
   
 class AtletaPagination(Resource):
   def get(self, id):
-    atletas = Atletas.query.paginate(page=id, per_page=10, error_out=False)
-    data = {"atletas": atletas.items}
+    atletas = Atleta.query.all()
+    atletasPagination = Atleta.query.paginate(page=id, per_page=10, error_out=False)
+    
+    data = {"atletas": atletasPagination.items, "totalAtletas":len(atletas)}
+    
+    logger.info("Atletas listados com sucesso")
+    return marshal(data, atletasFieldsPagination), 200
 
