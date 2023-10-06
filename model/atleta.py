@@ -26,6 +26,14 @@ atletasFieldsPagination = {
   "totalAtletas": fields.Integer
 }
 
+atletaAssociatedPersonalFields = {
+  "id": fields.Integer,
+  "nome": fields.String,
+  "email": fields.String,
+  "cpf": fields.String,
+  "tipo": fields.String,
+}
+
 class Atleta(Usuario):
   __tablename__ = 'tb_atleta'
   

@@ -19,6 +19,8 @@ class Usuario(db.Model):
   senha = db.Column(db.String, nullable=False)
   cpf = db.Column(db.String, nullable=False, unique=True)
   tipo = db.Column(db.String, nullable=False)
+
+  imagem = db.relationship("ImgUsuarios", back_populates="usuario", uselist=False, cascade="all, delete-orphan")
   
 
   __mapper_args__ = {

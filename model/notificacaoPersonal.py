@@ -18,11 +18,8 @@ class NotificacaoPersonal(db.Model):
   mensagem = db.Column(db.String, nullable=False)
   solicitacao = db.Column(db.Boolean, nullable=False, default=False)
 
-  personal_id = db.Column(db.Integer, db.ForeignKey('tb_personalTrainer.usuario_id'), nullable=True)
-  personal = db.relationship('PersonalTrainer', backref='notificacoes')
-  
   atleta_id = db.Column(db.Integer, db.ForeignKey('tb_atleta.usuario_id'), unique=True) 
-  atleta = db.relationship('Atleta') 
+  atleta = db.relationship('Atleta', foreign_keys=[atleta_id]) 
 
   def __init__(self, nome, email, mensagem, atleta):
     self.nome = nome

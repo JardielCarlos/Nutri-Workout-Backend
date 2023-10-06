@@ -9,7 +9,7 @@ from flask_socketio import SocketIO, emit
 from model.notificacaoPersonal import NotificacaoPersonal
 from model.atleta import Atleta
 
-from resources.atletas import Atletas, AtletaId, AtletaNome, RequestPersonal, AtletaPagination
+from resources.atletas import Atletas, AtletaId, AtletaNome, RequestPersonal, AtletaPagination, AtletaImg
 from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerPagination
 from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome, NutricionistaPagination
 from resources.administradores import Administradores, AdministradorId, AdministradorNome
@@ -45,10 +45,12 @@ api = Api(app)
 # rabbitmqConsumer.start()
 
 api.add_resource(Atletas, '/atletas')
-api.add_resource(AtletaId, '/atletas/<int:id>')
+api.add_resource(AtletaId, '/atleta/<int:id>')
 api.add_resource(AtletaNome, '/atletas/<string:nome>')
+api.add_resource(AtletaPagination, '/atletas/<int:id>')
+api.add_resource(AtletaImg, '/atleta/imagem/<int:id>')
+
 api.add_resource(RequestPersonal, '/atleta/solicitar-personal/<int:id>')
-api.add_resource(AtletaPagination, '/atletasp/<int:id>')
 
 api.add_resource(PersonaisTrainer, '/personalTrainer')
 api.add_resource(PersonalTrainerId, '/personalTrainer/<int:id>')

@@ -12,7 +12,7 @@ from json import loads
 import re
 
 from model.mensagem import Message, msgFields, msgFieldsToken
-from model.personalTrainer import PersonalTrainer, personalTrainerFieldsToken, personalTrainerPagination
+from model.personalTrainer import PersonalTrainer, personalTrainerFieldsToken, personalTrainerPagination, personalTrainerAssociatedFieldsToken
 from model.notificacaoPersonal import NotificacaoPersonal, notificacaoPersonalFields
 from model.atleta import Atleta
 
@@ -58,6 +58,9 @@ class PersonaisTrainer(Resource):
     
     logger.info("Personais Trainer listados com sucesso")
 
+    # personalTrainer = PersonalTrainer.query.get(2)
+    # atletas = personalTrainer.atletas
+    # print(atletas)
     personalTrainer = PersonalTrainer.query.all()
     data = {"personal": personalTrainer, "token": None}
 
@@ -167,7 +170,7 @@ class PersonalTrainerId(Resource):
     
     data = {"personal": personalTrainer, "token": None}
     logger.info(f"Personal Trainer de id: {id} listado com sucesso")
-    return marshal(data, personalTrainerFieldsToken), 200
+    return marshal(data, personalTrainerAssociatedFieldsToken), 200
   # @token_verify
   def put(self, id):
     # if tipo != 'Administrador' and tipo != 'Personal Trainer':
