@@ -1,10 +1,10 @@
-2023-10-06 14:42:01,314 WARNING _internal _log  * Debugger is active!
-2023-10-06 14:42:01,322 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-10-06 14:43:11,488 INFO atletas get Atletas listados com sucesso
-2023-10-06 14:43:11,493 INFO _internal _log 127.0.0.1 - - [06/Oct/2023 14:43:11] "GET /atletas HTTP/1.1" 200 -
-2023-10-06 14:43:46,493 INFO _internal _log 127.0.0.1 - - [06/Oct/2023 14:43:46] "GET /atleta/imagem/62 HTTP/1.1" 200 -
-2023-10-06 14:44:07,298 INFO atletas put Foto do atleta atualizada com sucesso
-2023-10-06 14:44:07,316 INFO _internal _log 127.0.0.1 - - [06/Oct/2023 14:44:07] "[35m[1mPUT /atleta/imagem/62 HTTP/1.1[0m" 204 -
-2023-10-06 14:44:15,798 INFO _internal _log 127.0.0.1 - - [06/Oct/2023 14:44:15] "GET /atleta/imagem/62 HTTP/1.1" 200 -
-2023-10-06 14:44:23,207 INFO _internal _log 127.0.0.1 - - [06/Oct/2023 14:44:23] "DELETE /atleta/imagem/62 HTTP/1.1" 200 -
-2023-10-06 14:44:30,092 INFO _internal _log 127.0.0.1 - - [06/Oct/2023 14:44:30] "GET /atleta/imagem/62 HTTP/1.1" 200 -
+2023-10-06 17:28:04,503 WARNING _internal _log  * Debugger is active!
+2023-10-06 17:28:04,506 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-10-06 17:28:51,453 INFO atletas put Atleta de id: 62 atualizado com sucesso
+2023-10-06 17:28:51,457 INFO _internal _log 127.0.0.1 - - [06/Oct/2023 17:28:51] "PUT /atleta/62 HTTP/1.1" 200 -
+2023-10-06 17:28:56,954 INFO atletas get Atletas listados com sucesso
+2023-10-06 17:28:56,955 INFO _internal _log 127.0.0.1 - - [06/Oct/2023 17:28:56] "GET /atletas HTTP/1.1" 200 -
+2023-10-06 17:29:37,385 ERROR atletas patch Atleta de id: 27 nao encotrado
+2023-10-06 17:29:37,386 INFO _internal _log 127.0.0.1 - - [06/Oct/2023 17:29:37] "[33mPATCH /atleta/27 HTTP/1.1[0m" 404 -
+2023-10-06 17:29:43,018 INFO atletas patch Senha alterada com sucesso
+2023-10-06 17:29:43,019 INFO _internal _log 127.0.0.1 - - [06/Oct/2023 17:29:43] "PATCH /atleta/62 HTTP/1.1" 200 -

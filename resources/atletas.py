@@ -181,7 +181,7 @@ class AtletaId(Resource):
     #   codigo = Message(1, "Usuario sem autorização suficiente!")
     #   return marshal(codigo, msgFields), 403
     
-    args = parser.parse_args()
+    # args = parser.parse_args()
 
     try:
       atletaBD = Atleta.query.get(id)
@@ -191,39 +191,39 @@ class AtletaId(Resource):
         codigo = Message(1, f"Atleta de id: {id} não encontrado")
         return marshal(codigo, msgFields), 404
       
-      if len(args['nome']) == 0:
+      if len(request.form['nome']) == 0:
         logger.info("Nome nao informado")
 
         codigo = Message(1, "Nome nao informado")
         return marshal(codigo, msgFields), 400
       
-      if not args['email']:
+      if not request.form['email']:
         codigo = Message(1, "email não informado")
         return marshal(codigo, msgFields), 400
       
-      if re.match(padrao_email, args['email']) == None:
+      if re.match(padrao_email, request.form['email']) == None:
         codigo = Message(1, "Email no formato errado")
         return marshal(codigo, msgFields), 400
       
-      if not args["cpf"]:
+      if not request.form["cpf"]:
         codigo = Message(1, "cpf não informado")
         return marshal(codigo, msgFields), 400
       
-      if not cpfValidate.validate(args["cpf"]):
-        logger.error(f"CPF {args['cpf']} não valido")
+      if not cpfValidate.validate(request.form["cpf"]):
+        logger.error(f"CPF {request.form['cpf']} não valido")
 
-        codigo = Message(1, f"CPF {args['cpf']} não valido")
+        codigo = Message(1, f"CPF {request.form['cpf']} não valido")
         return marshal(codigo, msgFields), 400
       
-      if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
-        logger.error(f"CPF {args['cpf']} no formato errado")
+      if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', request.form["cpf"]):
+        logger.error(f"CPF {request.form['cpf']} no formato errado")
 
         codigo = Message(1, "CPF no formato errado")
         return marshal(codigo, msgFields), 400
 
-      atletaBD.nome = args["nome"]
-      atletaBD.email = args["email"]
-      atletaBD.cpf = args["cpf"],
+      atletaBD.nome = request.form["nome"]
+      atletaBD.email = request.form["email"]
+      atletaBD.cpf = request.form["cpf"],
 
       db.session.add(atletaBD)
       db.session.commit()
@@ -255,7 +255,7 @@ class AtletaId(Resource):
     #   codigo = Message(1, "Usuario sem autorização suficiente!")
     #   return marshal(codigo, msgFields), 403
     
-    args = parser.parse_args()
+    # args = parser.parse_args()
     
     try:
       atleta = Atleta.query.get(id)
@@ -265,16 +265,16 @@ class AtletaId(Resource):
         codigo = Message(1, f"Atleta de id: {id} não encontrado")
         return marshal(codigo, msgFields), 404
 
-      if not atleta.verify_password(args["senha"]):
+      if not atleta.verify_password(request.form["senha"]):
         codigo = Message(1, "Senha incorreta ou inexistente")
         return marshal(codigo, msgFields), 404
       
-      if not args['novaSenha']:
+      if not request.form['novaSenha']:
         codigo = Message(1, "nova senha não informada")
         return marshal(codigo, msgFields), 400
       
     
-      atleta.senha = generate_password_hash(args["novaSenha"])
+      atleta.senha = generate_password_hash(request.form["novaSenha"])
 
       db.session.add(atleta)
       db.session.commit()
