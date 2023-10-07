@@ -13,7 +13,8 @@ atletaFields = {
   "altura": fields.Float,
   "peso": fields.Float,
   "imc": fields.Float,
-  "statusPagamento": fields.Boolean
+  "statusPagamento": fields.Boolean,
+  "atletaImg": fields.Url("atletaimg", absolute=True)
 }
 
 atletaFieldsToken = {
