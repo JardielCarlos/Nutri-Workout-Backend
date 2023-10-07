@@ -25,15 +25,17 @@ from werkzeug.datastructures import FileStorage
 from model.imgUsuarios import ImgUsuarios
 
 parser = reqparse.RequestParser()
+parserFiles = reqparse.RequestParser()
 # rabbitmqPublisher = RabbitmqPublisher()
 
-parser.add_argument('fotoPerfil', type=FileStorage, location='files')
+# parser.add_argument('fotoPerfil', type=FileStorage, location='files')
 
-# parser.add_argument("nome", type=str, help="Nome não informado", required=False)
-# parser.add_argument("email", type=str, help="email não informado", required=False)
-# parser.add_argument("senha", type=str, help="senha não informado", required=False)
-# parser.add_argument("cpf", type=str, help="cpf não informado", required=False)
-# parser.add_argument("novaSenha", type=str, help="nova senha não informado", required=False)
+parser.add_argument("nome", type=str, help="Nome não informado", required=False)
+parser.add_argument("email", type=str, help="email não informado", required=False)
+parser.add_argument("senha", type=str, help="senha não informado", required=False)
+parser.add_argument("cpf", type=str, help="cpf não informado", required=False)
+parser.add_argument("novaSenha", type=str, help="nova senha não informado", required=False)
+parserFiles.add_argument('fotoPerfil', type=FileStorage, location='files')
 
 padrao_email = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 policy = PasswordPolicy.from_names(
@@ -76,53 +78,53 @@ class Atletas(Resource):
 
     try:
       with db.session.begin():
-        foto = args['fotoPerfil']
+        # foto = args['fotoPerfil']
         fotoPerfil = None
 
-        if foto:
-          foto.stream.seek(0)
-          fotoPerfil = foto.stream.read()
+        # if foto:
+        #   foto.stream.seek(0)
+        #   fotoPerfil = foto.stream.read()
 
-        if len(request.form["nome"]) == 0:
+        if len(args["nome"]) == 0:
           logger.info("Nome não informado")
 
           codigo = Message(1, "Nome não informado")
           return marshal(codigo, msgFields), 400
         
-        if not request.form['email']:
+        if not args['email']:
           codigo = Message(1, "email não informada")
           return marshal(codigo, msgFields), 400
         
-        if re.match(padrao_email, request.form['email']) == None:
+        if re.match(padrao_email, args['email']) == None:
           codigo = Message(1, "Email no formato errado")
           return marshal(codigo, msgFields), 400
         
-        if not request.form["cpf"]:
+        if not args["cpf"]:
           codigo = Message(1, "cpf não informado")
           return marshal(codigo, msgFields), 400
         
-        if not cpfValidate.validate(request.form["cpf"]):
-          logger.error(f"CPF {request.form['cpf']} não valido")
+        if not cpfValidate.validate(args["cpf"]):
+          logger.error(f"CPF {args['cpf']} não valido")
 
-          codigo = Message(1, f"CPF {request.form['cpf']} não valido")
+          codigo = Message(1, f"CPF {args['cpf']} não valido")
           return marshal(codigo, msgFields), 400
         
-        if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', request.form["cpf"]):
-          logger.error(f"CPF {request.form['cpf']} no formato errado")
+        if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
+          logger.error(f"CPF {args['cpf']} no formato errado")
 
           codigo = Message(1, "CPF no formato errado")
           return marshal(codigo, msgFields), 400
 
-        if not request.form['senha']:
+        if not args['senha']:
           codigo = Message(1, "Senha não informada")
           return marshal(codigo, msgFields), 400
         
-        verifySenha = policy.test(request.form['senha'])
+        verifySenha = policy.test(args['senha'])
         if len(verifySenha) != 0:
           codigo = Message(1, "Senha no formato errado")
           return marshal(codigo, msgFields), 400
         
-        atleta = Atleta(request.form["nome"], request.form["email"], request.form["senha"], request.form["cpf"])
+        atleta = Atleta(args["nome"], args["email"], args["senha"], args["cpf"])
 
         db.session.add(atleta)
         db.session.flush()
@@ -181,7 +183,7 @@ class AtletaId(Resource):
     #   codigo = Message(1, "Usuario sem autorização suficiente!")
     #   return marshal(codigo, msgFields), 403
     
-    # args = parser.parse_args()
+    args = parser.parse_args()
 
     try:
       atletaBD = Atleta.query.get(id)
@@ -191,39 +193,39 @@ class AtletaId(Resource):
         codigo = Message(1, f"Atleta de id: {id} não encontrado")
         return marshal(codigo, msgFields), 404
       
-      if len(request.form['nome']) == 0:
+      if len(args['nome']) == 0:
         logger.info("Nome nao informado")
 
         codigo = Message(1, "Nome nao informado")
         return marshal(codigo, msgFields), 400
       
-      if not request.form['email']:
+      if not args['email']:
         codigo = Message(1, "email não informado")
         return marshal(codigo, msgFields), 400
       
-      if re.match(padrao_email, request.form['email']) == None:
+      if re.match(padrao_email, args['email']) == None:
         codigo = Message(1, "Email no formato errado")
         return marshal(codigo, msgFields), 400
       
-      if not request.form["cpf"]:
+      if not args["cpf"]:
         codigo = Message(1, "cpf não informado")
         return marshal(codigo, msgFields), 400
       
-      if not cpfValidate.validate(request.form["cpf"]):
-        logger.error(f"CPF {request.form['cpf']} não valido")
+      if not cpfValidate.validate(args["cpf"]):
+        logger.error(f"CPF {args['cpf']} não valido")
 
-        codigo = Message(1, f"CPF {request.form['cpf']} não valido")
+        codigo = Message(1, f"CPF {args['cpf']} não valido")
         return marshal(codigo, msgFields), 400
       
-      if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', request.form["cpf"]):
-        logger.error(f"CPF {request.form['cpf']} no formato errado")
+      if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
+        logger.error(f"CPF {args['cpf']} no formato errado")
 
         codigo = Message(1, "CPF no formato errado")
         return marshal(codigo, msgFields), 400
 
-      atletaBD.nome = request.form["nome"]
-      atletaBD.email = request.form["email"]
-      atletaBD.cpf = request.form["cpf"],
+      atletaBD.nome = args["nome"]
+      atletaBD.email = args["email"]
+      atletaBD.cpf = args["cpf"],
 
       db.session.add(atletaBD)
       db.session.commit()
@@ -255,7 +257,7 @@ class AtletaId(Resource):
     #   codigo = Message(1, "Usuario sem autorização suficiente!")
     #   return marshal(codigo, msgFields), 403
     
-    # args = parser.parse_args()
+    args = parser.parse_args()
     
     try:
       atleta = Atleta.query.get(id)
@@ -265,16 +267,16 @@ class AtletaId(Resource):
         codigo = Message(1, f"Atleta de id: {id} não encontrado")
         return marshal(codigo, msgFields), 404
 
-      if not atleta.verify_password(request.form["senha"]):
+      if not atleta.verify_password(args["senha"]):
         codigo = Message(1, "Senha incorreta ou inexistente")
         return marshal(codigo, msgFields), 404
       
-      if not request.form['novaSenha']:
+      if not args['novaSenha']:
         codigo = Message(1, "nova senha não informada")
         return marshal(codigo, msgFields), 400
       
     
-      atleta.senha = generate_password_hash(request.form["novaSenha"])
+      atleta.senha = generate_password_hash(args["novaSenha"])
 
       db.session.add(atleta)
       db.session.commit()
@@ -310,6 +312,9 @@ class AtletaId(Resource):
     return {"token": None}, 200
   
 class AtletaImg(Resource):
+  parser = reqparse.RequestParser()
+  parser.add_argument('fotoPerfil', type=FileStorage, location='files')
+
   def get(self, id):
     img_io = BytesIO()
 
@@ -330,7 +335,7 @@ class AtletaImg(Resource):
     return response
   
   def put(self, id):
-    args = parser.parse_args()
+    args = parserFiles.parse_args()
 
     try:
       userDB = ImgUsuarios.query.filter_by(usuario_id=id).first()
