@@ -11,6 +11,7 @@ personalTrainerFields = {
   "cpf": fields.String,
   "tipo": fields.String,
   "cref": fields.String,
+  "personalImg": fields.Url("personalimg", absolute=True)
 }
 
 personalTrainerAssociatedFields = {

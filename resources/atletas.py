@@ -312,9 +312,6 @@ class AtletaId(Resource):
     return {"token": None}, 200
   
 class AtletaImg(Resource):
-  parser = reqparse.RequestParser()
-  parser.add_argument('fotoPerfil', type=FileStorage, location='files')
-
   def get(self, id):
     img_io = BytesIO()
 
@@ -350,7 +347,7 @@ class AtletaImg(Resource):
         codigo = Message(1, "campo fotoPerfil nao informado")
         return marshal(codigo, msgFields), 404
       
-      fotoPerfil = None
+      # fotoPerfil = None
       if newFoto:
         newFoto.stream.seek(0)
         fotoPerfil = newFoto.stream.read()

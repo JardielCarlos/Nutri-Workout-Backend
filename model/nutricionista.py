@@ -9,7 +9,8 @@ nutricionistaFields = {
   "email": fields.String,
   "cpf": fields.String,
   "tipo": fields.String,
-  "crn": fields.String
+  "crn": fields.String,
+  "nutricionistaImg": fields.Url('nutricionistaimg', absolute=True)
 }
 
 nutricionistaFieldsToken = {

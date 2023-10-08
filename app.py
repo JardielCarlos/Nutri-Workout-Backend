@@ -2,17 +2,12 @@ from flask import Flask
 from flask_restful import Api
 from helpers.database import db, migrate
 from helpers.configCORS import cors
-from model.consumerRabbitmq import RabbitmqConsumer
-from json import loads
 from flask_socketio import SocketIO, emit
 
-from model.notificacaoPersonal import NotificacaoPersonal
-from model.atleta import Atleta
-
 from resources.atletas import Atletas, AtletaId, AtletaNome, RequestPersonal, AtletaPagination, AtletaImg
-from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerPagination
-from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome, NutricionistaPagination
-from resources.administradores import Administradores, AdministradorId, AdministradorNome
+from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerPagination, PersonalImg
+from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome, NutricionistaPagination, NutricionistaImg
+from resources.administradores import Administradores, AdministradorId, AdministradorNome, AdministradorImg
 from resources.login import Login
 from resources.logout import Logout
 
@@ -49,7 +44,6 @@ api.add_resource(AtletaId, '/atleta/<int:id>')
 api.add_resource(AtletaNome, '/atletas/<string:nome>')
 api.add_resource(AtletaPagination, '/atletas/<int:id>')
 api.add_resource(AtletaImg, '/atleta/imagem/<int:id>')
-
 api.add_resource(RequestPersonal, '/atleta/solicitar-personal/<int:id>')
 
 api.add_resource(PersonaisTrainer, '/personalTrainer')
@@ -58,16 +52,20 @@ api.add_resource(PersonalTrainerNome, '/personalTrainer/<string:nome>')
 api.add_resource(PersonalNotificacoes, '/personalTrainer/notificacoes')
 api.add_resource(PersonalNotificacoesId, '/personalTrainer/notificacoes/<int:id>')
 api.add_resource(PersonalTrainerPagination, '/personalTraineres/<int:id>')
+api.add_resource(PersonalImg, '/personal/imagem/<int:id>')
 
 
 api.add_resource(Nutricionistas, '/nutricionista')
 api.add_resource(NutricionistaId, '/nutricionista/<int:id>')
 api.add_resource(NutricionistaNome, '/nutricionista/<string:nome>')
 api.add_resource(NutricionistaPagination, "/nutricionistas/<int:id>")
+api.add_resource(NutricionistaImg, '/nutricionista/imagem/<int:id>')
 
 api.add_resource(Administradores, '/administradores')
 api.add_resource(AdministradorId, '/administradores/<int:id>')
 api.add_resource(AdministradorNome, '/administradores/<string:nome>')
+api.add_resource(AdministradorImg, '/administrador/imagem/<int:id>')
+
 
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')

@@ -1,3 +1,4 @@
+from flask import make_response
 from flask_restful import reqparse, marshal, Resource
 from helpers.logger import logger
 from helpers.database import db
@@ -5,13 +6,18 @@ from password_strength import PasswordPolicy
 from validate_docbr import CPF
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
+from werkzeug.datastructures import FileStorage
+from PIL import Image
+from io import BytesIO
 from helpers.auth.token_verifier import token_verify
 import re
 
+from model.imgUsuarios import ImgUsuarios
 from model.mensagem import Message, msgFields, msgFieldsToken
 from model.nutricionista import Nutricionista, nutricionistaFieldsToken, nutricionistaPagination
 
 parser = reqparse.RequestParser()
+parserFiles = reqparse.RequestParser()
 
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
 parser.add_argument("email", type=str, help="email não informado", required=False)
@@ -19,6 +25,8 @@ parser.add_argument("senha", type=str, help="senha não informado", required=Fal
 parser.add_argument("cpf", type=str, help="cpf não informado", required=False)
 parser.add_argument("crn", type=str, help="crn não informado", required=False)
 parser.add_argument("novaSenha", type=str, help="nova senha não informado", required=False)
+parserFiles.add_argument('fotoPerfil', type=FileStorage, location='files')
+
 
 "056.998.308-80"
 "290.297.910-04"
@@ -68,57 +76,63 @@ class Nutricionistas(Resource):
     args = parser.parse_args()
 
     try:
-      if len(args["nome"]) == 0:
-        logger.info("Nome não informado")
+      with db.session.begin():
+        fotoPerfil = None
+        if len(args["nome"]) == 0:
+          logger.info("Nome não informado")
 
-        codigo = Message(1, "Nome não informado")
-        return marshal(codigo, msgFields), 400
-      
-      if not args['email']:
-        codigo = Message(1, "email não informada")
-        return marshal(codigo, msgFields), 400
-      
-      if re.match(padrao_email, args['email']) == None:
-        codigo = Message(1, "Email no formato errado")
-        return marshal(codigo, msgFields), 400
-      
-      if not args["cpf"]:
-        codigo = Message(1, "cpf não informado")
-        return marshal(codigo, msgFields), 400
-      
-      if not cpfValidate.validate(args["cpf"]):
-        logger.error(f"CPF {args['cpf']} não valido")
+          codigo = Message(1, "Nome não informado")
+          return marshal(codigo, msgFields), 400
+        
+        if not args['email']:
+          codigo = Message(1, "email não informada")
+          return marshal(codigo, msgFields), 400
+        
+        if re.match(padrao_email, args['email']) == None:
+          codigo = Message(1, "Email no formato errado")
+          return marshal(codigo, msgFields), 400
+        
+        if not args["cpf"]:
+          codigo = Message(1, "cpf não informado")
+          return marshal(codigo, msgFields), 400
+        
+        if not cpfValidate.validate(args["cpf"]):
+          logger.error(f"CPF {args['cpf']} não valido")
 
-        codigo = Message(1, f"CPF {args['cpf']} não valido")
-        return marshal(codigo, msgFields), 400
-      
-      if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
-        logger.error(f"CPF {args['cpf']} no formato errado")
+          codigo = Message(1, f"CPF {args['cpf']} não valido")
+          return marshal(codigo, msgFields), 400
+        
+        if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
+          logger.error(f"CPF {args['cpf']} no formato errado")
 
-        codigo = Message(1, "CPF no formato errado")
-        return marshal(codigo, msgFields), 400
+          codigo = Message(1, "CPF no formato errado")
+          return marshal(codigo, msgFields), 400
 
-      if not args['senha']:
-        codigo = Message(1, "Senha não informada")
-        return marshal(codigo, msgFields), 400
-      
-      verifySenha = policy.test(args['senha'])
-      if len(verifySenha) != 0:
-        codigo = Message(1, "Senha no formato errado")
-        return marshal(codigo, msgFields), 400
-      
-      if not args['crn']:
-        codigo = Message(1, "CRN não informada")
-        return marshal(codigo, msgFields), 400
-      
-      if int(len((args['crn']))) <= 3:
-        codigo = Message(1, "CRN invalido")
-        return marshal(codigo, msgFields), 400
-      
-      nutricionista = Nutricionista(args["nome"], args["email"], args["senha"], args["cpf"], args["crn"])
+        if not args['senha']:
+          codigo = Message(1, "Senha não informada")
+          return marshal(codigo, msgFields), 400
+        
+        verifySenha = policy.test(args['senha'])
+        if len(verifySenha) != 0:
+          codigo = Message(1, "Senha no formato errado")
+          return marshal(codigo, msgFields), 400
+        
+        if not args['crn']:
+          codigo = Message(1, "CRN não informada")
+          return marshal(codigo, msgFields), 400
+        
+        if int(len((args['crn']))) <= 3:
+          codigo = Message(1, "CRN invalido")
+          return marshal(codigo, msgFields), 400
+        
+        nutricionista = Nutricionista(args["nome"], args["email"], args["senha"], args["cpf"], args["crn"])
 
-      db.session.add(nutricionista)
-      db.session.commit()
+        db.session.add(nutricionista)
+        db.session.flush()
+
+        imgUsuario = ImgUsuarios(fotoPerfil, nutricionista.usuario_id)
+
+        db.session.add(imgUsuario)
 
       data = {"nutricionista":nutricionista, "token": None}
 
@@ -166,7 +180,7 @@ class NutricionistaId(Resource):
     return marshal(data, nutricionistaFieldsToken), 200
   
   # @token_verify
-  def put(self, tipo, refreshToken, id):
+  def put(self, id):
     # if tipo != 'Administrador' and tipo != 'Nutricionista':
     #   logger.error("Usuario sem autorizacao para acessar os nutricionistas")
 
@@ -229,7 +243,7 @@ class NutricionistaId(Resource):
       db.session.add(nutricionistaBD)
       db.session.commit()
 
-      data = {"nutrcionista": nutricionistaBD, "token": refreshToken}
+      data = {"nutricionista": nutricionistaBD, "token": None}
 
       logger.info(f"Nutricionista de id: {id} atualizado com sucesso")
       return marshal(data, nutricionistaFieldsToken), 200
@@ -320,9 +334,76 @@ class NutricionistaId(Resource):
     logger.info(f"Nutricionista de id: {id} deletado com sucesso")
     return {"token": None}, 200
   
+class NutricionistaImg(Resource):
+  def get(self, id):
+    img_io = BytesIO()
+
+    usuario = ImgUsuarios.query.filter_by(usuario_id=id).first()
+
+    if usuario is None:
+      logger.error(f"Usuario de id: {id} nao encontrado")
+      codigo = Message(1, f"Usuario de id: {id} nao encontrado")
+      return marshal(codigo, msgFields), 404
+
+    if usuario.fotoPerfil is None: return None, 200
+
+    fotoPerfil = Image.open(BytesIO(usuario.fotoPerfil))
+    fotoPerfil.save(img_io, 'PNG')
+    img_io.seek(0)
+    response = make_response(img_io.getvalue())
+    response.headers['Content-Type'] = 'image/png'
+    return response
+  
+  def put(self, id):
+    args = parserFiles.parse_args()
+
+    try:
+      userDB = ImgUsuarios.query.filter_by(usuario_id=id).first()
+      if userDB is None:
+        logger.error(f'Usuario de id: {id} nao encontrado')
+        codigo = Message(1, f"Usuario de id: {id} nao encontrado")
+        return marshal(codigo, msgFields), 404
+      
+      newFoto = args['fotoPerfil']
+      if newFoto is None:
+        logger.error("campo fotoPerfil nao informado")
+        codigo = Message(1, "campo fotoPerfil nao informado")
+        return marshal(codigo, msgFields), 404
+      
+      newFoto.stream.seek(0)
+      fotoPerfil = newFoto.stream.read()
+
+      userDB.fotoPerfil = fotoPerfil
+
+      logger.info("Foto do nutricionista atualizada com sucesso")
+
+      db.session.add(userDB)
+      db.session.commit()
+
+      return {}, 204
+    except:
+      logger.error("Erro ao atualizar a imagem do nutricionista")
+
+      codigo = Message(2, "Erro ao atualizar a imagem do nutricionista")
+      return marshal(codigo, msgFields), 400
+
+  def delete(self, id):
+    userDB = ImgUsuarios.query.filter_by(usuario_id=id).first()
+
+    if userDB is None:
+      logger.error(f'Imagem do nutricionista de id: {id} nao encontrada')
+      codigo = Message(1, f"Imagem do nutricionista de id: {id} nao encontrada")
+      return marshal(codigo, msgFields), 404
+    
+    userDB.fotoPerfil= None
+
+    db.session.add(userDB)
+    db.session.commit()
+
+    return {}, 200
 class NutricionistaNome(Resource):
   # @token_verify
-  def get(self, tipo, refreshToken, nome):
+  def get(self, nome):
     # if tipo != 'Administrador':
     #   logger.error("Usuario sem autorizacao para acessar os nutricionistas")
 

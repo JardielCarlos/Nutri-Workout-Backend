@@ -9,6 +9,7 @@ administradorFields = {
   "email": fields.String,
   "cpf": fields.String,
   "tipo": fields.String,
+  "administradorImg": fields.Url('administradorimg', absolute=True)
 }
 
 administradorFieldsToken = {

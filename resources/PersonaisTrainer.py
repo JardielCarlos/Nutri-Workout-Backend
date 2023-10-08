@@ -1,3 +1,4 @@
+from flask import make_response
 from flask_restful import marshal, Resource, reqparse
 from helpers.logger import logger
 from helpers.database import db
@@ -7,7 +8,11 @@ from validate_docbr import CPF
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 from model.consumerRabbitmq import RabbitmqConsumer
+from model.imgUsuarios import ImgUsuarios
+from werkzeug.datastructures import FileStorage
 from helpers.auth.token_verifier import token_verify
+from io import BytesIO
+from PIL import Image
 from json import loads
 import re
 
@@ -17,12 +22,17 @@ from model.notificacaoPersonal import NotificacaoPersonal, notificacaoPersonalFi
 from model.atleta import Atleta
 
 parser = reqparse.RequestParser()
+parserFiles = reqparse.RequestParser()
+
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
 parser.add_argument("email", type=str, help="email não informado", required=False)
 parser.add_argument("senha", type=str, help="senha não informado", required=False)
 parser.add_argument("cpf", type=str, help="cpf não informado", required=False)
 parser.add_argument("cref", type=str, help="cref não informado", required=False)
 parser.add_argument("novaSenha", type=str, help="nova senha não informado", required=False)
+
+parserFiles.add_argument('fotoPerfil', type=FileStorage, location='files')
+
 
 padrao_email = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 policy = PasswordPolicy.from_names(
@@ -76,57 +86,64 @@ class PersonaisTrainer(Resource):
     
     args = parser.parse_args()
     try:
-      if len(args["nome"]) == 0:
-        logger.info("Nome não informado")
+      with db.session.begin():
 
-        codigo = Message(1, "Nome não informado")
-        return marshal(codigo, msgFields), 400
-      
-      if not args['email']:
-        codigo = Message(1, "email não informada")
-        return marshal(codigo, msgFields), 400
-      
-      if re.match(padrao_email, args['email']) == None:
-        codigo = Message(1, "Email no formato errado")
-        return marshal(codigo, msgFields), 400
-      
-      if not args["cpf"]:
-        codigo = Message(1, "cpf não informado")
-        return marshal(codigo, msgFields), 400
-      
-      if not cpfValidate.validate(args["cpf"]):
-        logger.error(f"CPF {args['cpf']} não valido")
+        fotoPerfil = None
+        if len(args["nome"]) == 0:
+          logger.info("Nome não informado")
 
-        codigo = Message(1, f"CPF {args['cpf']} não valido")
-        return marshal(codigo, msgFields), 400
-      
-      if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
-        logger.error(f"CPF {args['cpf']} no formato errado")
+          codigo = Message(1, "Nome não informado")
+          return marshal(codigo, msgFields), 400
+        
+        if not args['email']:
+          codigo = Message(1, "email não informada")
+          return marshal(codigo, msgFields), 400
+        
+        if re.match(padrao_email, args['email']) == None:
+          codigo = Message(1, "Email no formato errado")
+          return marshal(codigo, msgFields), 400
+        
+        if not args["cpf"]:
+          codigo = Message(1, "cpf não informado")
+          return marshal(codigo, msgFields), 400
+        
+        if not cpfValidate.validate(args["cpf"]):
+          logger.error(f"CPF {args['cpf']} não valido")
 
-        codigo = Message(1, "CPF no formato errado")
-        return marshal(codigo, msgFields), 400
+          codigo = Message(1, f"CPF {args['cpf']} não valido")
+          return marshal(codigo, msgFields), 400
+        
+        if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
+          logger.error(f"CPF {args['cpf']} no formato errado")
 
-      if not args['senha']:
-        codigo = Message(1, "Senha não informada")
-        return marshal(codigo, msgFields), 400
-      
-      verifySenha = policy.test(args['senha'])
-      if len(verifySenha) != 0:
-        codigo = Message(1, "Senha no formato errado")
-        return marshal(codigo, msgFields), 400
-      
-      if not args['cref']:
-        codigo = Message(1, "CREF não informada")
-        return marshal(codigo, msgFields), 400
-      
-      if not re.match(r'\d{6}-G\/[A-Z]{2}', args['cref']):
-        codigo = Message(1, "CREF no formato errado")
-        return marshal(codigo, msgFields), 400
+          codigo = Message(1, "CPF no formato errado")
+          return marshal(codigo, msgFields), 400
 
-      personalTrainer = PersonalTrainer(args["nome"], args["email"], args["senha"], args["cpf"], args["cref"])
+        if not args['senha']:
+          codigo = Message(1, "Senha não informada")
+          return marshal(codigo, msgFields), 400
+        
+        verifySenha = policy.test(args['senha'])
+        if len(verifySenha) != 0:
+          codigo = Message(1, "Senha no formato errado")
+          return marshal(codigo, msgFields), 400
+        
+        if not args['cref']:
+          codigo = Message(1, "CREF não informada")
+          return marshal(codigo, msgFields), 400
+        
+        if not re.match(r'\d{6}-G\/[A-Z]{2}', args['cref']):
+          codigo = Message(1, "CREF no formato errado")
+          return marshal(codigo, msgFields), 400
 
-      db.session.add(personalTrainer)
-      db.session.commit()
+        personalTrainer = PersonalTrainer(args["nome"], args["email"], args["senha"], args["cpf"], args["cref"])
+
+        db.session.add(personalTrainer)
+        db.session.flush()
+
+        imgUsuario = ImgUsuarios(fotoPerfil, personalTrainer.usuario_id)
+
+        db.session.add(imgUsuario)
 
       data = {"personal": personalTrainer, "token": None}
 
@@ -328,6 +345,76 @@ class PersonalTrainerId(Resource):
 
     logger.info(f"Personal Trainer de id: {id} deletado com sucesso")
     return {"token": None}, 200
+  
+class PersonalImg(Resource):
+  def get(self, id):
+    img_io = BytesIO()
+
+    usuario = ImgUsuarios.query.filter_by(usuario_id=id).first()
+
+    if usuario is None:
+      logger.error(f"Usuario de id: {id} nao encontrado")
+      codigo = Message(1, f"Usuario de id: {id} nao encontrado")
+      return marshal(codigo, msgFields), 404
+
+    if usuario.fotoPerfil is None: return None, 200
+
+    fotoPerfil = Image.open(BytesIO(usuario.fotoPerfil))
+    fotoPerfil.save(img_io, 'PNG')
+    img_io.seek(0)
+    response = make_response(img_io.getvalue())
+    response.headers['Content-Type'] = 'image/png'
+    return response
+  
+  def put(self, id):
+    args = parserFiles.parse_args()
+
+    try:
+      userDB = ImgUsuarios.query.filter_by(usuario_id=id).first()
+      if userDB is None:
+        logger.error(f'Usuario de id: {id} nao encontrado')
+        codigo = Message(1, f"Usuario de id: {id} nao encontrado")
+        return marshal(codigo, msgFields), 404
+      
+      newFoto = args['fotoPerfil']
+      if newFoto is None:
+        logger.error("campo fotoPerfil nao informado")
+        codigo = Message(1, "campo fotoPerfil nao informado")
+        return marshal(codigo, msgFields), 404
+      
+      if newFoto:
+        newFoto.stream.seek(0)
+        fotoPerfil = newFoto.stream.read()
+
+      userDB.fotoPerfil = fotoPerfil
+
+      logger.info("Foto do personal trainer atualizada com sucesso")
+
+      db.session.add(userDB)
+      db.session.commit()
+
+      return {}, 204
+    except:
+      logger.error("Erro ao atualizar a imagem do personal trainer")
+
+      codigo = Message(2, "Erro ao atualizar a imagem do personal trainer")
+      return marshal(codigo, msgFields), 400
+  
+  def delete(self, id):
+    userDB = ImgUsuarios.query.filter_by(usuario_id=id).first()
+
+    if userDB is None:
+      logger.error(f'Imagem do personal trainer de id: {id} nao encontrada')
+      codigo = Message(1, f"Imagem do personal trainer de id: {id} nao encontrada")
+      return marshal(codigo, msgFields), 404
+    
+    userDB.fotoPerfil= None
+
+    db.session.add(userDB)
+    db.session.commit()
+
+    return {}, 200
+
   
 class PersonalTrainerNome(Resource):
   # @token_verify
