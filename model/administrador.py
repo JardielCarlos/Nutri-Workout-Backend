@@ -6,6 +6,7 @@ from model.usuario import Usuario
 administradorFields = {
   "id": fields.Integer,
   "nome": fields.String,
+  "sobrenome": fields.String,
   "email": fields.String,
   "cpf": fields.String,
   "tipo": fields.String,
@@ -24,8 +25,8 @@ class Administrador(Usuario):
 
   __mapper_args__ = {"polymorphic_identity": "Administrador"}
 
-  def __init__(self, nome, email, senha, cpf):
-    super().__init__(nome, email, senha, cpf)
+  def __init__(self, nome, sobrenome, email, senha, cpf):
+    super().__init__(nome, sobrenome, email, senha, cpf)
 
   def __repr__(self):
     return f"<Administrador {self.nome}>"

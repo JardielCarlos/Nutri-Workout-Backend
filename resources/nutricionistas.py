@@ -20,6 +20,8 @@ parser = reqparse.RequestParser()
 parserFiles = reqparse.RequestParser()
 
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
+parser.add_argument("sobrenome", type=str, help="Sobrenome não informado", required=False)
+
 parser.add_argument("email", type=str, help="email não informado", required=False)
 parser.add_argument("senha", type=str, help="senha não informado", required=False)
 parser.add_argument("cpf", type=str, help="cpf não informado", required=False)
@@ -84,6 +86,12 @@ class Nutricionistas(Resource):
           codigo = Message(1, "Nome não informado")
           return marshal(codigo, msgFields), 400
         
+        if len(args["sobrenome"]) == 0:
+          logger.info("Sobrenome não informado")
+
+          codigo = Message(1, "Sobrenome não informado")
+          return marshal(codigo, msgFields), 400
+        
         if not args['email']:
           codigo = Message(1, "email não informada")
           return marshal(codigo, msgFields), 400
@@ -125,7 +133,7 @@ class Nutricionistas(Resource):
           codigo = Message(1, "CRN invalido")
           return marshal(codigo, msgFields), 400
         
-        nutricionista = Nutricionista(args["nome"], args["email"], args["senha"], args["cpf"], args["crn"])
+        nutricionista = Nutricionista(args["nome"], args["sobrenome"], args["email"], args["senha"], args["cpf"], args["crn"])
 
         db.session.add(nutricionista)
         db.session.flush()
@@ -203,6 +211,12 @@ class NutricionistaId(Resource):
         codigo = Message(1, "Nome nao informado")
         return marshal(codigo, msgFields), 400
       
+      if len(args["sobrenome"]) == 0:
+        logger.info("Sobrenome não informado")
+
+        codigo = Message(1, "Sobrenome não informado")
+        return marshal(codigo, msgFields), 400
+      
       if not args['email']:
         codigo = Message(1, "email não informado")
         return marshal(codigo, msgFields), 400
@@ -236,6 +250,7 @@ class NutricionistaId(Resource):
         return marshal(codigo, msgFields), 400
       
       nutricionistaBD.nome = args["nome"]
+      nutricionistaBD.sobrenome = args["sobrenome"]
       nutricionistaBD.email = args["email"]
       nutricionistaBD.cpf = args["cpf"]
       nutricionistaBD.crn = args["crn"]

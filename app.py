@@ -8,6 +8,7 @@ from resources.atletas import Atletas, AtletaId, AtletaNome, RequestPersonal, At
 from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerPagination, PersonalImg
 from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome, NutricionistaPagination, NutricionistaImg
 from resources.administradores import Administradores, AdministradorId, AdministradorNome, AdministradorImg
+from resources.usuario import Usuarios
 from resources.login import Login
 from resources.logout import Logout
 
@@ -66,6 +67,7 @@ api.add_resource(AdministradorId, '/administradores/<int:id>')
 api.add_resource(AdministradorNome, '/administradores/<string:nome>')
 api.add_resource(AdministradorImg, '/administrador/imagem/<int:id>')
 
+api.add_resource(Usuarios, '/usuarios')
 
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')

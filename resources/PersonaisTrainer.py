@@ -25,6 +25,7 @@ parser = reqparse.RequestParser()
 parserFiles = reqparse.RequestParser()
 
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
+parser.add_argument("sobrenome", type=str, help="Sobrenome não informado", required=False)
 parser.add_argument("email", type=str, help="email não informado", required=False)
 parser.add_argument("senha", type=str, help="senha não informado", required=False)
 parser.add_argument("cpf", type=str, help="cpf não informado", required=False)
@@ -95,6 +96,11 @@ class PersonaisTrainer(Resource):
           codigo = Message(1, "Nome não informado")
           return marshal(codigo, msgFields), 400
         
+        if len(args["sobrenome"]) == 0:
+          logger.info("Sobrenome não informado")
+
+          codigo = Message(1, "Sobrenome não informado")
+          return marshal(codigo, msgFields), 400
         if not args['email']:
           codigo = Message(1, "email não informada")
           return marshal(codigo, msgFields), 400
@@ -136,7 +142,7 @@ class PersonaisTrainer(Resource):
           codigo = Message(1, "CREF no formato errado")
           return marshal(codigo, msgFields), 400
 
-        personalTrainer = PersonalTrainer(args["nome"], args["email"], args["senha"], args["cpf"], args["cref"])
+        personalTrainer = PersonalTrainer(args["nome"], args["sobrenome"], args["email"], args["senha"], args["cpf"], args["cref"])
 
         db.session.add(personalTrainer)
         db.session.flush()
@@ -212,6 +218,12 @@ class PersonalTrainerId(Resource):
         codigo = Message(1, "Nome nao informado")
         return marshal(codigo, msgFields), 400
       
+      if len(args["sobrenome"]) == 0:
+          logger.info("Sobrenome não informado")
+
+          codigo = Message(1, "Sobrenome não informado")
+          return marshal(codigo, msgFields), 400
+      
       if not args['email']:
         codigo = Message(1, "email não informado")
         return marshal(codigo, msgFields), 400
@@ -245,6 +257,7 @@ class PersonalTrainerId(Resource):
         return marshal(codigo, msgFields), 400
 
       personalTrainerBD.nome = args["nome"]
+      personalTrainerBD.sobrenome = args["sobrenome"]
       personalTrainerBD.email = args["email"]
       personalTrainerBD.cpf = args["cpf"]
       personalTrainerBD.cref = args["cref"]

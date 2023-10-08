@@ -25,8 +25,8 @@ class Login(Resource):
     if not user.verify_password(args['senha']):
       codigo = Message(1, "Senha Incorreta ou inexistente")
       return marshal(codigo, msgFields), 404
-
+    
+    inicialNome = user.nome[0] + user.sobrenome[0]
     token = token_creator.create(user.tipo, user.id)
-
-
-    return {"token": token, "tipo":user.tipo, "user_id": user.id}, 200
+    
+    return {"token": token, "tipo":user.tipo, "user_id": user.id, "sigla": inicialNome}, 200

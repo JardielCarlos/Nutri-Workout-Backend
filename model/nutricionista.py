@@ -6,6 +6,7 @@ from model.usuario import Usuario
 nutricionistaFields = {
   "id": fields.Integer,
   "nome": fields.String,
+  "sobrenome": fields.String,
   "email": fields.String,
   "cpf": fields.String,
   "tipo": fields.String,
@@ -31,8 +32,8 @@ class Nutricionista(Usuario):
 
   __mapper_args__ = {"polymorphic_identity": "Nutricionista"}
 
-  def __init__(self, nome, email, senha, cpf, crn):
-    super().__init__(nome, email, senha, cpf)
+  def __init__(self, nome, sobrenome, email, senha, cpf, crn):
+    super().__init__(nome, sobrenome, email, senha, cpf)
     self.crn = crn
 
   def __repr__(self):

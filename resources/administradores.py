@@ -20,6 +20,7 @@ parser = reqparse.RequestParser()
 parserFiles = reqparse.RequestParser()
 
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
+parser.add_argument("sobrenome", type=str, help="Sobrenome não informado", required=False)
 parser.add_argument("email", type=str, help="email não informado", required=False)
 parser.add_argument("senha", type=str, help="senha não informado", required=False)
 parser.add_argument("cpf", type=str, help="cpf não informado", required=False)
@@ -75,6 +76,11 @@ class Administradores(Resource):
 
           codigo = Message(1, "Nome não informado")
           return marshal(codigo, msgFields), 400
+        if len(args["sobrenome"]) == 0:
+          logger.info("Sobrenome não informado")
+
+          codigo = Message(1, "Sobrenome não informado")
+          return marshal(codigo, msgFields), 400
         
         if not args['email']:
           codigo = Message(1, "email não informada")
@@ -109,7 +115,7 @@ class Administradores(Resource):
           codigo = Message(1, "Senha no formato errado")
           return marshal(codigo, msgFields), 400
         
-        administrador = Administrador(args["nome"], args["email"], args["senha"], args["cpf"])
+        administrador = Administrador(args["nome"], args["sobrenome"], args["email"], args["senha"], args["cpf"])
         
         db.session.add(administrador)
         db.session.flush()
@@ -183,6 +189,12 @@ class AdministradorId(Resource):
         codigo = Message(1, "Nome nao informado")
         return marshal(codigo, msgFields), 400
       
+      if len(args["sobrenome"]) == 0:
+          logger.info("Sobrenome não informado")
+
+          codigo = Message(1, "Sobrenome não informado")
+          return marshal(codigo, msgFields), 400
+      
       if not args['email']:
         codigo = Message(1, "email não informado")
         return marshal(codigo, msgFields), 400
@@ -208,6 +220,7 @@ class AdministradorId(Resource):
         return marshal(codigo, msgFields), 400
       
       administradorBD.nome = args["nome"]
+      administradorBD.sobrenome = args["sobrenome"]
       administradorBD.email = args["email"]
       administradorBD.cpf = args["cpf"],
 
