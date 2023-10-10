@@ -385,6 +385,13 @@ class NutricionistaImg(Resource):
         codigo = Message(1, "campo fotoPerfil nao informado")
         return marshal(codigo, msgFields), 404
       
+      try:
+        Image.open(newFoto)
+      except IOError:
+        logger.error("O arquivo nao e uma imagem")
+        codigo = Message(1, "O arquivo não é uma imagem")
+        return marshal(codigo, msgFields), 404
+      
       newFoto.stream.seek(0)
       fotoPerfil = newFoto.stream.read()
 

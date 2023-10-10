@@ -5,6 +5,8 @@ from sqlalchemy.exc import IntegrityError
 from helpers.logger import logger
 from helpers.database import db
 
+import os
+
 from helpers.auth.token_verifier import token_verify
 from werkzeug.security import generate_password_hash
 
@@ -353,10 +355,15 @@ class AtletaImg(Resource):
         codigo = Message(1, "campo fotoPerfil nao informado")
         return marshal(codigo, msgFields), 404
       
-      # fotoPerfil = None
-      if newFoto:
-        newFoto.stream.seek(0)
-        fotoPerfil = newFoto.stream.read()
+      try:
+        Image.open(newFoto)
+      except IOError:
+        logger.error("O arquivo nao e uma imagem")
+        codigo = Message(1, "O arquivo não é uma imagem")
+        return marshal(codigo, msgFields), 404
+      
+      newFoto.stream.seek(0)
+      fotoPerfil = newFoto.stream.read()
 
       userDB.fotoPerfil = fotoPerfil
 
