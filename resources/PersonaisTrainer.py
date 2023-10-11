@@ -15,6 +15,7 @@ from io import BytesIO
 from PIL import Image
 from json import loads
 import re
+import os
 
 from model.mensagem import Message, msgFields, msgFieldsToken
 from model.personalTrainer import PersonalTrainer, personalTrainerFieldsToken, personalTrainerPagination, personalTrainerAssociatedFieldsToken
@@ -353,6 +354,11 @@ class PersonalTrainerId(Resource):
       codigo = Message(1, f"Personal Trainer de id: {id} não encontrado")
       return marshal(codigo, msgFields), 404
     
+    for atleta in personalTrainer.atletas:
+      notificacaoAtleta = NotificacaoPersonal.query.filter_by(atleta_id=atleta.id).first()
+      notificacaoAtleta.solicitacao= False
+      db.session.add(notificacaoAtleta)
+      
     db.session.delete(personalTrainer)
     db.session.commit()
 
@@ -389,15 +395,29 @@ class PersonalImg(Resource):
         codigo = Message(1, f"Usuario de id: {id} nao encontrado")
         return marshal(codigo, msgFields), 404
       
+      maxSizeImage = 2 * 1024 * 1024 
       newFoto = args['fotoPerfil']
       if newFoto is None:
         logger.error("campo fotoPerfil nao informado")
         codigo = Message(1, "campo fotoPerfil nao informado")
         return marshal(codigo, msgFields), 404
       
-      if newFoto:
-        newFoto.stream.seek(0)
-        fotoPerfil = newFoto.stream.read()
+      try:
+        Image.open(newFoto)
+      except IOError:
+        logger.error("O arquivo nao e uma imagem")
+        codigo = Message(1, "O arquivo não é uma imagem")
+        return marshal(codigo, msgFields), 404
+      
+      newFoto.stream.seek(0, os.SEEK_END)
+      fileSize = newFoto.stream.tell()
+      if fileSize > maxSizeImage:
+        logger.error("O arquivo e muito grande")
+        codigo = Message(1, "O arquivo é muito grande")
+        return marshal(codigo, msgFields), 400
+
+      newFoto.stream.seek(0)
+      fotoPerfil = newFoto.stream.read()
 
       userDB.fotoPerfil = fotoPerfil
 
@@ -427,7 +447,6 @@ class PersonalImg(Resource):
     db.session.commit()
 
     return {}, 200
-
   
 class PersonalTrainerNome(Resource):
   # @token_verify
@@ -445,15 +464,34 @@ class PersonalTrainerNome(Resource):
     return marshal(data, personalTrainerFieldsToken), 200
   
 class PersonalNotificacoes(Resource):
-  def get(self):
-    notificacoes = NotificacaoPersonal.query.filter_by(solicitacao=False).all()
+  @token_verify
+  def get(self, tipo, refreshToken, user_id):
+    notificacoes = NotificacaoPersonal.query.filter(
+      NotificacaoPersonal.solicitacao==False, 
+      ~NotificacaoPersonal.personals_rejeitados.any(PersonalTrainer.usuario_id==user_id)
+      # ~ operador de negação
+    ).all()
+    # notificacoes = NotificacaoPersonal.query.filter_by(solicitacao=False).all()
 
     logger.info(f"Notificacoes dos personais listadas com sucesso")
     return marshal(notificacoes, notificacaoPersonalFields)
   
 class PersonalNotificacoesId(Resource):
-  def get(self, id):
-    notificacao = NotificacaoPersonal.query.filter_by(solicitacao=False, id=id).first()
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, id):
+    personal = PersonalTrainer.query.get(user_id)
+    if personal is None:
+      logger.error(f"Personal Trainer de id: {user_id} nao encontrado")
+
+      codigo = Message(1, f"Personal Trainer de id: {user_id} nao encontrado")
+      return marshal(codigo, msgFields), 404
+    
+    notificacao = NotificacaoPersonal.query.filter(
+      NotificacaoPersonal.solicitacao==False, 
+      NotificacaoPersonal.id==id, 
+      ~NotificacaoPersonal.personals_rejeitados.any(PersonalTrainer.usuario_id==user_id)
+      # ~ operador de negação
+    ).first()
 
     if notificacao is None:
       logger.error(f"Notificacao de id: {id} nao encontrada")
@@ -463,30 +501,6 @@ class PersonalNotificacoesId(Resource):
 
     logger.info(f"Notificacao de id: {id} listado com sucesso")
     return marshal(notificacao, notificacaoPersonalFields)
-  @token_verify
-  def patch(self, tipo, refreshToken, user_id, id):
-    notificacao = NotificacaoPersonal.query.filter_by(solicitacao=False, id=id).first()
-    if notificacao is None:
-      logger.error(f"Notificacao de id: {id} nao encontrada")
-
-      codigo = Message(1, f"Notificacao de id: {id} nao encontrada")
-      return marshal(codigo, msgFields), 404
-    
-    personal = PersonalTrainer.query.get(user_id)
-    atleta = Atleta.query.get(notificacao.atleta_id)
-
-    personal.atletas.append(atleta)
-    atleta.personal_trainer_id = personal.usuario_id
-    notificacao.solicitacao = True
-
-    db.session.add(notificacao)
-    db.session.add(personal)
-    db.session.add(atleta)
-    db.session.commit()
-
-    logger.info(f"O personal aceitou o atleta: {notificacao.nome} como seu aluno")
-    codigo = Message(0, f"Voce aceitou o atleta: {notificacao.nome} como seu aluno")
-    return marshal(codigo, msgFields), 200
   
   def delete(self, id):
     notificacao = NotificacaoPersonal.query.get(id)
@@ -502,6 +516,48 @@ class PersonalNotificacoesId(Resource):
 
     logger.info(f"Notificacao de id: {id} deletado com sucesso")
     return {}, 200
+  
+class PersonalTrainerNotificacaoState(Resource):
+  @token_verify
+  def patch(self, tipo, refreshToken, user_id, state, id):
+    notificacao = NotificacaoPersonal.query.filter(
+      NotificacaoPersonal.solicitacao==False, 
+      NotificacaoPersonal.id==id, 
+      ~NotificacaoPersonal.personals_rejeitados.any(PersonalTrainer.usuario_id==user_id)
+    ).first()
+
+    if notificacao is None:
+      logger.error(f"Notificacao de id: {id} nao encontrada")
+
+      codigo = Message(1, f"Notificacao de id: {id} nao encontrada")
+      return marshal(codigo, msgFields), 404
+      
+    personal = PersonalTrainer.query.get(user_id)
+
+    if state == "aceitar":
+      atleta = Atleta.query.get(notificacao.atleta_id)
+
+      personal.atletas.append(atleta)
+      atleta.personal_trainer_id = personal.usuario_id
+      notificacao.solicitacao = True
+
+      db.session.add(notificacao)
+      db.session.add(personal)
+      db.session.add(atleta)
+      db.session.commit()
+
+      logger.info(f"O personal aceitou o atleta: {notificacao.nome} como seu aluno")
+      codigo = Message(0, f"Voce aceitou o atleta: {notificacao.nome} como seu aluno")
+      return marshal(codigo, msgFields), 200
+    elif state == "rejeitar":
+      notificacao.personals_rejeitados.append(personal)
+
+      db.session.add(notificacao)
+      db.session.commit()
+
+      logger.info(f"O personal rejeitou o atleta: {notificacao.nome}")
+      codigo = Message(0, f"Você rejeitou o atleta: {notificacao.nome}")
+      return marshal(codigo, msgFields), 200
   
 class PersonalTrainerPagination(Resource):
   def get(self, id):

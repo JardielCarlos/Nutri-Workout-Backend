@@ -11,6 +11,7 @@ from PIL import Image
 from io import BytesIO
 from helpers.auth.token_verifier import token_verify
 import re
+import os
 
 from model.imgUsuarios import ImgUsuarios
 from model.mensagem import Message, msgFields, msgFieldsToken
@@ -379,11 +380,26 @@ class NutricionistaImg(Resource):
         codigo = Message(1, f"Usuario de id: {id} nao encontrado")
         return marshal(codigo, msgFields), 404
       
+      maxSizeImage = 2 *1024 * 1024 
       newFoto = args['fotoPerfil']
       if newFoto is None:
         logger.error("campo fotoPerfil nao informado")
         codigo = Message(1, "campo fotoPerfil nao informado")
         return marshal(codigo, msgFields), 404
+      
+      try:
+        Image.open(newFoto)
+      except IOError:
+        logger.error("O arquivo nao e uma imagem")
+        codigo = Message(1, "O arquivo não é uma imagem")
+        return marshal(codigo, msgFields), 404
+      
+      newFoto.stream.seek(0, os.SEEK_END)
+      fileSize = newFoto.stream.tell()
+      if fileSize > maxSizeImage:
+        logger.error("O arquivo e muito grande")
+        codigo = Message(1, "O arquivo é muito grande")
+        return marshal(codigo, msgFields), 400
       
       newFoto.stream.seek(0)
       fotoPerfil = newFoto.stream.read()

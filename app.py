@@ -5,7 +5,7 @@ from helpers.configCORS import cors
 from flask_socketio import SocketIO, emit
 
 from resources.atletas import Atletas, AtletaId, AtletaNome, RequestPersonal, AtletaPagination, AtletaImg
-from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerPagination, PersonalImg
+from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerPagination, PersonalImg, PersonalTrainerNotificacaoState
 from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome, NutricionistaPagination, NutricionistaImg
 from resources.administradores import Administradores, AdministradorId, AdministradorNome, AdministradorImg
 from resources.usuario import Usuarios
@@ -52,6 +52,7 @@ api.add_resource(PersonalTrainerId, '/personalTrainer/<int:id>')
 api.add_resource(PersonalTrainerNome, '/personalTrainer/<string:nome>')
 api.add_resource(PersonalNotificacoes, '/personalTrainer/notificacoes')
 api.add_resource(PersonalNotificacoesId, '/personalTrainer/notificacoes/<int:id>')
+api.add_resource(PersonalTrainerNotificacaoState, '/personalTrainer/notificacao/<string:state>/<int:id>')
 api.add_resource(PersonalTrainerPagination, '/personalTraineres/<int:id>')
 api.add_resource(PersonalImg, '/personal/imagem/<int:id>')
 

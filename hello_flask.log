@@ -1,2 +1,23 @@
-2023-10-08 20:41:49,676 WARNING _internal _log  * Debugger is active!
-2023-10-08 20:41:49,679 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-10-11 11:35:17,805 WARNING _internal _log  * Debugger is active!
+2023-10-11 11:35:17,809 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-10-11 11:35:18,724 INFO PersonaisTrainer delete Personal Trainer de id: 9 deletado com sucesso
+2023-10-11 11:35:18,724 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:35:18] "DELETE /personalTrainer/9 HTTP/1.1" 200 -
+2023-10-11 11:36:19,209 INFO PersonaisTrainer post Personal Trainer de id: 13 criado com sucesso
+2023-10-11 11:36:19,210 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:36:19] "[35m[1mPOST /personalTrainer HTTP/1.1[0m" 201 -
+2023-10-11 11:36:33,526 ERROR login post Email incorreto ou inexistente
+2023-10-11 11:36:33,528 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:36:33] "[33mPOST /login HTTP/1.1[0m" 404 -
+2023-10-11 11:36:39,764 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:36:39] "POST /login HTTP/1.1" 200 -
+2023-10-11 11:36:55,962 INFO PersonaisTrainer get Notificacoes dos personais listadas com sucesso
+2023-10-11 11:36:55,965 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:36:55] "GET /personalTrainer/notificacoes HTTP/1.1" 200 -
+2023-10-11 11:37:13,330 INFO PersonaisTrainer get Personais Trainer listados com sucesso
+2023-10-11 11:37:13,337 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:37:13] "GET /personalTrainer HTTP/1.1" 200 -
+2023-10-11 11:37:20,730 INFO PersonaisTrainer get Personal Trainer de id: 13 listado com sucesso
+2023-10-11 11:37:20,732 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:37:20] "GET /personalTrainer/13 HTTP/1.1" 200 -
+2023-10-11 11:37:41,561 INFO PersonaisTrainer patch O personal aceitou o atleta: jooj como seu aluno
+2023-10-11 11:37:41,562 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:37:41] "PATCH /personalTrainer/notificacao/aceitar/1 HTTP/1.1" 200 -
+2023-10-11 11:37:45,680 INFO PersonaisTrainer patch O personal aceitou o atleta: diego como seu aluno
+2023-10-11 11:37:45,682 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:37:45] "PATCH /personalTrainer/notificacao/aceitar/5 HTTP/1.1" 200 -
+2023-10-11 11:37:49,791 INFO PersonaisTrainer get Personal Trainer de id: 13 listado com sucesso
+2023-10-11 11:37:49,793 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:37:49] "GET /personalTrainer/13 HTTP/1.1" 200 -
+2023-10-11 11:37:56,432 INFO PersonaisTrainer get Notificacoes dos personais listadas com sucesso
+2023-10-11 11:37:56,433 INFO _internal _log 127.0.0.1 - - [11/Oct/2023 11:37:56] "GET /personalTrainer/notificacoes HTTP/1.1" 200 -
