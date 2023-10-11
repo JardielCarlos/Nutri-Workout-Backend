@@ -5,14 +5,14 @@ from sqlalchemy.exc import IntegrityError
 from helpers.logger import logger
 from helpers.database import db
 
-import os
-
 from helpers.auth.token_verifier import token_verify
 from werkzeug.security import generate_password_hash
 
 from password_strength import PasswordPolicy
 from validate_docbr import CPF
 import re
+
+import os
 
 from model.publisherRabbitmq import RabbitmqPublisher
 
@@ -349,6 +349,7 @@ class AtletaImg(Resource):
         codigo = Message(1, f"Usuario de id: {id} nao encontrado")
         return marshal(codigo, msgFields), 404
       
+      maxSizeImage = 2 * 1024 * 1024 
       newFoto = args['fotoPerfil']
       if newFoto is None:
         logger.error("campo fotoPerfil nao informado")
@@ -362,6 +363,13 @@ class AtletaImg(Resource):
         codigo = Message(1, "O arquivo não é uma imagem")
         return marshal(codigo, msgFields), 404
       
+      newFoto.stream.seek(0, os.SEEK_END)
+      fileSize = newFoto.stream.tell()
+      if fileSize > maxSizeImage:
+        logger.error("O arquivo e muito grande")
+        codigo = Message(1, "O arquivo é muito grande")
+        return marshal(codigo, msgFields), 400
+
       newFoto.stream.seek(0)
       fotoPerfil = newFoto.stream.read()
 

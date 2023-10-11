@@ -12,6 +12,7 @@ from PIL import Image
 from werkzeug.datastructures import FileStorage
 from model.imgUsuarios import ImgUsuarios
 import re
+import os
 
 from model.mensagem import Message, msgFields, msgFieldsToken
 from model.administrador import Administrador, administradorFieldsToken
@@ -339,6 +340,7 @@ class AdministradorImg(Resource):
         codigo = Message(1, f"Usuario de id: {id} nao encontrado")
         return marshal(codigo, msgFields), 404
       
+      maxSizeImage = 2 *1024 * 1024 
       newFoto = args['fotoPerfil']
       if newFoto is None:
         logger.error("campo fotoPerfil nao informado")
@@ -351,6 +353,13 @@ class AdministradorImg(Resource):
         logger.error("O arquivo nao e uma imagem")
         codigo = Message(1, "O arquivo não é uma imagem")
         return marshal(codigo, msgFields), 404
+      
+      newFoto.stream.seek(0, os.SEEK_END)
+      fileSize = newFoto.stream.tell()
+      if fileSize > maxSizeImage:
+          logger.error("O arquivo e muito grande")
+          codigo = Message(1, "O arquivo é muito grande")
+          return marshal(codigo, msgFields), 400
 
       newFoto.stream.seek(0)
       fotoPerfil = newFoto.stream.read()

@@ -9,6 +9,11 @@ notificacaoPersonalFields = {
   "mensagem": fields.String
 }
 
+personal_rejeitado = db.Table('personal_rejeitado',
+  db.Column('notificacao_id', db.Integer, db.ForeignKey('tb_notificacaoPersonal.id')),
+  db.Column('personal_id', db.Integer, db.ForeignKey('tb_personalTrainer.usuario_id'))
+)
+
 class NotificacaoPersonal(db.Model):
   __tablename__ = 'tb_notificacaoPersonal'
 
@@ -20,6 +25,8 @@ class NotificacaoPersonal(db.Model):
 
   atleta_id = db.Column(db.Integer, db.ForeignKey('tb_atleta.usuario_id'), unique=True) 
   atleta = db.relationship('Atleta', backref=db.backref("notificacoes", cascade="all,delete"), foreign_keys=[atleta_id]) 
+
+  personals_rejeitados = db.relationship('PersonalTrainer', secondary=personal_rejeitado, backref=db.backref('notificacoes_rejeitadas'))
 
   def __init__(self, nome, email, mensagem, atleta):
     self.nome = nome
