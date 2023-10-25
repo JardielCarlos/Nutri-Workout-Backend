@@ -13,7 +13,7 @@ parser = reqparse.RequestParser()
 class Logout(Resource):
   
   @token_verify
-  def post(self, tipo, token):
+  def post(self, tipo, refreshToken, user_id):
     try:
       rawToken = request.headers["Authorization"]
       token = rawToken.split()[1]
