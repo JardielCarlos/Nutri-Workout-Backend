@@ -17,6 +17,7 @@ import os
 from model.publisherRabbitmq import RabbitmqPublisher
 
 from model.notificacaoPersonal import NotificacaoPersonal
+from model.notificacaoNutricionista import NotificacaoNutricionista
 from model.atleta import Atleta, atletaFieldsToken, atletasFieldsPagination
 from model.mensagem import Message, msgFields, msgFieldsToken
 
@@ -418,6 +419,27 @@ class AtletaNome(Resource):
     logger.info(f"Atletas com nomes: {nome} listados com sucesso")
     return marshal(data, atletaFieldsToken), 200
   
+class RequestNutricionista(Resource):
+   def post(self, id):
+    atleta = Atleta.query.get(id)
+
+    if atleta is None:
+      logger.error(f"Atleta de id: {id} nao encontrado")
+
+      codigo = Message(1, f"Atleta de id: {id} não encontrado")
+      return marshal(codigo, msgFields), 404
+    
+    msg = f"O atleta {atleta.nome} esta solicitando um(a) nutricionista, você gostaria de aceitar?"
+
+    notificacao = NotificacaoNutricionista(atleta.nome, atleta.email, msg, atleta)
+
+    db.session.add(notificacao)
+    db.session.commit()
+
+    logger.info(f"Solicitação de nutricionista realizada com sucesso pelo atleta de id: {atleta.id} ")
+    codigo = Message(0, "Solicitação realizada com sucesso")
+    return marshal(codigo, msgFields), 201
+
 class RequestPersonal(Resource):
   def post(self, id):
     atleta = Atleta.query.get(id)
@@ -440,7 +462,7 @@ class RequestPersonal(Resource):
     db.session.add(notificacao)
     db.session.commit()
 
-    logger.info(f"Solicitação de personal realizada com sucesso pelo usuario de id: {id} ")
+    logger.info(f"Solicitação de personal realizada com sucesso pelo atleta de id: {atleta.id} ")
     codigo = Message(0, "Solicitação realizada com sucesso")
     return marshal(codigo, msgFields), 201
   

@@ -15,7 +15,9 @@ import os
 
 from model.imgUsuarios import ImgUsuarios
 from model.mensagem import Message, msgFields, msgFieldsToken
-from model.nutricionista import Nutricionista, nutricionistaFieldsToken, nutricionistaPagination
+from model.atleta import Atleta
+from model.nutricionista import Nutricionista, nutricionistaFieldsToken, nutricionistaPagination, nutricionistaAssociatedFieldsToken
+from model.notificacaoNutricionista import NotificacaoNutricionista, notificacaoNutricionistaFields
 
 parser = reqparse.RequestParser()
 parserFiles = reqparse.RequestParser()
@@ -186,7 +188,7 @@ class NutricionistaId(Resource):
     data = {"nutricionista": nutricionista, "token": None}
     
     logger.info(f"Nutricionista de id: {id} listado com sucesso")
-    return marshal(data, nutricionistaFieldsToken), 200
+    return marshal(data, nutricionistaAssociatedFieldsToken), 200
   
   # @token_verify
   def put(self, id):
@@ -344,6 +346,11 @@ class NutricionistaId(Resource):
         codigo = Message(1, f"Nutricionista de id: {id} não encontrado")
         return marshal(codigo, msgFields), 404
     
+    for atleta in Nutricionista.atletas:
+      notificacaoAtleta = NotificacaoNutricionista.query.filter_by(atleta_id=atleta.id).first()
+      notificacaoAtleta.solicitacao= False
+      db.session.add(notificacaoAtleta)
+    
     db.session.delete(nutricionista)
     db.session.commit()
 
@@ -432,6 +439,103 @@ class NutricionistaImg(Resource):
     db.session.commit()
 
     return {}, 200
+  
+class NutricionistaNotificacoes(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id):
+    notificacoes = NotificacaoNutricionista.query.filter(
+      NotificacaoNutricionista.solicitacao==False, 
+      ~NotificacaoNutricionista.nutricionistas_rejeitados.any(Nutricionista.usuario_id==user_id)
+      # ~ operador de negação
+    ).all()
+
+    logger.info(f"Notificacoes dos nutricionista listado com sucesso")
+    return marshal(notificacoes, notificacaoNutricionistaFields)
+
+class NutricionistaNotificacoesId(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, id):
+    nutricionista = Nutricionista.query.get(user_id)
+    if nutricionista is None:
+      logger.error(f"Nutricionista de id: {user_id} nao encontrado")
+
+      codigo = Message(1, f"Nutricionista de id: {user_id} nao encontrado")
+      return marshal(codigo, msgFields), 404
+    
+    notificacao = NotificacaoNutricionista.query.filter(
+      NotificacaoNutricionista.solicitacao==False, 
+      NotificacaoNutricionista.id==id, 
+      ~NotificacaoNutricionista.nutricionistas_rejeitados.any(Nutricionista.usuario_id==user_id)
+      # ~ operador de negação
+    ).first()
+
+    if notificacao is None:
+      logger.error(f"Notificacao de id: {id} nao encontrada")
+
+      codigo = Message(1, f"Notificacao de id: {id} nao encontrada")
+      return marshal(codigo, msgFields), 404
+    
+    logger.info(f"Notificacao de id: {id} listado com sucesso")
+    return marshal(notificacao, notificacaoNutricionistaFields)
+  
+  def delete(self, id):
+    notificacao = NotificacaoNutricionista.query.get(id)
+
+    if notificacao is None:
+      logger.error(f"Notificacao de id: {id} nao encontrada")
+
+      codigo = Message(1, f"Notificacao de id: {id} nao encontrada")
+      return marshal(codigo, msgFields), 404
+    
+    db.session.delete(notificacao)
+    db.session.commit()
+
+    logger.info(f"Notificacao de id: {id} deletado com sucesso")
+    return {}, 200
+
+class NutricionistaNotificacaoState(Resource):
+  @token_verify
+  def patch(self, tipo, refreshToken, user_id, state, id):
+    notificacao = NotificacaoNutricionista.query.filter(
+      NotificacaoNutricionista.solicitacao==False, 
+      NotificacaoNutricionista.id==id, 
+      ~NotificacaoNutricionista.nutricionistas_rejeitados.any(Nutricionista.usuario_id==user_id)
+    ).first()
+
+    if notificacao is None:
+      logger.error(f"Notificacao de id: {id} nao encontrada")
+
+      codigo = Message(1, f"Notificacao de id: {id} nao encontrada")
+      return marshal(codigo, msgFields), 404
+    
+    nutricionista = Nutricionista.query.get(user_id)
+
+    if state == "aceitar":
+      atleta = Atleta.query.get(notificacao.atleta_id)
+
+      nutricionista.atletas.append(atleta)
+      atleta.nutricionista_id = nutricionista.usuario_id
+      notificacao.solicitacao = True
+
+      db.session.add(notificacao)
+      db.session.add(nutricionista)
+      db.session.add(atleta)
+      db.session.commit()
+
+      logger.info(f"O nutricionista aceitou o atleta: {notificacao.nome} como seu aluno")
+      codigo = Message(0, f"Voce aceitou o atleta: {notificacao.nome} como seu aluno")
+      return marshal(codigo, msgFields), 200
+    
+    elif state == "rejeitar":
+      notificacao.nutricionistas_rejeitados.append(nutricionista)
+
+      db.session.add(notificacao)
+      db.session.commit()
+
+      logger.info(f"O nutriconista rejeitou o atleta: {notificacao.nome}")
+      codigo = Message(0, f"Você rejeitou o atleta: {notificacao.nome}")
+      return marshal(codigo, msgFields), 200
+    
 class NutricionistaNome(Resource):
   # @token_verify
   def get(self, nome):

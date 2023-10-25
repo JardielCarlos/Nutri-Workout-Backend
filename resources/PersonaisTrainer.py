@@ -471,7 +471,6 @@ class PersonalNotificacoes(Resource):
       ~NotificacaoPersonal.personals_rejeitados.any(PersonalTrainer.usuario_id==user_id)
       # ~ operador de negação
     ).all()
-    # notificacoes = NotificacaoPersonal.query.filter_by(solicitacao=False).all()
 
     logger.info(f"Notificacoes dos personais listadas com sucesso")
     return marshal(notificacoes, notificacaoPersonalFields)

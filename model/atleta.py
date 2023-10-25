@@ -1,5 +1,6 @@
-from helpers.database import db
 from flask_restful import fields
+
+from helpers.database import db
 from model.usuario import Usuario
 
 atletaFields = {
@@ -28,7 +29,7 @@ atletasFieldsPagination = {
   "totalAtletas": fields.Integer
 }
 
-atletaAssociatedPersonalFields = {
+atletaAssociatedFields = {
   "id": fields.Integer,
   "nome": fields.String,
   "email": fields.String,
@@ -48,6 +49,7 @@ class Atleta(Usuario):
   statusPagamento = db.Column(db.Boolean, nullable=False, default=True)
 
   personal_trainer_id = db.Column(db.Integer ,db.ForeignKey("tb_personalTrainer.usuario_id"), nullable=True)
+  nutricionista_id = db.Column(db.Integer ,db.ForeignKey("tb_nutricionista.usuario_id"), nullable=True)
   
   __mapper_args__ = {"polymorphic_identity": "Atleta"}
 
