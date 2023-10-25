@@ -1,8 +1,8 @@
-from helpers.database import db
 from flask_restful import fields
 
+from helpers.database import db
+from model.atleta import Atleta, atletaAssociatedFields
 from model.usuario import Usuario
-from model.atleta import Atleta, atletaAssociatedPersonalFields
 
 personalTrainerFields = {
   "id": fields.Integer,
@@ -22,7 +22,7 @@ personalTrainerAssociatedFields = {
   "cpf": fields.String,
   "tipo": fields.String,
   "cref": fields.String,
-  "atletas": fields.List(fields.Nested(atletaAssociatedPersonalFields))
+  "atletas": fields.List(fields.Nested(atletaAssociatedFields))
 }
 
 personalTrainerFieldsToken = {

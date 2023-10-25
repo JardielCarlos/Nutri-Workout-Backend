@@ -10,7 +10,8 @@ userFields = {
   "email": fields.String,
   "cpf": fields.String,
   "tipo": fields.String,
-  "urlImg": fields.String(attribute=lambda x: x.get_url()),
+  "sigla": fields.String(attribute=lambda x: x.get_sigla()),
+  "urlImg": fields.String(attribute=lambda x: x.get_url())
 }
 
 class Usuario(db.Model):
@@ -26,7 +27,6 @@ class Usuario(db.Model):
 
   imagem = db.relationship("ImgUsuarios", back_populates="usuario", uselist=False, cascade="all, delete-orphan")
   
-
   __mapper_args__ = {
     'polymorphic_identity': 'usuario',
     'polymorphic_on': tipo
@@ -42,6 +42,9 @@ class Usuario(db.Model):
   def verify_password(self, senha):
     return check_password_hash(self.senha, senha)
   
+  def get_sigla(self):
+    return self.nome[0] + self.sobrenome[0]
+
   def get_url(self):
     if self.tipo == 'Atleta':
       return url_for('atletaimg', id=self.id, _external=True)

@@ -4,11 +4,12 @@ from helpers.database import db, migrate
 from helpers.configCORS import cors
 from flask_socketio import SocketIO, emit
 
-from resources.atletas import Atletas, AtletaId, AtletaNome, RequestPersonal, AtletaPagination, AtletaImg
+
+from resources.atletas import Atletas, AtletaId, AtletaNome, RequestPersonal, AtletaPagination, AtletaImg, RequestNutricionista
 from resources.PersonaisTrainer import PersonaisTrainer, PersonalTrainerId, PersonalTrainerNome, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerPagination, PersonalImg, PersonalTrainerNotificacaoState
-from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome, NutricionistaPagination, NutricionistaImg
+from resources.nutricionistas import Nutricionistas, NutricionistaId, NutricionistaNome, NutricionistaPagination, NutricionistaImg, NutricionistaNotificacoes, NutricionistaNotificacoesId, NutricionistaNotificacaoState
 from resources.administradores import Administradores, AdministradorId, AdministradorNome, AdministradorImg
-from resources.usuario import Usuarios
+from resources.usuario import Usuarios, UsuarioId, UsuarioNome
 from resources.login import Login
 from resources.logout import Logout
 
@@ -46,6 +47,7 @@ api.add_resource(AtletaNome, '/atletas/<string:nome>')
 api.add_resource(AtletaPagination, '/atletas/<int:id>')
 api.add_resource(AtletaImg, '/atleta/imagem/<int:id>')
 api.add_resource(RequestPersonal, '/atleta/solicitar-personal/<int:id>')
+api.add_resource(RequestNutricionista, '/atleta/solicitar-nutricionista/<int:id>')
 
 api.add_resource(PersonaisTrainer, '/personalTrainer')
 api.add_resource(PersonalTrainerId, '/personalTrainer/<int:id>')
@@ -60,6 +62,11 @@ api.add_resource(PersonalImg, '/personal/imagem/<int:id>')
 api.add_resource(Nutricionistas, '/nutricionista')
 api.add_resource(NutricionistaId, '/nutricionista/<int:id>')
 api.add_resource(NutricionistaNome, '/nutricionista/<string:nome>')
+api.add_resource(NutricionistaNotificacoes, '/nutricionista/notificacoes')
+api.add_resource(NutricionistaNotificacoesId, '/nutricionista/notificacoes/<int:id>')
+api.add_resource(NutricionistaNotificacaoState, '/nutricionista/notificacao/<string:state>/<int:id>')
+
+
 api.add_resource(NutricionistaPagination, "/nutricionistas/<int:id>")
 api.add_resource(NutricionistaImg, '/nutricionista/imagem/<int:id>')
 
@@ -69,6 +76,8 @@ api.add_resource(AdministradorNome, '/administradores/<string:nome>')
 api.add_resource(AdministradorImg, '/administrador/imagem/<int:id>')
 
 api.add_resource(Usuarios, '/usuarios')
+api.add_resource(UsuarioId, '/usuarios/<int:id>')
+api.add_resource(UsuarioNome, '/usuarios/<string:nome>')
 
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
