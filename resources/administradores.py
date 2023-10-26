@@ -392,6 +392,7 @@ class AdministradorImg(Resource):
     db.session.commit()
 
     return {}, 200
+  
 class AdministradorNome(Resource):
   # @token_verify
   def get(self, nome):
