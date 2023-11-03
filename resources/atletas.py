@@ -20,6 +20,7 @@ from model.notificacaoPersonal import NotificacaoPersonal
 from model.notificacaoNutricionista import NotificacaoNutricionista
 from model.atleta import Atleta, atletaFieldsToken, atletasFieldsPagination
 from model.mensagem import Message, msgFields, msgFieldsToken
+from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
 
 from io import BytesIO
 from PIL import Image
@@ -403,6 +404,27 @@ class AtletaImg(Resource):
 
     return {}, 200
 
+class TabelaAtleta(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, id):
+    if tipo != "Atleta":
+      logger.error("Usuario sem autorizacao para acessar a tabela do atleta")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    atleta = Atleta.query.get(id)
+
+    if atleta is None:
+      logger.error(f"Atleta de id: {id} nao encontrado")
+
+      codigo = Message(1,f"Atleta de id: {id} não encontrado")
+      return marshal(codigo, msgFields), 400
+    
+    tabelaTreino = TabelaTreino.query.filter_by(atleta=id).first()
+    print(tabelaTreino, "to aqui")
+    return marshal(tabelaTreino, tabelaTreinoFields), 200
+    
+
 class AtletaNome(Resource):
   # @token_verify
   def get(self, nome):
@@ -420,14 +442,15 @@ class AtletaNome(Resource):
     return marshal(data, atletaFieldsToken), 200
   
 class RequestNutricionista(Resource):
-   def post(self, id):
-    atleta = Atleta.query.get(id)
+   @token_verify
+   def post(self, tipo, refreshToken, user_id):
+    if tipo != "Atleta":
+      logger.error("Usuario sem autorizacao para acessar a requisição de nutricionista")
 
-    if atleta is None:
-      logger.error(f"Atleta de id: {id} nao encontrado")
-
-      codigo = Message(1, f"Atleta de id: {id} não encontrado")
-      return marshal(codigo, msgFields), 404
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    atleta = Atleta.query.get(user_id)
     
     msg = f"O atleta {atleta.nome} esta solicitando um(a) nutricionista, você gostaria de aceitar?"
 
@@ -441,15 +464,16 @@ class RequestNutricionista(Resource):
     return marshal(codigo, msgFields), 201
 
 class RequestPersonal(Resource):
-  def post(self, id):
-    atleta = Atleta.query.get(id)
+  @token_verify
+  def post(self, tipo, refreshToken, user_id):
+    if tipo != "Atleta":
+      logger.error("Usuario sem autorizacao para acessar a requisição de personal")
 
-    if atleta is None:
-      logger.error(f"Atleta de id: {id} nao encontrado")
-
-      codigo = Message(1, f"Atleta de id: {id} não encontrado")
-      return marshal(codigo, msgFields), 404
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     
+    atleta = Atleta.query.get(user_id)
+
     msg = f"O atleta {atleta.nome} esta solicitando um personal trainer, você gostaria de aceitar?"
 
     notificacao = NotificacaoPersonal(atleta.nome, atleta.email, msg, atleta)

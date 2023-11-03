@@ -1,68 +1,12 @@
-2023-10-26 09:54:50,896 WARNING _internal _log  * Debugger is active!
-2023-10-26 09:54:50,900 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-10-26 09:57:16,589 ERROR nutricionistas get Nutricionista de id: 3 nao encotrado
-2023-10-26 09:57:16,591 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 09:57:16] "[33mGET /nutricionista/3 HTTP/1.1[0m" 404 -
-2023-10-26 09:57:19,799 INFO nutricionistas get Nutricionistas listados com sucesso
-2023-10-26 09:57:19,803 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 09:57:19] "GET /nutricionista HTTP/1.1" 200 -
-2023-10-26 09:57:24,927 INFO nutricionistas get Nutricionista de id: 14 listado com sucesso
-2023-10-26 09:57:24,932 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 09:57:24] "GET /nutricionista/14 HTTP/1.1" 200 -
-2023-10-26 09:57:48,120 INFO administradores get Administrador de id: 13 nao encontrado
-2023-10-26 09:57:48,121 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 09:57:48] "[31m[1mGET /administradores/13 HTTP/1.1[0m" 400 -
-2023-10-26 09:57:51,021 INFO administradores get Administradores listado com sucesso
-2023-10-26 09:57:51,023 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 09:57:51] "GET /administradores HTTP/1.1" 200 -
-2023-10-26 09:57:55,413 INFO administradores get Administrador de id: 4 listado com sucesso
-2023-10-26 09:57:55,414 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 09:57:55] "GET /administradores/4 HTTP/1.1" 200 -
-2023-10-26 09:58:07,176 INFO PersonaisTrainer get Personais Trainer listados com sucesso
-2023-10-26 09:58:07,180 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 09:58:07] "GET /personalTrainer HTTP/1.1" 200 -
-2023-10-26 09:58:13,750 INFO PersonaisTrainer get Personal Trainer de id: 12 listado com sucesso
-2023-10-26 09:58:13,753 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 09:58:13] "GET /personalTrainer/12 HTTP/1.1" 200 -
-2023-10-26 09:58:18,087 INFO PersonaisTrainer get Personal Trainer de id: 13 listado com sucesso
-2023-10-26 09:58:18,089 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 09:58:18] "GET /personalTrainer/13 HTTP/1.1" 200 -
-2023-10-26 10:00:09,621 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:00:09] "[31m[1mPOST /nutricionista HTTP/1.1[0m" 400 -
-2023-10-26 10:00:15,143 INFO nutricionistas post Nutricionista de id: 20 criado com sucesso
-2023-10-26 10:00:15,144 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:00:15] "[35m[1mPOST /nutricionista HTTP/1.1[0m" 201 -
-2023-10-26 10:00:29,128 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:00:29] "OPTIONS /login HTTP/1.1" 200 -
-2023-10-26 10:00:29,568 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:00:29] "POST /login HTTP/1.1" 200 -
-2023-10-26 10:01:40,100 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:01:40] "OPTIONS /login HTTP/1.1" 200 -
-2023-10-26 10:01:40,532 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:01:40] "[33mPOST /login HTTP/1.1[0m" 404 -
-2023-10-26 10:01:48,429 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:01:48] "OPTIONS /login HTTP/1.1" 200 -
-2023-10-26 10:01:48,918 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:01:48] "POST /login HTTP/1.1" 200 -
-2023-10-26 10:02:18,724 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:02:18] "OPTIONS /nutricionista/20 HTTP/1.1" 200 -
-2023-10-26 10:02:19,034 INFO nutricionistas get Nutricionista de id: 20 listado com sucesso
-2023-10-26 10:02:19,036 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:02:19] "GET /nutricionista/20 HTTP/1.1" 200 -
-2023-10-26 10:02:19,363 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:02:19] "GET /nutricionista/imagem/20 HTTP/1.1" 200 -
-2023-10-26 10:02:23,335 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:02:23] "GET /nutricionista/imagem/20 HTTP/1.1" 200 -
-2023-10-26 10:02:25,436 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:02:25] "OPTIONS /nutricionista/20 HTTP/1.1" 200 -
-2023-10-26 10:02:25,764 INFO nutricionistas get Nutricionista de id: 20 listado com sucesso
-2023-10-26 10:02:25,766 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:02:25] "GET /nutricionista/20 HTTP/1.1" 200 -
-2023-10-26 10:02:26,082 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:02:26] "GET /nutricionista/imagem/20 HTTP/1.1" 200 -
-2023-10-26 10:02:27,208 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:02:27] "GET /nutricionista/imagem/20 HTTP/1.1" 200 -
-2023-10-26 10:03:30,027 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:03:30] "OPTIONS /nutricionista/20 HTTP/1.1" 200 -
-2023-10-26 10:03:30,277 INFO nutricionistas get Nutricionista de id: 20 listado com sucesso
-2023-10-26 10:03:30,279 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:03:30] "GET /nutricionista/20 HTTP/1.1" 200 -
-2023-10-26 10:04:03,718 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:04:03] "OPTIONS /nutricionista/20 HTTP/1.1" 200 -
-2023-10-26 10:04:04,039 INFO nutricionistas get Nutricionista de id: 20 listado com sucesso
-2023-10-26 10:04:04,040 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:04:04] "GET /nutricionista/20 HTTP/1.1" 200 -
-2023-10-26 10:04:05,709 INFO nutricionistas get Nutricionista de id: 20 listado com sucesso
-2023-10-26 10:04:05,711 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:04:05] "GET /nutricionista/20 HTTP/1.1" 200 -
-2023-10-26 10:04:56,009 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:04:56] "OPTIONS /logout HTTP/1.1" 200 -
-2023-10-26 10:04:56,281 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:04:56] "[35m[1mPOST /logout HTTP/1.1[0m" 204 -
-2023-10-26 10:13:09,274 INFO PersonaisTrainer get Personais Trainer listados com sucesso
-2023-10-26 10:13:09,277 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:13:09] "GET /personalTrainer HTTP/1.1" 200 -
-2023-10-26 10:13:29,993 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:13:29] "OPTIONS /login HTTP/1.1" 200 -
-2023-10-26 10:13:30,452 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:13:30] "POST /login HTTP/1.1" 200 -
-2023-10-26 10:13:30,469 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:13:30] "OPTIONS /personalTrainer/18 HTTP/1.1" 200 -
-2023-10-26 10:13:30,783 INFO PersonaisTrainer get Personal Trainer de id: 18 listado com sucesso
-2023-10-26 10:13:30,784 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:13:30] "GET /personalTrainer/18 HTTP/1.1" 200 -
-2023-10-26 10:13:31,094 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:13:31] "GET /personal/imagem/18 HTTP/1.1" 200 -
-2023-10-26 10:13:31,988 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:13:31] "GET /personal/imagem/18 HTTP/1.1" 200 -
-2023-10-26 10:13:33,530 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:13:33] "OPTIONS /logout HTTP/1.1" 200 -
-2023-10-26 10:13:33,839 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:13:33] "[35m[1mPOST /logout HTTP/1.1[0m" 204 -
-2023-10-26 10:16:35,171 INFO administradores get Administradores listado com sucesso
-2023-10-26 10:16:35,173 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:16:35] "GET /administradores HTTP/1.1" 200 -
-2023-10-26 10:16:37,811 INFO administradores get Administrador de id: 4 listado com sucesso
-2023-10-26 10:16:37,812 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:16:37] "GET /administradores/4 HTTP/1.1" 200 -
-2023-10-26 10:30:56,090 INFO administradores post Administrador de id: 21 criado com sucesso
-2023-10-26 10:30:56,091 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:30:56] "[35m[1mPOST /administradores HTTP/1.1[0m" 201 -
-2023-10-26 10:32:11,391 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:32:11] "OPTIONS /login HTTP/1.1" 200 -
-2023-10-26 10:32:11,842 INFO _internal _log 127.0.0.1 - - [26/Oct/2023 10:32:11] "POST /login HTTP/1.1" 200 -
+2023-11-03 17:56:54,488 WARNING _internal _log  * Debugger is active!
+2023-11-03 17:56:54,490 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-11-03 17:56:57,527 INFO ExercicioAtleta post Exercicio adicionado a tabela de treino
+2023-11-03 17:56:57,529 INFO _internal _log 127.0.0.1 - - [03/Nov/2023 17:56:57] "[35m[1mPOST /personal/atleta/tabelaTreino/exercicio HTTP/1.1[0m" 201 -
+2023-11-03 17:57:08,518 INFO ExercicioAtleta delete Exercicio de id: 3 nao encontrado
+2023-11-03 17:57:08,519 INFO _internal _log 127.0.0.1 - - [03/Nov/2023 17:57:08] "DELETE /personal/atleta/tabelaTreino/exercicio/3 HTTP/1.1" 200 -
+2023-11-03 17:57:13,496 INFO ExercicioAtleta post Exercicio adicionado a tabela de treino
+2023-11-03 17:57:13,498 INFO _internal _log 127.0.0.1 - - [03/Nov/2023 17:57:13] "[35m[1mPOST /personal/atleta/tabelaTreino/exercicio HTTP/1.1[0m" 201 -
+2023-11-03 17:58:32,264 INFO usuario get Usuarios listados com sucesso
+2023-11-03 17:58:32,266 INFO _internal _log 127.0.0.1 - - [03/Nov/2023 17:58:32] "GET /usuarios HTTP/1.1" 200 -
+2023-11-03 17:58:47,100 INFO _internal _log 127.0.0.1 - - [03/Nov/2023 17:58:47] "POST /login HTTP/1.1" 200 -
+2023-11-03 17:59:00,869 INFO _internal _log 127.0.0.1 - - [03/Nov/2023 17:59:00] "GET /atleta/tabelaTreino/22 HTTP/1.1" 200 -

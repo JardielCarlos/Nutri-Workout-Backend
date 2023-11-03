@@ -20,6 +20,7 @@ from model.nutricionista import Nutricionista, nutricionistaFieldsToken, nutrici
 from model.notificacaoNutricionista import NotificacaoNutricionista, notificacaoNutricionistaFields
 
 parser = reqparse.RequestParser()
+parserState = reqparse.RequestParser()
 parserFiles = reqparse.RequestParser()
 
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
@@ -30,8 +31,11 @@ parser.add_argument("senha", type=str, help="senha não informado", required=Fal
 parser.add_argument("cpf", type=str, help="cpf não informado", required=False)
 parser.add_argument("crn", type=str, help="crn não informado", required=False)
 parser.add_argument("novaSenha", type=str, help="nova senha não informado", required=False)
+
 parserFiles.add_argument('fotoPerfil', type=FileStorage, location='files')
 
+parserState.add_argument("situacao", type=str, help="situação não informado", required=True)
+parserState.add_argument("idNotificacao", type=str, help="id da notificacao não informado", required=True)
 
 "056.998.308-80"
 "290.297.910-04"
@@ -495,10 +499,11 @@ class NutricionistaNotificacoesId(Resource):
 
 class NutricionistaNotificacaoState(Resource):
   @token_verify
-  def patch(self, tipo, refreshToken, user_id, state, id):
+  def patch(self, tipo, refreshToken, user_id):
+    args = parserState.parse_args()
     notificacao = NotificacaoNutricionista.query.filter(
       NotificacaoNutricionista.solicitacao==False, 
-      NotificacaoNutricionista.id==id, 
+      NotificacaoNutricionista.id==args["idNotificacao"], 
       ~NotificacaoNutricionista.nutricionistas_rejeitados.any(Nutricionista.usuario_id==user_id)
     ).first()
 
@@ -510,7 +515,7 @@ class NutricionistaNotificacaoState(Resource):
     
     nutricionista = Nutricionista.query.get(user_id)
 
-    if state == "aceitar":
+    if args["situacao"] == "aceitar":
       atleta = Atleta.query.get(notificacao.atleta_id)
 
       nutricionista.atletas.append(atleta)
@@ -526,7 +531,7 @@ class NutricionistaNotificacaoState(Resource):
       codigo = Message(0, f"Voce aceitou o atleta: {notificacao.nome} como seu aluno")
       return marshal(codigo, msgFields), 200
     
-    elif state == "rejeitar":
+    elif args["situacao"] == "rejeitar":
       notificacao.nutricionistas_rejeitados.append(nutricionista)
 
       db.session.add(notificacao)
@@ -561,8 +566,3 @@ class NutricionistaPagination(Resource):
 
     logger.info("Nutricionistas listados com sucesso")
     return marshal(data, nutricionistaPagination), 200
-
-
-
-
-

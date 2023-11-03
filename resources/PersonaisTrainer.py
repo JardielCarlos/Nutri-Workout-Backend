@@ -23,6 +23,7 @@ from model.notificacaoPersonal import NotificacaoPersonal, notificacaoPersonalFi
 from model.atleta import Atleta
 
 parser = reqparse.RequestParser()
+parserState = reqparse.RequestParser()
 parserFiles = reqparse.RequestParser()
 
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
@@ -34,6 +35,9 @@ parser.add_argument("cref", type=str, help="cref não informado", required=False
 parser.add_argument("novaSenha", type=str, help="nova senha não informado", required=False)
 
 parserFiles.add_argument('fotoPerfil', type=FileStorage, location='files')
+
+parserState.add_argument("situacao", type=str, help="situação não informado", required=True)
+parserState.add_argument("idNotificacao", type=str, help="id da notificacao não informado", required=True)
 
 
 padrao_email = r'^[\w\.-]+@[\w\.-]+\.\w+$'
@@ -285,9 +289,9 @@ class PersonalTrainerId(Resource):
         return marshal(codigo, msgFields), 400
       
     except:
-      logger.error("Erro ao cadastrar o Personal Trainer")
+      logger.error("Erro ao atualizar o Personal Trainer")
 
-      codigo = Message(2, "Erro ao cadastrar o Personal Trainer")
+      codigo = Message(2, "Erro ao atualizar o Personal Trainer")
       return marshal(codigo, msgFields), 400
     
   # @token_verify
@@ -518,22 +522,23 @@ class PersonalNotificacoesId(Resource):
   
 class PersonalTrainerNotificacaoState(Resource):
   @token_verify
-  def patch(self, tipo, refreshToken, user_id, state, id):
+  def patch(self, tipo, refreshToken, user_id):
+    args = parserState.parse_args()
     notificacao = NotificacaoPersonal.query.filter(
       NotificacaoPersonal.solicitacao==False, 
-      NotificacaoPersonal.id==id, 
+      NotificacaoPersonal.id==args["idNotificacao"], 
       ~NotificacaoPersonal.personals_rejeitados.any(PersonalTrainer.usuario_id==user_id)
     ).first()
 
     if notificacao is None:
-      logger.error(f"Notificacao de id: {id} nao encontrada")
+      logger.error(f"Notificacao de id: {args['idNotificacao']} nao encontrada")
 
-      codigo = Message(1, f"Notificacao de id: {id} nao encontrada")
+      codigo = Message(1, f"Notificacao de id: {args['idNotificacao']} nao encontrada")
       return marshal(codigo, msgFields), 404
       
     personal = PersonalTrainer.query.get(user_id)
 
-    if state == "aceitar":
+    if args["situacao"] == "aceitar":
       atleta = Atleta.query.get(notificacao.atleta_id)
 
       personal.atletas.append(atleta)
@@ -548,7 +553,7 @@ class PersonalTrainerNotificacaoState(Resource):
       logger.info(f"O personal aceitou o atleta: {notificacao.nome} como seu aluno")
       codigo = Message(0, f"Voce aceitou o atleta: {notificacao.nome} como seu aluno")
       return marshal(codigo, msgFields), 200
-    elif state == "rejeitar":
+    elif args["situacao"] == "rejeitar":
       notificacao.personals_rejeitados.append(personal)
 
       db.session.add(notificacao)
