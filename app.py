@@ -16,7 +16,7 @@ from resources.nutricionistas import NutricionistaId, NutricionistaImg, Nutricio
 from resources.PersonaisTrainer import PersonaisTrainer, PersonalImg, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerId, PersonalTrainerNome,PersonalTrainerNotificacaoState, PersonalTrainerPagination
 from resources.personalAtleta import PersonalAtleta
 from resources.tabelaTreinoAtleta import TabelaTreinoAtleta, TabelaTreinoAtletaId
-from resources.ExercicioAtleta import ExerciciosAtleta, ExercicioAtletaId
+from resources.ExercicioAtleta import ExerciciosAtleta, ExercicioAtletaId, ExercicioAtletaTabela, ExercicioAtletaTabelaId
 from resources.usuario import UsuarioId, UsuarioNome, Usuarios
 
 app = Flask(__name__)
@@ -51,6 +51,8 @@ api.add_resource(TabelaTreinoAtleta, '/personal/atleta/tabelaTreino')
 api.add_resource(TabelaTreinoAtletaId, '/personal/atleta/tabelaTreino/<int:id>')
 api.add_resource(ExerciciosAtleta, '/personal/atleta/tabelaTreino/exercicio')
 api.add_resource(ExercicioAtletaId, '/personal/atleta/tabelaTreino/exercicio/<int:id>')
+api.add_resource(ExercicioAtletaTabela, '/personal/atleta/tabelaTreino/exercicios/<int:id_tabela>')
+api.add_resource(ExercicioAtletaTabelaId, '/personal/atleta/tabelaTreino/exercicios/<int:id_tabela>/<int:id_exercicio>')
 
 
 api.add_resource(Nutricionistas, '/nutricionista')

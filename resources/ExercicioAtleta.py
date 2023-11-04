@@ -126,20 +126,54 @@ class ExercicioAtletaId(Resource):
 
     logger.info(f"Exercicio de id: {id} nao encontrado")
     return {}, 200
-  # @token_verify
-  # def get(self, tipo, refreshToken, user_id, id):
-    # if tipo != "Personal Trainer":
-    #   logger.error("Usuario sem autorizacao para acessar os exercicios do atleta")
-    #   codigo = Message(1, "Usuario sem autorização suficiente!")
-    #   return marshal(codigo, msgFields), 403
+  
+class ExercicioAtletaTabela(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, id_tabela):
+    if tipo != "Personal Trainer":
+      logger.error("Usuario sem autorizacao para acessar os exercicios do atleta")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
      
-  #   tabelaTreino = TabelaTreino.query.get(id)
+    tabelaTreino = TabelaTreino.query.get(id_tabela)
 
-  #   if tabelaTreino is None:
-  #     logger.error(f"Tabela de treino de id: {id} nao encontrada")
+    if tabelaTreino is None:
+      logger.error(f"Tabela de treino de id: {id_tabela} nao encontrada")
     
-  #     codigo = Message(1, f"Tabela de treino de id: {id} não encontrada")
-  #     return marshal(codigo, msgFields), 200
+      codigo = Message(1, f"Tabela de treino de id: {id_tabela} não encontrada")
+      return marshal(codigo, msgFields), 200
     
-  #   return marshal(tabelaTreino.exercicios, exercicioFields), 200
+    return marshal(tabelaTreino.exercicios, exercicioFields), 200
+  
+class ExercicioAtletaTabelaId(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, id_tabela, id_exercicio):
+    if tipo != "Personal Trainer":
+      logger.error("Usuario sem autorizacao para acessar os exercicios do atleta")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
     
+    tabelaTreino = TabelaTreino.query.get(id_tabela)
+
+    if tabelaTreino is None:
+      logger.error(f"Tabela de treino de id: {id_tabela} nao encontrada")
+    
+      codigo = Message(1, f"Tabela de treino de id: {id_tabela} não encontrada")
+      return marshal(codigo, msgFields), 200
+    
+    exercicio = ExercicioAtleta.query.get(id_exercicio)
+
+    if exercicio is None:
+      logger.error(f"Exercicio de id: {id_exercicio} nao encontrada")
+  
+      codigo = Message(1, f"Exercicio de id: {id_exercicio} não encontrada")
+      return marshal(codigo, msgFields), 200
+    
+    if exercicio not in tabelaTreino.exercicios:
+      logger.error(f"Exercicio nao encontrado na tabela de treino")
+      
+      codigo = Message(1, f"Exercicio não encontrado na tabela de treino")
+      return marshal(codigo, msgFields), 200
+    
+    return marshal(exercicio, exercicioFields), 200
+        
