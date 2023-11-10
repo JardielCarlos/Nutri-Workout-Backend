@@ -24,46 +24,52 @@ parser.add_argument("observacoes", type=str, help="observações não informadas
 class ExerciciosAtleta(Resource):
   @token_verify
   def post(self, tipo, refreshToken, user_id):
-    args = parser.parse_args()
     if tipo != "Personal Trainer":
       logger.error("Usuario sem autorizacao para acessar os exercicios do atleta")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    if args["idTabela"] is None:
-      logger.error("id da tabela nao informado")
+    try:
+      args = parser.parse_args()
+      if args["idTabela"] is None:
+        logger.error("id da tabela nao informado")
 
-      codigo = Message(1, "id da tabela não informada")
-      return marshal(codigo, msgFields), 200
-    if len(args["musculoTrabalhado"]) <= 2:
-        logger.error(f"Escreva o nome de um musculo valido")
+        codigo = Message(1, "id da tabela não informada")
+        return marshal(codigo, msgFields), 200
+      if len(args["musculoTrabalhado"]) <= 2:
+          logger.error(f"Escreva o nome de um musculo valido")
 
-        codigo = Message(1, f"Escreva o nome de um musculo válido")
+          codigo = Message(1, f"Escreva o nome de um musculo válido")
+          return marshal(codigo, msgFields), 400
+        
+      if len(args['nomeExercicio']) <= 2:
+        logger.error(f"Escreva o nome de um exercicio valido")
+
+        codigo = Message(1, f"Escreva o nome de um exercicio válido")
         return marshal(codigo, msgFields), 400
       
-    if len(args['nomeExercicio']) <= 2:
-      logger.error(f"Escreva o nome de um exercicio valido")
+      tabelaTreino = TabelaTreino.query.get(args["idTabela"])
 
-      codigo = Message(1, f"Escreva o nome de um exercicio válido")
+      if tabelaTreino is None:
+        logger.error(f"Tabela de id: {args['idTabela']} nao encontrado")
+
+        codigo = Message(1, f"Tabela de id: {args['idTabela']} não encontrado")
+        return marshal(codigo, msgFields), 400
+      
+      exercicio = ExercicioAtleta(tabelaTreino, args["musculoTrabalhado"], args["nomeExercicio"], args["series"], args["repeticao"], args["kg"], args["descanso"], args["unidadeDescanso"], args["observacoes"])
+
+      tabelaTreino.exercicios.append(exercicio)
+
+      db.session.add(tabelaTreino)
+      db.session.add(exercicio)
+      db.session.commit()
+
+      logger.info(f"Exercicio adicionado a tabela de treino")
+      return marshal(exercicio, exercicioFields), 201
+    except:
+      logger.error("Erro ao cadastrar o exercicio")
+
+      codigo = Message(2, "Erro ao cadastrar o exercicio")
       return marshal(codigo, msgFields), 400
-    
-    tabelaTreino = TabelaTreino.query.get(args["idTabela"])
-
-    if tabelaTreino is None:
-      logger.error(f"Tabela de id: {args['idTabela']} nao encontrado")
-
-      codigo = Message(1, f"Tabela de id: {args['idTabela']} não encontrado")
-      return marshal(codigo, msgFields), 400
-    
-    exercicio = ExercicioAtleta(tabelaTreino, args["musculoTrabalhado"], args["nomeExercicio"], args["series"], args["repeticao"], args["kg"], args["descanso"], args["unidadeDescanso"], args["observacoes"])
-
-    tabelaTreino.exercicios.append(exercicio)
-
-    db.session.add(tabelaTreino)
-    db.session.add(exercicio)
-    db.session.commit()
-
-    logger.info(f"Exercicio adicionado a tabela de treino")
-    return marshal(exercicio, exercicioFields), 201
   
 class ExercicioAtletaId(Resource):
   @token_verify

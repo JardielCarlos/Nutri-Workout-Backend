@@ -26,7 +26,7 @@ class ExercicioAtleta(db.Model):
   unidadeDescanso = db.Column(db.String, nullable=False)
   observacoes = db.Column(db.String, nullable=True)
 
-  tabelaTreino = db.Column(db.Integer, db.ForeignKey("tb_tabelaTreino.id"), nullable=False)
+  tabelaTreino = db.Column(db.Integer, db.ForeignKey("tb_tabelaTreino.id", ondelete='CASCADE'), nullable=False)
 
   def __init__(self, tabelaTreino, musculoTrabalhado, nomeExercicio, series, repeticao, kg, descanso, unidadeDescanso, observacoes):
     self.tabelaTreino = tabelaTreino
@@ -38,6 +38,6 @@ class ExercicioAtleta(db.Model):
     self.descanso = descanso
     self.unidadeDescanso = unidadeDescanso
     self.observacoes = observacoes
-  
+
   def __repr__(self):
     return f"<ExercioAtleta >"

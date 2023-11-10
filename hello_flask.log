@@ -1,16 +1,4 @@
-2023-11-04 11:11:41,539 WARNING _internal _log  * Debugger is active!
-2023-11-04 11:11:41,542 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-11-04 11:11:42,022 INFO _internal _log 127.0.0.1 - - [04/Nov/2023 11:11:42] "GET /personal/atleta/tabelaTreino/exercicios/12/4 HTTP/1.1" 200 -
-2023-11-04 11:11:49,090 ERROR ExercicioAtleta get Exercicio de id: 3 nao encontrada
-2023-11-04 11:11:49,091 INFO _internal _log 127.0.0.1 - - [04/Nov/2023 11:11:49] "GET /personal/atleta/tabelaTreino/exercicios/12/3 HTTP/1.1" 200 -
-2023-11-04 11:12:12,554 INFO _internal _log 127.0.0.1 - - [04/Nov/2023 11:12:12] "GET /personal/atleta/tabelaTreino/exercicios/12/4 HTTP/1.1" 200 -
-2023-11-04 11:12:46,933 INFO _internal _log 127.0.0.1 - - [04/Nov/2023 11:12:46] "GET /personal/atleta/tabelaTreino HTTP/1.1" 200 -
-2023-11-04 11:12:54,567 INFO ExercicioAtleta post Exercicio adicionado a tabela de treino
-2023-11-04 11:12:54,570 INFO _internal _log 127.0.0.1 - - [04/Nov/2023 11:12:54] "[35m[1mPOST /personal/atleta/tabelaTreino/exercicio HTTP/1.1[0m" 201 -
-2023-11-04 11:13:00,695 INFO _internal _log 127.0.0.1 - - [04/Nov/2023 11:13:00] "GET /personal/atleta/tabelaTreino HTTP/1.1" 200 -
-2023-11-04 11:13:14,987 ERROR ExercicioAtleta get Exercicio nao encontrado na tabela de treino
-2023-11-04 11:13:14,988 INFO _internal _log 127.0.0.1 - - [04/Nov/2023 11:13:14] "GET /personal/atleta/tabelaTreino/exercicios/12/5 HTTP/1.1" 200 -
-2023-11-04 11:13:21,344 INFO _internal _log 127.0.0.1 - - [04/Nov/2023 11:13:21] "GET /personal/atleta/tabelaTreino/exercicios/12/4 HTTP/1.1" 200 -
-2023-11-04 11:13:30,463 INFO ExercicioAtleta delete Exercicio de id: 5 nao encontrado
-2023-11-04 11:13:30,463 INFO _internal _log 127.0.0.1 - - [04/Nov/2023 11:13:30] "DELETE /personal/atleta/tabelaTreino/exercicio/5 HTTP/1.1" 200 -
-2023-11-04 11:13:37,529 INFO _internal _log 127.0.0.1 - - [04/Nov/2023 11:13:37] "GET /personal/atleta/tabelaTreino HTTP/1.1" 200 -
+2023-11-10 17:17:51,776 WARNING _internal _log  * Debugger is active!
+2023-11-10 17:17:51,780 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-11-10 17:17:56,747 INFO atletas delete Atleta de id: 24 deletado com sucesso
+2023-11-10 17:17:56,748 INFO _internal _log 127.0.0.1 - - [10/Nov/2023 17:17:56] "DELETE /atleta/24 HTTP/1.1" 200 -

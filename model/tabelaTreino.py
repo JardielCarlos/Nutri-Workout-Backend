@@ -1,7 +1,8 @@
 from flask_restful import fields
+
 from helpers.database import db
-from model.exercicioAtleta import ExercicioAtleta
-from model.exercicioAtleta import exercicioFields
+from model.exercicioAtleta import ExercicioAtleta, exercicioFields
+
 
 class DateField(fields.Raw):
   def format(self, value):
@@ -24,7 +25,8 @@ class TabelaTreino(db.Model):
   semanaFim = db.Column(db.Date, nullable=False)
 
   exercicios = db.relationship("ExercicioAtleta", backref="tabelaTreino_backref", foreign_keys=[ExercicioAtleta.tabelaTreino])
-  atleta = db.Column(db.Integer, db.ForeignKey('tb_atleta.usuario_id'), unique=True)
+
+  atleta = db.Column(db.Integer, db.ForeignKey('tb_atleta.usuario_id', ondelete='CASCADE'), unique=True)
   personal = db.Column(db.Integer, db.ForeignKey('tb_personalTrainer.usuario_id'))
 
   def __init__(self, semanaInicio, semanaFim, atleta, personal):
@@ -32,9 +34,6 @@ class TabelaTreino(db.Model):
     self.semanaFim = semanaFim
     self.atleta = atleta
     self.personal = personal
-    
+
   def __repr__(self):
     return f"<TabelaTreino >"
-
-
-

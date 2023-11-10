@@ -1,23 +1,28 @@
-from flask import make_response
-from flask_restful import reqparse, marshal, Resource
-from helpers.logger import logger
-from helpers.database import db
-from password_strength import PasswordPolicy
-from validate_docbr import CPF
-from sqlalchemy.exc import IntegrityError
-from werkzeug.security import generate_password_hash
-from werkzeug.datastructures import FileStorage
-from PIL import Image
-from io import BytesIO
-from helpers.auth.token_verifier import token_verify
-import re
 import os
+import re
+from io import BytesIO
 
+from flask import make_response
+from flask_restful import Resource, marshal, reqparse
+from password_strength import PasswordPolicy
+from PIL import Image
+from sqlalchemy.exc import IntegrityError
+from validate_docbr import CPF
+from werkzeug.datastructures import FileStorage
+from werkzeug.security import generate_password_hash
+
+from helpers.auth.token_verifier import token_verify
+from helpers.database import db
+from helpers.logger import logger
+from model.atleta import Atleta
 from model.imgUsuarios import ImgUsuarios
 from model.mensagem import Message, msgFields, msgFieldsToken
-from model.atleta import Atleta
-from model.nutricionista import Nutricionista, nutricionistaFieldsToken, nutricionistaPagination, nutricionistaAssociatedFieldsToken
-from model.notificacaoNutricionista import NotificacaoNutricionista, notificacaoNutricionistaFields
+from model.notificacaoNutricionista import (NotificacaoNutricionista,
+                                            notificacaoNutricionistaFields)
+from model.nutricionista import (Nutricionista,
+                                 nutricionistaAssociatedFieldsToken,
+                                 nutricionistaFieldsToken,
+                                 nutricionistaPagination)
 
 parser = reqparse.RequestParser()
 parserState = reqparse.RequestParser()
@@ -166,11 +171,11 @@ class Nutricionistas(Resource):
       elif "crn" in str(e.orig):
         codigo = Message(1, "CRN já cadastrado no sistema")
         return marshal(codigo, msgFields), 400
-    # except:
-    #   logger.error("Erro ao cadastrar o Nutricionista")
+    except:
+      logger.error("Erro ao cadastrar o Nutricionista")
 
-    #   codigo = Message(2, "Erro ao cadastrar o Nutricionista")
-    #   return marshal(codigo, msgFields), 400
+      codigo = Message(2, "Erro ao cadastrar o Nutricionista")
+      return marshal(codigo, msgFields), 400
   
 class NutricionistaId(Resource):
   # @token_verify
@@ -351,7 +356,7 @@ class NutricionistaId(Resource):
         return marshal(codigo, msgFields), 404
     
     for atleta in Nutricionista.atletas:
-      notificacaoAtleta = NotificacaoNutricionista.query.filter_by(atleta_id=atleta.id).first()
+      notificacaoAtleta = NotificacaoNutricionista.query.filter_by(atleta_id=atleta.usuario_id).first()
       notificacaoAtleta.solicitacao= False
       db.session.add(notificacaoAtleta)
     

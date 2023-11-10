@@ -15,6 +15,7 @@ atletaFields = {
   "altura": fields.Float,
   "peso": fields.Float,
   "imc": fields.Float,
+  "statusImc": fields.String,
   "statusPagamento": fields.Boolean,
   "atletaImg": fields.Url("atletaimg", absolute=True)
 }
@@ -46,6 +47,7 @@ class Atleta(Usuario):
   altura = db.Column(db.Float, nullable=True)
   peso = db.Column(db.Float, nullable=True)
   imc = db.Column(db.Float, nullable=True)
+  statusImc = db.Column(db.String, nullable=True)
   statusPagamento = db.Column(db.Boolean, nullable=False, default=True)
 
   personal_trainer_id = db.Column(db.Integer ,db.ForeignKey("tb_personalTrainer.usuario_id"), nullable=True)

@@ -1,31 +1,27 @@
+import os
+import re
+from io import BytesIO
+
 from flask import make_response
-
 from flask_restful import Resource, marshal, reqparse, request
+from password_strength import PasswordPolicy
+from PIL import Image
 from sqlalchemy.exc import IntegrityError
-from helpers.logger import logger
-from helpers.database import db
-
-from helpers.auth.token_verifier import token_verify
+from validate_docbr import CPF
+from werkzeug.datastructures import FileStorage
 from werkzeug.security import generate_password_hash
 
-from password_strength import PasswordPolicy
-from validate_docbr import CPF
-import re
-
-import os
-
-from model.publisherRabbitmq import RabbitmqPublisher
-
-from model.notificacaoPersonal import NotificacaoPersonal
-from model.notificacaoNutricionista import NotificacaoNutricionista
+from helpers.auth.token_verifier import token_verify
+from helpers.database import db
+from helpers.logger import logger
 from model.atleta import Atleta, atletaFieldsToken, atletasFieldsPagination
-from model.mensagem import Message, msgFields, msgFieldsToken
-from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
-
-from io import BytesIO
-from PIL import Image
-from werkzeug.datastructures import FileStorage
 from model.imgUsuarios import ImgUsuarios
+from model.mensagem import Message, msgFields, msgFieldsToken
+from model.notificacaoNutricionista import NotificacaoNutricionista
+from model.notificacaoPersonal import NotificacaoPersonal
+from model.publisherRabbitmq import RabbitmqPublisher
+from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
+from model.cardapio import Cardapio, cardapioFields
 
 parser = reqparse.RequestParser()
 parserFiles = reqparse.RequestParser()
@@ -138,7 +134,7 @@ class Atletas(Resource):
 
       data = {"atleta": atleta, "token": None}
 
-      logger.info(f"Atleta de id: {atleta.id} criado com sucesso")
+      logger.info(f"Atleta de id: {atleta.usuario_id} criado com sucesso")
       return marshal(data, atletaFieldsToken), 201
     
     except IntegrityError as e:
@@ -406,25 +402,54 @@ class AtletaImg(Resource):
 
 class TabelaAtleta(Resource):
   @token_verify
-  def get(self, tipo, refreshToken, user_id, id):
+  def get(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a tabela do atleta")
 
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    atleta = Atleta.query.get(id)
+    atleta = Atleta.query.get(user_id)
 
     if atleta is None:
-      logger.error(f"Atleta de id: {id} nao encontrado")
+      logger.error(f"Atleta de id: {user_id} nao encontrado")
 
-      codigo = Message(1,f"Atleta de id: {id} não encontrado")
+      codigo = Message(1,f"Atleta de id: {user_id} não encontrado")
       return marshal(codigo, msgFields), 400
     
-    tabelaTreino = TabelaTreino.query.filter_by(atleta=id).first()
-    print(tabelaTreino, "to aqui")
+    tabelaTreino = TabelaTreino.query.filter_by(atleta=atleta.usuario_id).first()
+    if tabelaTreino is None:
+      logger.error(f"Atleta de id: {atleta.usuario_id} nao possui uma tabela de treino")
+
+      codigo = Message(1,"Você não possui uma tabela de treino")
+      return marshal(codigo, msgFields), 404
+
     return marshal(tabelaTreino, tabelaTreinoFields), 200
     
+class CardapioAtleta(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id):
+    if tipo != "Atleta":
+      logger.error("Usuario sem autorizacao para acessar a tabela do atleta")
 
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    atleta = Atleta.query.get(user_id)
+
+    if atleta is None:
+      logger.error(f"Atleta de id: {user_id} nao encontrado")
+
+      codigo = Message(1,f"Atleta de id: {user_id} não encontrado")
+      return marshal(codigo, msgFields), 400
+    
+    cardapio = Cardapio.query.filter_by(atleta=atleta.usuario_id).first()
+    if cardapio is None:
+      logger.error(f"Atleta de id: {atleta.usuario_id} nao possui um cardapio")
+
+      codigo = Message(1,"Você não possui um cardapio")
+      return marshal(codigo, msgFields), 404
+    
+    return marshal(cardapio, cardapioFields), 200
+  
 class AtletaNome(Resource):
   # @token_verify
   def get(self, nome):
@@ -442,14 +467,14 @@ class AtletaNome(Resource):
     return marshal(data, atletaFieldsToken), 200
   
 class RequestNutricionista(Resource):
-   @token_verify
-   def post(self, tipo, refreshToken, user_id):
+  @token_verify
+  def post(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a requisição de nutricionista")
 
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+  
     atleta = Atleta.query.get(user_id)
     
     msg = f"O atleta {atleta.nome} esta solicitando um(a) nutricionista, você gostaria de aceitar?"
@@ -459,13 +484,12 @@ class RequestNutricionista(Resource):
     db.session.add(notificacao)
     db.session.commit()
 
-    logger.info(f"Solicitação de nutricionista realizada com sucesso pelo atleta de id: {atleta.id} ")
+    logger.info(f"Solicitação de nutricionista realizada com sucesso pelo atleta de id: {atleta.usuario_id} ")
     codigo = Message(0, "Solicitação realizada com sucesso")
     return marshal(codigo, msgFields), 201
-
-class RequestPersonal(Resource):
+  
   @token_verify
-  def post(self, tipo, refreshToken, user_id):
+  def delete(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a requisição de personal")
 
@@ -474,21 +498,71 @@ class RequestPersonal(Resource):
     
     atleta = Atleta.query.get(user_id)
 
-    msg = f"O atleta {atleta.nome} esta solicitando um personal trainer, você gostaria de aceitar?"
+    notificacao = NotificacaoNutricionista.query.filter_by(atleta=atleta).first()
 
-    notificacao = NotificacaoPersonal(atleta.nome, atleta.email, msg, atleta)
-    # rabbitmqPublisher.send_message({
-    #   "id": atleta.id,
-    #   "nome": atleta.nome,
-    #   "email": atleta.email,
-    #   "mensagem": f"O atleta {atleta.nome} esta solicitando um personal trainer, você gostaria de aceitar?"
-    # })
-    db.session.add(notificacao)
+    if notificacao is None:
+      logger.error(f"Notificacao do usuario de id: {atleta.usuario_id} nao encontrada")
+
+      codigo = Message(1, "Você não possui solicitações de nutricionista")
+      return marshal(codigo, msgFields), 404
+    
+    db.session.delete(notificacao)
     db.session.commit()
 
-    logger.info(f"Solicitação de personal realizada com sucesso pelo atleta de id: {atleta.id} ")
-    codigo = Message(0, "Solicitação realizada com sucesso")
-    return marshal(codigo, msgFields), 201
+    logger.info("Solicitacao de nutricionista cancelada com sucesso")
+    codigo = Message(0, "Solicitação de nutricionista cancelada com sucesso")
+    return marshal(codigo, msgFields), 200
+  
+class RequestPersonal(Resource):
+  @token_verify
+  def post(self, tipo, refreshToken, user_id):
+    if tipo != "Atleta":
+      logger.error("Usuario sem autorizacao para acessar a requisição de personal")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    try:
+      atleta = Atleta.query.get(user_id)
+
+      msg = f"O atleta {atleta.nome} esta solicitando um personal trainer, você gostaria de aceitar?"
+
+      notificacao = NotificacaoPersonal(atleta.nome, atleta.email, msg, atleta)
+      db.session.add(notificacao)
+      db.session.commit()
+
+      logger.info(f"Solicitação de personal realizada com sucesso pelo atleta de id: {atleta.usuario_id} ")
+      codigo = Message(0, "Solicitação realizada com sucesso")
+      return marshal(codigo, msgFields), 201
+    except IntegrityError:
+      logger.error("O atleta ja tem um personal ou ainda nao foi aceito por algum personal")
+
+      codigo = Message(1, "Você já solicitou um personal trainer")
+      return marshal(codigo, msgFields), 200
+    
+  @token_verify
+  def delete(self, tipo, refreshToken, user_id):
+    if tipo != "Atleta":
+      logger.error("Usuario sem autorizacao para acessar a requisição de personal")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    atleta = Atleta.query.get(user_id)
+
+    notificacao = NotificacaoPersonal.query.filter_by(atleta=atleta).first()
+
+    if notificacao is None:
+      logger.error(f"Notificacao do usuario de id: {atleta.usuario_id} nao encontrada")
+
+      codigo = Message(1, "Você não possui solicitações de personal")
+      return marshal(codigo, msgFields), 404
+    
+    db.session.delete(notificacao)
+    db.session.commit()
+
+    logger.info("Solicitacao de personal cancelada com sucesso")
+    codigo = Message(0, "Solicitação de personal cancelada com sucesso")
+    return marshal(codigo, msgFields), 200
   
 class AtletaPagination(Resource):
   def get(self, id):

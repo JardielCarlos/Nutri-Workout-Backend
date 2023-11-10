@@ -1,26 +1,30 @@
+import os
+import re
+from io import BytesIO
+from json import loads
+
 from flask import make_response
-from flask_restful import marshal, Resource, reqparse
-from helpers.logger import logger
-from helpers.database import db
-from helpers.auth.token_verifier import token_verify
+from flask_restful import Resource, marshal, reqparse
 from password_strength import PasswordPolicy
-from validate_docbr import CPF
+from PIL import Image
 from sqlalchemy.exc import IntegrityError
+from validate_docbr import CPF
+from werkzeug.datastructures import FileStorage
 from werkzeug.security import generate_password_hash
+
+from helpers.auth.token_verifier import token_verify
+from helpers.database import db
+from helpers.logger import logger
+from model.atleta import Atleta
 from model.consumerRabbitmq import RabbitmqConsumer
 from model.imgUsuarios import ImgUsuarios
-from werkzeug.datastructures import FileStorage
-from helpers.auth.token_verifier import token_verify
-from io import BytesIO
-from PIL import Image
-from json import loads
-import re
-import os
-
 from model.mensagem import Message, msgFields, msgFieldsToken
-from model.personalTrainer import PersonalTrainer, personalTrainerFieldsToken, personalTrainerPagination, personalTrainerAssociatedFieldsToken
-from model.notificacaoPersonal import NotificacaoPersonal, notificacaoPersonalFields
-from model.atleta import Atleta
+from model.notificacaoPersonal import (NotificacaoPersonal,
+                                       notificacaoPersonalFields)
+from model.personalTrainer import (PersonalTrainer,
+                                   personalTrainerAssociatedFieldsToken,
+                                   personalTrainerFieldsToken,
+                                   personalTrainerPagination)
 
 parser = reqparse.RequestParser()
 parserState = reqparse.RequestParser()
@@ -359,7 +363,7 @@ class PersonalTrainerId(Resource):
       return marshal(codigo, msgFields), 404
     
     for atleta in personalTrainer.atletas:
-      notificacaoAtleta = NotificacaoPersonal.query.filter_by(atleta_id=atleta.id).first()
+      notificacaoAtleta = NotificacaoPersonal.query.filter_by(atleta_id=atleta.usuario_id).first()
       notificacaoAtleta.solicitacao= False
       db.session.add(notificacaoAtleta)
       
