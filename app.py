@@ -5,19 +5,24 @@ from helpers.database import db, migrate
 
 from resources.administradores import Administradores, AdministradorId, AdministradorImg, AdministradorNome
 
-from resources.atletas import AtletaId, AtletaImg, AtletaNome, AtletaPagination, Atletas, RequestNutricionista, RequestPersonal, TabelaAtleta
+from resources.atletas import AtletaId, AtletaImg, AtletaNome, AtletaPagination, Atletas, RequestNutricionista, RequestPersonal, TabelaAtleta, CardapioAtleta
+
+from resources.cardapioAtleta import CardapioAtletaNutri, CardapioAtletaNutriId
+from resources.refeicaoAtleta import RefeicaoAtleta, RefeicaoAtletaId
+from resources.ingredienteAtleta import IngredienteAtleta, IngredienteAtletaId
 
 from resources.login import Login
 from resources.logout import Logout
 
-from resources.nutricionistaAtleta import NutricionistaAtleta
+from resources.nutricionistaAtleta import NutricionistaAtleta, NutricionistaAtletaId
 from resources.nutricionistas import NutricionistaId, NutricionistaImg, NutricionistaNome,NutricionistaNotificacaoState, NutricionistaNotificacoes, NutricionistaNotificacoesId,NutricionistaPagination, Nutricionistas
 
 from resources.PersonaisTrainer import PersonaisTrainer, PersonalImg, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerId, PersonalTrainerNome,PersonalTrainerNotificacaoState, PersonalTrainerPagination
-from resources.personalAtleta import PersonalAtleta
+from resources.personalAtleta import PersonalAtleta, PersonalAtletaId
 from resources.tabelaTreinoAtleta import TabelaTreinoAtleta, TabelaTreinoAtletaId
 from resources.ExercicioAtleta import ExerciciosAtleta, ExercicioAtletaId, ExercicioAtletaTabela, ExercicioAtletaTabelaId
 from resources.usuario import UsuarioId, UsuarioNome, Usuarios
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:senhasecreta@localhost:5432/NutriWorkout"
@@ -36,7 +41,8 @@ api.add_resource(AtletaPagination, '/atletas/<int:id>')
 api.add_resource(AtletaImg, '/atleta/imagem/<int:id>')
 api.add_resource(RequestPersonal, '/atleta/solicitar-personal')
 api.add_resource(RequestNutricionista, '/atleta/solicitar-nutricionista')
-api.add_resource(TabelaAtleta, '/atleta/tabelaTreino/<int:id>')
+api.add_resource(TabelaAtleta, '/atleta/tabelaTreino')
+api.add_resource(CardapioAtleta, '/atleta/cardapio')
 
 api.add_resource(PersonaisTrainer, '/personalTrainer')
 api.add_resource(PersonalTrainerId, '/personalTrainer/<int:id>')
@@ -47,6 +53,7 @@ api.add_resource(PersonalTrainerNotificacaoState, '/personalTrainer/notificacao'
 api.add_resource(PersonalTrainerPagination, '/personalTraineres/<int:id>')
 api.add_resource(PersonalImg, '/personal/imagem/<int:id>')
 api.add_resource(PersonalAtleta, '/personal/atleta')
+api.add_resource(PersonalAtletaId, '/personal/atleta/<int:id>')
 api.add_resource(TabelaTreinoAtleta, '/personal/atleta/tabelaTreino')
 api.add_resource(TabelaTreinoAtletaId, '/personal/atleta/tabelaTreino/<int:id>')
 api.add_resource(ExerciciosAtleta, '/personal/atleta/tabelaTreino/exercicio')
@@ -64,6 +71,13 @@ api.add_resource(NutricionistaNotificacaoState, '/nutricionista/notificacao')
 api.add_resource(NutricionistaPagination, "/nutricionistas/<int:id>")
 api.add_resource(NutricionistaImg, '/nutricionista/imagem/<int:id>')
 api.add_resource(NutricionistaAtleta, '/nutricionista/atleta')
+api.add_resource(NutricionistaAtletaId, '/nutricionista/atleta/<int:id>')
+api.add_resource(CardapioAtletaNutri, '/nutricionista/atleta/cardapio')
+api.add_resource(CardapioAtletaNutriId, '/nutricionista/atleta/cardapio/<int:id>')
+api.add_resource(RefeicaoAtleta, '/nutricionista/atleta/refeicao/<int:id_cardapio>')
+api.add_resource(RefeicaoAtletaId, '/nutricionista/atleta/refeicao/<int:id_cardapio>/<int:id>')
+api.add_resource(IngredienteAtleta, '/nutricionista/atleta/ingrediente/<int:id_cardapio>/<int:id_refeicao>')
+api.add_resource(IngredienteAtletaId, '/nutricionista/atleta/ingrediente/<int:id_cardapio>/<int:id_refeicao>/<int:id>')
 
 api.add_resource(Administradores, '/administradores')
 api.add_resource(AdministradorId, '/administradores/<int:id>')

@@ -4,11 +4,11 @@ from flask_restful import Resource, marshal, reqparse
 from sqlalchemy.exc import IntegrityError
 
 from helpers.auth.token_verifier import token_verify
-
 from helpers.database import db
 from helpers.logger import logger
 from model.atleta import Atleta, atletaAssociatedFields
 from model.mensagem import Message, msgFields
+from model.notificacaoPersonal import NotificacaoPersonal
 from model.personalTrainer import PersonalTrainer
 from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
 
@@ -39,7 +39,66 @@ class PersonalAtleta(Resource):
     
     personal = PersonalTrainer.query.get(user_id)
     return marshal(personal.atletas, atletaAssociatedFields), 200
+
+class PersonalAtletaId(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, id):
+    if tipo != "Personal Trainer":
+      logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    atleta = Atleta.query.get(id)
+    if atleta is None:
+      logger.error(f"Atleta de id: {id} nao encontrado")
+
+      codigo = Message(1, f"Atleta de id: {id} não encontrado")
+      return marshal(codigo, msgFields), 200
+    
+    personal = PersonalTrainer.query.get(user_id)
+
+    if atleta not in personal.atletas:
+      logger.error(f"Atleta de id:{id} associado a outro personal")
+
+      codigo = Message(1, f"Atleta de id: {id} não associado ao personal")
+      return marshal(codigo, msgFields), 400
+    
+    return marshal(atleta, atletaAssociatedFields), 200
   
+  @token_verify
+  def delete(self, tipo, refreshToken, user_id, id):
+    if tipo != "Personal Trainer":
+      logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+    
+    atleta = Atleta.query.get(id)
+    if atleta is None:
+      logger.error(f"Atleta de id: {id} nao encontrado")
+
+      codigo = Message(1, f"Atleta de id: {id} não encontrado")
+      return marshal(codigo, msgFields), 200
+    
+    personal = PersonalTrainer.query.get(user_id)
+    
+    if atleta not in personal.atletas:
+      logger.error(f"Atleta de id:{id} associado a outro personal")
+
+      codigo = Message(1, f"Atleta de id: {id} não associado ao personal")
+      return marshal(codigo, msgFields), 400
+    
+    
+    atleta.personal_trainer_id = None
+    notificacaoAtleta = NotificacaoPersonal.query.filter_by(atleta_id=atleta.usuario_id).first()
+    notificacaoAtleta.solicitacao= False
+    
+    db.session.add(notificacaoAtleta)
+    db.session.add(atleta)
+    db.session.commit()
+
+    logger.info(f"Atleta de id: {id} deletado com sucesso")
+    return {}, 200
+
 class TabelaTreinoAtleta(Resource):
   @token_verify
   def post(self, tipo, refreshToken, user_id):
@@ -95,8 +154,8 @@ class TabelaTreinoAtleta(Resource):
       codigo = Message(1, "O atleta já tem uma tabela de treino associada")
       return marshal(codigo, msgFields), 400
     except:
-      logger.error(f"Erro ao cadastra a tabela de treino do atleta: {atleta.id}")
-      codigo = Message(2, f"Erro ao cadastra a tabela de treino do atleta: {atleta.id}")
+      logger.error(f"Erro ao cadastra a tabela de treino do atleta: {atleta.usuario_id}")
+      codigo = Message(2, f"Erro ao cadastra a tabela de treino do atleta: {atleta.usuario_id}")
       return marshal(codigo, msgFields), 400
     
 class TabelaTreinoAtletaId(Resource):

@@ -1,16 +1,14 @@
-from flask_restful import Resource, marshal, reqparse
+from datetime import datetime
 
+from flask_restful import Resource, marshal, reqparse
 from sqlalchemy.exc import IntegrityError
 
 from helpers.auth.token_verifier import token_verify
-from helpers.logger import logger
 from helpers.database import db
-
-from datetime import datetime
-
+from helpers.logger import logger
+from model.atleta import Atleta
 from model.mensagem import Message, msgFields
 from model.personalTrainer import PersonalTrainer
-from model.atleta import Atleta
 from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
 
 parser = reqparse.RequestParser()
@@ -75,8 +73,8 @@ class TabelaTreinoAtleta(Resource):
       codigo = Message(1, "O atleta já tem uma tabela de treino associada")
       return marshal(codigo, msgFields), 400
     except:
-      logger.error(f"Erro ao cadastra a tabela de treino do atleta: {atleta.id}")
-      codigo = Message(2, f"Erro ao cadastra a tabela de treino do atleta: {atleta.id}")
+      logger.error(f"Erro ao cadastra a tabela de treino do atleta: {atleta.usuario_id}")
+      codigo = Message(2, f"Erro ao cadastra a tabela de treino do atleta: {atleta.usuario_id}")
       return marshal(codigo, msgFields), 400
     
 class TabelaTreinoAtletaId(Resource):
