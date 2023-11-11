@@ -15,6 +15,9 @@ parser.add_argument("descricao", type=str, help="descrição não informada", re
 class ProdutosNutriWorkOut(Resource):
   def get(self):
     produtos = stripe.Product.list()
+    if not produtos.data:
+      return [], 200
+
     return marshal(produtos, produtoFields), 200
 
   def post(self):
@@ -84,7 +87,7 @@ class ProdutosNutriWorkOutId(Resource):
 
       codigo = Message(f"Produto de id: {id} não encontrado")
       return marshal(codigo, msgFields), 404
-    
+
     stripe.Product.delete(produto.id_ProductStripe)
     db.session.delete(produto)
     db.session.commit()

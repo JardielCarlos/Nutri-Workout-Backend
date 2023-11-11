@@ -23,6 +23,7 @@ from resources.tabelaTreinoAtleta import TabelaTreinoAtleta, TabelaTreinoAtletaI
 from resources.ExercicioAtleta import ExerciciosAtleta, ExercicioAtletaId, ExercicioAtletaTabela, ExercicioAtletaTabelaId
 from resources.usuario import UsuarioId, UsuarioNome, Usuarios, UsuarioPagination
 
+from resources.produtosNutriWorkOut import ProdutosNutriWorkOut, ProdutosNutriWorkOutId
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:senhasecreta@localhost:5432/NutriWorkout"
@@ -37,7 +38,7 @@ api = Api(app)
 api.add_resource(Atletas, '/atletas')
 api.add_resource(AtletaId, '/atleta/<int:id>')
 api.add_resource(AtletaNome, '/atletas/<string:nome>')
-api.add_resource(AtletaPagination, '/atletas/<int:id>')
+api.add_resource(AtletaPagination, '/atletas/<int:id>/<int:max_itens>')
 api.add_resource(AtletaImg, '/atleta/imagem/<int:id>')
 api.add_resource(RequestPersonal, '/atleta/solicitar-personal')
 api.add_resource(RequestNutricionista, '/atleta/solicitar-nutricionista')
@@ -50,7 +51,7 @@ api.add_resource(PersonalTrainerNome, '/personalTrainer/<string:nome>')
 api.add_resource(PersonalNotificacoes, '/personalTrainer/notificacoes')
 api.add_resource(PersonalNotificacoesId, '/personalTrainer/notificacoes/<int:id>')
 api.add_resource(PersonalTrainerNotificacaoState, '/personalTrainer/notificacao')
-api.add_resource(PersonalTrainerPagination, '/personalTraineres/<int:id>')
+api.add_resource(PersonalTrainerPagination, '/personalTraineres/<int:id>/<int:max_itens>')
 api.add_resource(PersonalImg, '/personal/imagem/<int:id>')
 api.add_resource(PersonalAtleta, '/personal/atleta')
 api.add_resource(PersonalAtletaId, '/personal/atleta/<int:id>')
@@ -68,7 +69,7 @@ api.add_resource(NutricionistaNome, '/nutricionista/<string:nome>')
 api.add_resource(NutricionistaNotificacoes, '/nutricionista/notificacoes')
 api.add_resource(NutricionistaNotificacoesId, '/nutricionista/notificacoes/<int:id>')
 api.add_resource(NutricionistaNotificacaoState, '/nutricionista/notificacao')
-api.add_resource(NutricionistaPagination, "/nutricionistas/<int:id>")
+api.add_resource(NutricionistaPagination, "/nutricionistas/<int:id>/<int:max_itens>")
 api.add_resource(NutricionistaImg, '/nutricionista/imagem/<int:id>')
 api.add_resource(NutricionistaAtleta, '/nutricionista/atleta')
 api.add_resource(NutricionistaAtletaId, '/nutricionista/atleta/<int:id>')
@@ -87,10 +88,14 @@ api.add_resource(AdministradorImg, '/administrador/imagem/<int:id>')
 api.add_resource(Usuarios, '/usuarios')
 api.add_resource(UsuarioId, '/usuario/<int:id>')
 api.add_resource(UsuarioNome, '/usuarios/<string:nome>')
-api.add_resource(UsuarioPagination, '/usuarios/<int:id>')
+api.add_resource(UsuarioPagination, '/usuarios/<int:id>/<int:max_itens>')
 
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
+
+api.add_resource(ProdutosNutriWorkOut, '/produtos')
+api.add_resource(ProdutosNutriWorkOutId, '/produtos/<int:id>')
+
 
 if __name__ == '__main__':
   app.run(debug=True)

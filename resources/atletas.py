@@ -572,9 +572,9 @@ class RequestPersonal(Resource):
     return marshal(codigo, msgFields), 200
 
 class AtletaPagination(Resource):
-  def get(self, id):
+  def get(self, id, max_itens):
     atletas = Atleta.query.all()
-    atletasPagination = Atleta.query.paginate(page=id, per_page=10, error_out=False)
+    atletasPagination = Atleta.query.paginate(page=id, per_page=max_itens, error_out=False)
 
     data = {"atletas": atletasPagination.items, "totalAtletas":len(atletas)}
 

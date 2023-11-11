@@ -567,9 +567,9 @@ class PersonalTrainerNotificacaoState(Resource):
       return marshal(codigo, msgFields), 200
 
 class PersonalTrainerPagination(Resource):
-  def get(self, id):
+  def get(self, id, max_itens):
     personais = PersonalTrainer.query.all()
-    personaisPagination = PersonalTrainer.query.paginate(page=id, per_page=10, error_out=False)
+    personaisPagination = PersonalTrainer.query.paginate(page=id, per_page=max_itens, error_out=False)
 
     data = {"personais": personaisPagination.items, "totalPersonais": len(personais)}
     logger.info("Personais listados com sucesso")
