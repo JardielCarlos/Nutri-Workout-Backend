@@ -40,8 +40,9 @@ atletaAssociatedFields = {
 
 class Atleta(Usuario):
   __tablename__ = 'tb_atleta'
-  
+
   usuario_id = db.Column(db.Integer ,db.ForeignKey("tb_usuario.id"), primary_key=True)
+  stripe_id = db.Column(db.String, nullable=True)
   massaMagra = db.Column(db.Float, nullable=True)
   massaGorda = db.Column(db.Float, nullable=True)
   altura = db.Column(db.Float, nullable=True)
@@ -52,7 +53,7 @@ class Atleta(Usuario):
 
   personal_trainer_id = db.Column(db.Integer ,db.ForeignKey("tb_personalTrainer.usuario_id"), nullable=True)
   nutricionista_id = db.Column(db.Integer ,db.ForeignKey("tb_nutricionista.usuario_id"), nullable=True)
-  
+
   __mapper_args__ = {"polymorphic_identity": "Atleta"}
 
   def __init__(self, nome, sobrenome, email, senha, cpf):

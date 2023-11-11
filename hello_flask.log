@@ -1,4 +1,8 @@
-2023-11-10 17:17:51,776 WARNING _internal _log  * Debugger is active!
-2023-11-10 17:17:51,780 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-11-10 17:17:56,747 INFO atletas delete Atleta de id: 24 deletado com sucesso
-2023-11-10 17:17:56,748 INFO _internal _log 127.0.0.1 - - [10/Nov/2023 17:17:56] "DELETE /atleta/24 HTTP/1.1" 200 -
+2023-11-11 13:40:33,684 WARNING _internal _log  * Debugger is active!
+2023-11-11 13:40:33,687 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-11-11 13:40:33,838 INFO usuario get Usuarios listados com sucesso
+2023-11-11 13:40:33,842 INFO _internal _log 127.0.0.1 - - [11/Nov/2023 13:40:33] "GET /usuarios/1 HTTP/1.1" 200 -
+2023-11-11 13:40:44,492 INFO usuario get Usuarios listados com sucesso
+2023-11-11 13:40:44,493 INFO _internal _log 127.0.0.1 - - [11/Nov/2023 13:40:44] "GET /usuarios/2 HTTP/1.1" 200 -
+2023-11-11 13:40:54,563 INFO usuario get Usuarios listados com sucesso
+2023-11-11 13:40:54,565 INFO _internal _log 127.0.0.1 - - [11/Nov/2023 13:40:54] "GET /usuarios/1 HTTP/1.1" 200 -

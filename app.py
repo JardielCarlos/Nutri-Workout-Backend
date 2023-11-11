@@ -21,7 +21,7 @@ from resources.PersonaisTrainer import PersonaisTrainer, PersonalImg, PersonalNo
 from resources.personalAtleta import PersonalAtleta, PersonalAtletaId
 from resources.tabelaTreinoAtleta import TabelaTreinoAtleta, TabelaTreinoAtletaId
 from resources.ExercicioAtleta import ExerciciosAtleta, ExercicioAtletaId, ExercicioAtletaTabela, ExercicioAtletaTabelaId
-from resources.usuario import UsuarioId, UsuarioNome, Usuarios
+from resources.usuario import UsuarioId, UsuarioNome, Usuarios, UsuarioPagination
 
 
 app = Flask(__name__)
@@ -85,8 +85,9 @@ api.add_resource(AdministradorNome, '/administradores/<string:nome>')
 api.add_resource(AdministradorImg, '/administrador/imagem/<int:id>')
 
 api.add_resource(Usuarios, '/usuarios')
-api.add_resource(UsuarioId, '/usuarios/<int:id>')
+api.add_resource(UsuarioId, '/usuario/<int:id>')
 api.add_resource(UsuarioNome, '/usuarios/<string:nome>')
+api.add_resource(UsuarioPagination, '/usuarios/<int:id>')
 
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
