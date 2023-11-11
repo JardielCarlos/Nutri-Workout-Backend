@@ -14,6 +14,11 @@ userFields = {
   "urlImg": fields.String(attribute=lambda x: x.get_url())
 }
 
+usuarioFieldsPagination = {
+  "usuarios": fields.Nested(userFields),
+  "totalAtletas": fields.Integer
+}
+
 class Usuario(db.Model):
   __tablename__= "tb_usuario"
 
@@ -26,7 +31,7 @@ class Usuario(db.Model):
   tipo = db.Column(db.String, nullable=False)
 
   imagem = db.relationship("ImgUsuarios", back_populates="usuario", uselist=False, cascade="all, delete-orphan")
-  
+
   __mapper_args__ = {
     'polymorphic_identity': 'usuario',
     'polymorphic_on': tipo
@@ -41,20 +46,20 @@ class Usuario(db.Model):
 
   def verify_password(self, senha):
     return check_password_hash(self.senha, senha)
-  
+
   def get_sigla(self):
     return self.nome[0] + self.sobrenome[0]
 
   def get_url(self):
     if self.tipo == 'Atleta':
       return url_for('atletaimg', id=self.id, _external=True)
-    
+
     elif self.tipo == 'Personal Trainer':
       return url_for('personalimg', id=self.id, _external=True)
-    
+
     elif self.tipo == 'Nutricionista':
       return url_for('nutricionistaimg', id=self.id, _external=True)
-    
+
     elif self.tipo == 'Administrador':
       return url_for('administradorimg', id=self.id, _external=True)
     else:

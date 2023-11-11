@@ -6,7 +6,7 @@ from password_strength import PasswordPolicy
 from werkzeug.security import generate_password_hash
 from validate_docbr import CPF
 
-from model.usuario import Usuario, userFields
+from model.usuario import Usuario, userFields, usuarioFieldsPagination
 from model.mensagem import msgFields, Message
 import re
 
@@ -34,7 +34,7 @@ class Usuarios(Resource):
     usuarios = Usuario.query.all()
     logger.info("Usuarios listados com sucesso")
     return marshal(usuarios, userFields), 200
-  
+
 class UsuarioId(Resource):
   def get(self, id):
     usuario = Usuario.query.get(id)
@@ -44,10 +44,10 @@ class UsuarioId(Resource):
 
       codigo = Message(1, f"Usuario de id: {id} não encontrado")
       return marshal(codigo, msgFields), 404
-    
+
     logger.info(f"Usuario de id: {id} listado com sucesso")
     return marshal(usuario, userFields), 200
-  
+
   def put(self, id):
     args = parser.parse_args()
     try:
@@ -58,43 +58,43 @@ class UsuarioId(Resource):
 
         codigo = Message(f"Usuario de id: {id} não encontrado")
         return marshal(codigo, msgFields), 404
-      
+
       if len(args['nome']) == 0:
         logger.info("Nome nao informado")
 
         codigo = Message(1, "Nome nao informado")
         return marshal(codigo, msgFields), 400
-      
+
       if len(args["sobrenome"]) == 0:
         logger.info("Sobrenome não informado")
 
         codigo = Message(1, "Sobrenome não informado")
         return marshal(codigo, msgFields), 400
-      
+
       if not args['email']:
         codigo = Message(1, "email não informado")
         return marshal(codigo, msgFields), 400
-      
+
       if re.match(padrao_email, args['email']) == None:
         codigo = Message(1, "Email no formato errado")
         return marshal(codigo, msgFields), 400
-      
+
       if not args["cpf"]:
         codigo = Message(1, "cpf não informado")
         return marshal(codigo, msgFields), 400
-      
+
       if not cpfValidate.validate(args["cpf"]):
         logger.error(f"CPF {args['cpf']} não valido")
 
         codigo = Message(1, f"CPF {args['cpf']} não valido")
         return marshal(codigo, msgFields), 400
-      
+
       if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
         logger.error(f"CPF {args['cpf']} no formato errado")
 
         codigo = Message(1, "CPF no formato errado")
         return marshal(codigo, msgFields), 400
-      
+
       usuarioBD.nome = args["nome"]
       usuarioBD.sobrenome = args["sobrenome"]
       usuarioBD.email = args["email"]
@@ -109,16 +109,16 @@ class UsuarioId(Resource):
       if 'cpf' in str(e.orig):
         codigo = Message(1, "CPF já cadastrado no sistema")
         return marshal(codigo, msgFields), 400
-      
+
       elif 'email' in str(e.orig):
         codigo = Message(1, "Email já cadastrado no sistema")
         return marshal(codigo, msgFields), 400
-      
+
     except:
       logger.error("Erro ao atulizar o usuario")
       codigo = Message(2, "Erro ao atualizar o usuario")
       return marshal(codigo, msgFields), 400
-    
+
   def patch(self, id):
     args = parser.parse_args()
 
@@ -129,15 +129,15 @@ class UsuarioId(Resource):
 
         codigo = Message(1, f"Usuario de id: {id} não encontrado")
         return marshal(codigo, msgFields), 404
-      
+
       if not usuarioBD.verify_password(args["senha"]):
         codigo = Message(1, "Senha incorreta ou inexistente")
         return marshal(codigo, msgFields), 404
-      
+
       if not args['novaSenha']:
         codigo = Message(1, "nova senha não informada")
         return marshal(codigo, msgFields), 400
-      
+
       usuarioBD.senha = generate_password_hash(args["novaSenha"])
 
       db.session.add(usuarioBD)
@@ -150,7 +150,7 @@ class UsuarioId(Resource):
       logger.error("Erro ao atualizar a senha do usuario")
       codigo = Message(2, "Erro ao atualizar a senha do usuario")
       return marshal(codigo, msgFields), 400
-  
+
   def delete(self, id):
     usuarioBD = Usuario.query.get(id)
 
@@ -159,7 +159,7 @@ class UsuarioId(Resource):
 
       codigo = Message(1, f"Usuario de id: {id} não encontrado")
       return marshal(codigo, msgFields), 404
-    
+
     db.session.delete(usuarioBD)
     db.session.commit()
 
@@ -172,3 +172,13 @@ class UsuarioNome(Resource):
 
     logger.info(f"usuario com nomes: {nome} listados com sucesso")
     return marshal(usuarioNome, userFields), 200
+
+class UsuarioPagination(Resource):
+  def get(self, id):
+    usuarios = Usuario.query.all()
+    usuarioPagination = Usuario.query.paginate(page=id, per_page=10, error_out=False)
+
+    data = {"usuarios": usuarioPagination.items, "totalAtletas": len(usuarios)}
+
+    logger.info("Usuarios listados com sucesso")
+    return marshal(data, usuarioFieldsPagination), 200
