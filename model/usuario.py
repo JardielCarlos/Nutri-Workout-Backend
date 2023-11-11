@@ -16,7 +16,7 @@ userFields = {
 
 usuarioFieldsPagination = {
   "usuarios": fields.Nested(userFields),
-  "totalAtletas": fields.Integer
+  "totalUsuarios": fields.Integer
 }
 
 class Usuario(db.Model):

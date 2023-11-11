@@ -174,11 +174,11 @@ class UsuarioNome(Resource):
     return marshal(usuarioNome, userFields), 200
 
 class UsuarioPagination(Resource):
-  def get(self, id):
+  def get(self, id, max_itens):
     usuarios = Usuario.query.all()
-    usuarioPagination = Usuario.query.paginate(page=id, per_page=10, error_out=False)
+    usuarioPagination = Usuario.query.paginate(page=id, per_page=max_itens, error_out=False)
 
-    data = {"usuarios": usuarioPagination.items, "totalAtletas": len(usuarios)}
+    data = {"usuarios": usuarioPagination.items, "totalUsuarios": len(usuarios)}
 
     logger.info("Usuarios listados com sucesso")
     return marshal(data, usuarioFieldsPagination), 200
