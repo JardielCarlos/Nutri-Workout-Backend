@@ -507,7 +507,7 @@ class RequestNutricionista(Resource):
   @token_verify
   def delete(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
-      logger.error("Usuario sem autorizacao para acessar a requisição de personal")
+      logger.error("Usuario sem autorizacao para acessar a requisição de nutricionista")
 
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -560,6 +560,31 @@ class RequestPersonal(Resource):
       logger.error("Erro ao solicitar o personal")
       codigo = Message(2, "Erro ao solicitar o personal")
       return marshal(codigo, msgFields), 400
+
+  @token_verify
+  def delete(self, tipo, refreshToken, user_id):
+    if tipo != "Atleta":
+      logger.error("Usuario sem autorizacao para acessar a requisição de personal")
+
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+
+    atleta = Atleta.query.get(user_id)
+
+    notificacao = NotificacaoPersonal.query.filter_by(atleta=atleta).first()
+
+    if notificacao is None:
+      logger.error(f"Notificacao do usuario de id: {atleta.usuario_id} nao encontrada")
+
+      codigo = Message(1, "Você não possui solicitações do personal")
+      return marshal(codigo, msgFields), 404
+
+    db.session.delete(notificacao)
+    db.session.commit()
+
+    logger.info("Solicitacao do personal cancelada com sucesso")
+    codigo = Message(0, "Solicitação do personal cancelada com sucesso")
+    return marshal(codigo, msgFields), 200
 
 
 class AtletaPagination(Resource):
