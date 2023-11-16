@@ -24,6 +24,8 @@ from resources.ExercicioAtleta import ExerciciosAtleta, ExercicioAtletaId, Exerc
 from resources.usuario import UsuarioId, UsuarioNome, Usuarios, UsuarioPagination
 
 from resources.produtosNutriWorkOut import ProdutosNutriWorkOut, ProdutosNutriWorkOutId
+from resources.planosNutriWorkOut import PlanosNutriWorkOut, PlanosNutriWorkOutId
+from resources.cartaoCredito import CartaoCreditoAtleta, CartaoCreditoAtletaId
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:senhasecreta@localhost:5432/NutriWorkout"
@@ -44,6 +46,8 @@ api.add_resource(RequestPersonal, '/atleta/solicitar-personal')
 api.add_resource(RequestNutricionista, '/atleta/solicitar-nutricionista')
 api.add_resource(TabelaAtleta, '/atleta/tabelaTreino')
 api.add_resource(CardapioAtleta, '/atleta/cardapio')
+api.add_resource(CartaoCreditoAtleta, '/cartaoCredito')
+api.add_resource(CartaoCreditoAtletaId, '/cartaoCredito/<int:id>')
 
 api.add_resource(PersonaisTrainer, '/personalTrainer')
 api.add_resource(PersonalTrainerId, '/personalTrainer/<int:id>')
@@ -96,6 +100,8 @@ api.add_resource(Logout, '/logout')
 api.add_resource(ProdutosNutriWorkOut, '/produtos')
 api.add_resource(ProdutosNutriWorkOutId, '/produtos/<int:id>')
 
+api.add_resource(PlanosNutriWorkOut, '/planos')
+api.add_resource(PlanosNutriWorkOutId, '/planos/<int:id>')
 
 if __name__ == '__main__':
   app.run(debug=True)

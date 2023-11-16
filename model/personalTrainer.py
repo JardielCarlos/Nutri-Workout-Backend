@@ -52,8 +52,8 @@ class PersonalTrainer(Usuario):
   __mapper_args__ = {"polymorphic_identity": "Personal Trainer"}
 
 
-  def __init__(self, nome, sobrenome, email, senha, cpf, cref, ):
-    super().__init__(nome, sobrenome, email, senha, cpf, )
+  def __init__(self, nome, sobrenome, email, senha, cpf, cref):
+    super().__init__(nome, sobrenome, email, senha, cpf)
     self.cref = cref
 
   def __repr__(self):
