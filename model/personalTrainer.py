@@ -49,7 +49,7 @@ class PersonalTrainer(Usuario):
 
   atletas = db.relationship("Atleta", backref="personal", foreign_keys=[Atleta.personal_trainer_id])
 
-  __mapper_args__ = {"polymorphic_identity": "Personal Trainer"}
+  __mapper_args__ = {"polymorphic_identity": "Personal"}
 
 
   def __init__(self, nome, sobrenome, email, senha, cpf, cref, ):
