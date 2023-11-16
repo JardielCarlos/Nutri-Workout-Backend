@@ -54,7 +54,7 @@ class Usuario(db.Model):
     if self.tipo == 'Atleta':
       return url_for('atletaimg', id=self.id, _external=True)
 
-    elif self.tipo == 'Personal Trainer':
+    elif self.tipo == 'Personal':
       return url_for('personalimg', id=self.id, _external=True)
 
     elif self.tipo == 'Nutricionista':

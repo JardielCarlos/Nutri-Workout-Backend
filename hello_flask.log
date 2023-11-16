@@ -1,6 +1,4 @@
-2023-11-15 22:59:11,422 WARNING _internal _log  * Debugger is active!
-2023-11-15 22:59:11,428 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-11-15 22:59:21,957 INFO atletas delete Solicitacao do personal cancelada com sucesso
-2023-11-15 22:59:21,960 INFO _internal _log 127.0.0.1 - - [15/Nov/2023 22:59:21] "DELETE /atleta/solicitar-personal HTTP/1.1" 200 -
-2023-11-15 22:59:26,755 ERROR atletas delete Notificacao do usuario de id: 2 nao encontrada
-2023-11-15 22:59:26,757 INFO _internal _log 127.0.0.1 - - [15/Nov/2023 22:59:26] "[33mDELETE /atleta/solicitar-personal HTTP/1.1[0m" 404 -
+2023-11-16 09:38:39,484 WARNING _internal _log  * Debugger is active!
+2023-11-16 09:38:39,487 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-11-16 09:38:39,592 INFO usuario get Usuarios listados com sucesso
+2023-11-16 09:38:39,593 INFO _internal _log 127.0.0.1 - - [16/Nov/2023 09:38:39] "GET /usuarios HTTP/1.1" 200 -
