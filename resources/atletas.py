@@ -481,24 +481,33 @@ class RequestNutricionista(Resource):
 
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
+    try:
+      atleta = Atleta.query.get(user_id)
 
-    atleta = Atleta.query.get(user_id)
+      msg = f"O atleta {atleta.nome} esta solicitando um(a) nutricionista, você gostaria de aceitar?"
 
-    msg = f"O atleta {atleta.nome} esta solicitando um(a) nutricionista, você gostaria de aceitar?"
+      notificacao = NotificacaoNutricionista(atleta.nome, atleta.email, msg, atleta)
 
-    notificacao = NotificacaoNutricionista(atleta.nome, atleta.email, msg, atleta)
+      db.session.add(notificacao)
+      db.session.commit()
 
-    db.session.add(notificacao)
-    db.session.commit()
+      logger.info(f"Solicitação de nutricionista realizada com sucesso pelo atleta de id: {atleta.usuario_id} ")
+      codigo = Message(0, "Solicitação realizada com sucesso")
+      return marshal(codigo, msgFields), 201
+    except IntegrityError:
+      logger.error("O atleta ja tem um nutricionista ou ainda nao foi aceito por algum nutricionista")
 
-    logger.info(f"Solicitação de nutricionista realizada com sucesso pelo atleta de id: {atleta.usuario_id} ")
-    codigo = Message(0, "Solicitação realizada com sucesso")
-    return marshal(codigo, msgFields), 201
+      codigo = Message(1, "Você já solicitou um nutricionista")
+      return marshal(codigo, msgFields), 400
+
+    except:
+      logger.error("Erro ao solicita o nutricionista")
+      codigo = Message(2, "Erro ao solicita o nutricionista")
 
   @token_verify
   def delete(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
-      logger.error("Usuario sem autorizacao para acessar a requisição de personal")
+      logger.error("Usuario sem autorizacao para acessar a requisição de nutricionista")
 
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -521,6 +530,7 @@ class RequestNutricionista(Resource):
     return marshal(codigo, msgFields), 200
 
 class RequestPersonal(Resource):
+
   @token_verify
   def post(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
@@ -544,7 +554,12 @@ class RequestPersonal(Resource):
       logger.error("O atleta ja tem um personal ou ainda nao foi aceito por algum personal")
 
       codigo = Message(1, "Você já solicitou um personal trainer")
-      return marshal(codigo, msgFields), 200
+      return marshal(codigo, msgFields), 400
+
+    except:
+      logger.error("Erro ao solicitar o personal")
+      codigo = Message(2, "Erro ao solicitar o personal")
+      return marshal(codigo, msgFields), 400
 
   @token_verify
   def delete(self, tipo, refreshToken, user_id):
@@ -561,15 +576,16 @@ class RequestPersonal(Resource):
     if notificacao is None:
       logger.error(f"Notificacao do usuario de id: {atleta.usuario_id} nao encontrada")
 
-      codigo = Message(1, "Você não possui solicitações de personal")
+      codigo = Message(1, "Você não possui solicitações do personal")
       return marshal(codigo, msgFields), 404
 
     db.session.delete(notificacao)
     db.session.commit()
 
-    logger.info("Solicitacao de personal cancelada com sucesso")
-    codigo = Message(0, "Solicitação de personal cancelada com sucesso")
+    logger.info("Solicitacao do personal cancelada com sucesso")
+    codigo = Message(0, "Solicitação do personal cancelada com sucesso")
     return marshal(codigo, msgFields), 200
+
 
 class AtletaPagination(Resource):
   def get(self, id, max_itens):

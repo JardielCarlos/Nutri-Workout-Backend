@@ -1,9 +1,0 @@
-<<<<<<< Updated upstream
-=======
-2023-11-15 22:09:07,998 WARNING _internal _log  * Debugger is active!
-2023-11-15 22:09:08,004 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-11-15 22:09:13,317 INFO _internal _log 127.0.0.1 - - [15/Nov/2023 22:09:13] "[35m[1mGET /usuarios HTTP/1.1[0m" 500 -
-2023-11-15 22:09:14,862 INFO _internal _log 127.0.0.1 - - [15/Nov/2023 22:09:14] "[36mGET /usuarios?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
-2023-11-15 22:09:14,864 INFO _internal _log 127.0.0.1 - - [15/Nov/2023 22:09:14] "[36mGET /usuarios?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
-2023-11-15 22:09:14,968 INFO _internal _log 127.0.0.1 - - [15/Nov/2023 22:09:14] "[36mGET /usuarios?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
->>>>>>> Stashed changes
