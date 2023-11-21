@@ -13,6 +13,8 @@ from werkzeug.security import generate_password_hash
 from helpers.stripe_config import stripe
 
 from helpers.auth.token_verifier import token_verify
+from helpers.auth.subscribe_verifier import subscribe_verifier
+
 from helpers.database import db
 from helpers.logger import logger
 from model.atleta import Atleta, atletaFieldsToken, atletasFieldsPagination
@@ -22,7 +24,8 @@ from model.notificacaoNutricionista import NotificacaoNutricionista
 from model.notificacaoPersonal import NotificacaoPersonal
 from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
 from model.cardapio import Cardapio, cardapioFields
-
+from model.assinatura import Assinatura
+from model.cartaoCredito import CartaoCredito
 parser = reqparse.RequestParser()
 parserFiles = reqparse.RequestParser()
 # rabbitmqPublisher = RabbitmqPublisher()
@@ -75,82 +78,82 @@ class Atletas(Resource):
     #   return marshal(codigo, msgFields), 403
     args = parser.parse_args()
 
-    try:
-      with db.session.begin():
-        fotoPerfil = None
-        if len(args["nome"]) == 0:
-          logger.info("Nome não informado")
+    # try:
+    with db.session.begin():
+      fotoPerfil = None
+      if len(args["nome"]) == 0:
+        logger.info("Nome não informado")
 
-          codigo = Message(1, "Nome não informado")
-          return marshal(codigo, msgFields), 400
-
-        if len(args["sobrenome"]) == 0:
-          logger.info("Sobrenome não informado")
-
-          codigo = Message(1, "Sobrenome não informado")
-          return marshal(codigo, msgFields), 400
-
-        if not args['email']:
-          codigo = Message(1, "email não informada")
-          return marshal(codigo, msgFields), 400
-
-        if re.match(padrao_email, args['email']) == None:
-          codigo = Message(1, "Email no formato errado")
-          return marshal(codigo, msgFields), 400
-
-        if not args["cpf"]:
-          codigo = Message(1, "cpf não informado")
-          return marshal(codigo, msgFields), 400
-
-        if not cpfValidate.validate(args["cpf"]):
-          logger.error(f"CPF {args['cpf']} não valido")
-
-          codigo = Message(1, f"CPF {args['cpf']} não valido")
-          return marshal(codigo, msgFields), 400
-
-        if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
-          logger.error(f"CPF {args['cpf']} no formato errado")
-
-          codigo = Message(1, "CPF no formato errado")
-          return marshal(codigo, msgFields), 400
-
-        if not args['senha']:
-          codigo = Message(1, "Senha não informada")
-          return marshal(codigo, msgFields), 400
-
-        verifySenha = policy.test(args['senha'])
-        if len(verifySenha) != 0:
-          codigo = Message(1, "Senha no formato errado")
-          return marshal(codigo, msgFields), 400
-
-        clienteStripe = stripe.Customer.create(
-          name=args["nome"]+" "+args["sobrenome"],
-          email=args["email"],
-        )
-
-        atleta = Atleta(args["nome"], args["sobrenome"], args["email"], args["senha"], args["cpf"])
-        atleta.stripe_id = clienteStripe.id
-
-        db.session.add(atleta)
-        db.session.flush()
-
-        imgUsuario = ImgUsuarios(fotoPerfil, atleta.usuario_id)
-
-        db.session.add(imgUsuario)
-
-      data = {"atleta": atleta, "token": None}
-
-      logger.info(f"Atleta de id: {atleta.usuario_id} criado com sucesso")
-      return marshal(data, atletaFieldsToken), 201
-
-    except IntegrityError as e:
-      if 'cpf' in str(e.orig):
-        codigo = Message(1, "CPF já cadastrado no sistema")
+        codigo = Message(1, "Nome não informado")
         return marshal(codigo, msgFields), 400
 
-      elif 'email' in str(e.orig):
-        codigo = Message(1, "Email já cadastrado no sistema")
+      if len(args["sobrenome"]) == 0:
+        logger.info("Sobrenome não informado")
+
+        codigo = Message(1, "Sobrenome não informado")
         return marshal(codigo, msgFields), 400
+
+      if not args['email']:
+        codigo = Message(1, "email não informada")
+        return marshal(codigo, msgFields), 400
+
+      if re.match(padrao_email, args['email']) == None:
+        codigo = Message(1, "Email no formato errado")
+        return marshal(codigo, msgFields), 400
+
+      if not args["cpf"]:
+        codigo = Message(1, "cpf não informado")
+        return marshal(codigo, msgFields), 400
+
+      if not cpfValidate.validate(args["cpf"]):
+        logger.error(f"CPF {args['cpf']} não valido")
+
+        codigo = Message(1, f"CPF {args['cpf']} não valido")
+        return marshal(codigo, msgFields), 400
+
+      if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
+        logger.error(f"CPF {args['cpf']} no formato errado")
+
+        codigo = Message(1, "CPF no formato errado")
+        return marshal(codigo, msgFields), 400
+
+      if not args['senha']:
+        codigo = Message(1, "Senha não informada")
+        return marshal(codigo, msgFields), 400
+
+      verifySenha = policy.test(args['senha'])
+      if len(verifySenha) != 0:
+        codigo = Message(1, "Senha no formato errado")
+        return marshal(codigo, msgFields), 400
+
+      clienteStripe = stripe.Customer.create(
+        name=args["nome"]+" "+args["sobrenome"],
+        email=args["email"],
+      )
+
+      atleta = Atleta(args["nome"], args["sobrenome"], args["email"], args["senha"], args["cpf"])
+      atleta.stripe_id = clienteStripe.id
+
+      db.session.add(atleta)
+      db.session.flush()
+
+      imgUsuario = ImgUsuarios(fotoPerfil, atleta.usuario_id)
+
+      db.session.add(imgUsuario)
+
+    data = {"atleta": atleta, "token": None}
+
+    logger.info(f"Atleta de id: {atleta.usuario_id} criado com sucesso")
+    return marshal(data, atletaFieldsToken), 201
+
+    # except IntegrityError as e:
+    #   if 'cpf' in str(e.orig):
+    #     codigo = Message(1, "CPF já cadastrado no sistema")
+    #     return marshal(codigo, msgFields), 400
+
+    #   elif 'email' in str(e.orig):
+    #     codigo = Message(1, "Email já cadastrado no sistema")
+        # return marshal(codigo, msgFields), 400
 
     # except:
     #   logger.error("Erro ao cadastrar o Atleta")
@@ -316,8 +319,9 @@ class AtletaId(Resource):
 
       codigo = Message(1, f"Atleta de id: {id} não encontrado")
       return marshal(codigo, msgFields), 404
-
     stripe.Customer.delete(atleta.stripe_id)
+    Assinatura.query.filter_by(atleta_id=atleta.usuario_id).delete()
+    CartaoCredito.query.filter_by(atleta_id=id).delete()
     db.session.delete(atleta)
     db.session.commit()
 
@@ -409,6 +413,7 @@ class AtletaImg(Resource):
 
 class TabelaAtleta(Resource):
   @token_verify
+  @subscribe_verifier
   def get(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a tabela do atleta")
@@ -434,6 +439,7 @@ class TabelaAtleta(Resource):
 
 class CardapioAtleta(Resource):
   @token_verify
+  @subscribe_verifier
   def get(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a tabela do atleta")
@@ -475,6 +481,7 @@ class AtletaNome(Resource):
 
 class RequestNutricionista(Resource):
   @token_verify
+  @subscribe_verifier
   def post(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a requisição de nutricionista")
@@ -522,6 +529,8 @@ class RequestNutricionista(Resource):
       codigo = Message(1, "Você não possui solicitações de nutricionista")
       return marshal(codigo, msgFields), 404
 
+
+
     db.session.delete(notificacao)
     db.session.commit()
 
@@ -532,6 +541,7 @@ class RequestNutricionista(Resource):
 class RequestPersonal(Resource):
 
   @token_verify
+  @subscribe_verifier
   def post(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a requisição de personal")
@@ -585,7 +595,6 @@ class RequestPersonal(Resource):
     logger.info("Solicitacao do personal cancelada com sucesso")
     codigo = Message(0, "Solicitação do personal cancelada com sucesso")
     return marshal(codigo, msgFields), 200
-
 
 class AtletaPagination(Resource):
   def get(self, id, max_itens):

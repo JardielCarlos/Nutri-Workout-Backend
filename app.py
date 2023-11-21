@@ -26,7 +26,8 @@ from resources.usuario import UsuarioId, UsuarioNome, Usuarios, UsuarioPaginatio
 from resources.produtosNutriWorkOut import ProdutosNutriWorkOut, ProdutosNutriWorkOutId
 from resources.planosNutriWorkOut import PlanosNutriWorkOut, PlanosNutriWorkOutId
 from resources.cartaoCredito import CartaoCreditoAtleta, CartaoCreditoAtletaId
-
+from resources.assinaturas import Assinaturas
+from resources.stripeWebHook import StripeWeebHook
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:senhasecreta@localhost:5432/NutriWorkout"
 app.config['SECRET_KEY'] = 'senhasecreta'
@@ -102,6 +103,9 @@ api.add_resource(ProdutosNutriWorkOutId, '/produtos/<int:id>')
 
 api.add_resource(PlanosNutriWorkOut, '/planos')
 api.add_resource(PlanosNutriWorkOutId, '/planos/<int:id>')
+
+api.add_resource(Assinaturas, '/assinaturas')
+api.add_resource(StripeWeebHook, '/webhook')
 
 if __name__ == '__main__':
   app.run(debug=True)

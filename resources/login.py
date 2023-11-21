@@ -3,7 +3,7 @@ from helpers.logger import logger
 
 from model.mensagem import Message, msgFields
 from model.usuario import Usuario
-
+from model.atleta import Atleta
 from helpers.auth.token_handler import token_creator
 
 parser = reqparse.RequestParser()
@@ -25,8 +25,17 @@ class Login(Resource):
     if not user.verify_password(args['senha']):
       codigo = Message(1, "Senha Incorreta ou inexistente")
       return marshal(codigo, msgFields), 404
-    
+
+    # if user.tipo == 'Atleta':
+    #   atleta = Atleta.query.filter_by(email=args["email"]).first()
+    #   if atleta.statusPagamento != 'active' or atleta.statusPagamento != 'trialing':
+    #     logger.error("Atleta sem assinatura ou com pendencia na assinatura")
+    #     codigo = Message(1, "Atleta sem assinatura ou com pendências na assinatura")
+    #     return marshal(codigo, msgFields), 400
+
+
+
     inicialNome = user.nome[0] + user.sobrenome[0]
     token = token_creator.create(user.tipo, user.id)
-    
+
     return {"token": token, "tipo":user.tipo, "user_id": user.id, "sigla": inicialNome}, 200

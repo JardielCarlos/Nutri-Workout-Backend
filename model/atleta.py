@@ -16,7 +16,7 @@ atletaFields = {
   "peso": fields.Float,
   "imc": fields.Float,
   "statusImc": fields.String,
-  "statusPagamento": fields.Boolean,
+  "statusPagamento": fields.String,
   "atletaImg": fields.Url("atletaimg", absolute=True)
 }
 
@@ -49,11 +49,11 @@ class Atleta(Usuario):
   peso = db.Column(db.Float, nullable=True)
   imc = db.Column(db.Float, nullable=True)
   statusImc = db.Column(db.String, nullable=True)
-  statusPagamento = db.Column(db.Boolean, nullable=False, default=True)
+  statusPagamento = db.Column(db.String, nullable=False, default="Inativo")
 
   personal_trainer_id = db.Column(db.Integer ,db.ForeignKey("tb_personalTrainer.usuario_id"), nullable=True)
   nutricionista_id = db.Column(db.Integer ,db.ForeignKey("tb_nutricionista.usuario_id"), nullable=True)
-  assinatura = db.relationship("Assinaturas", backref="atleta_assinatura", uselist=False)
+  assinatura = db.relationship("Assinatura", backref="atleta_assinatura", uselist=False)
   cartoes = db.relationship("CartaoCredito", backref="atleta")
 
   __mapper_args__ = {"polymorphic_identity": "Atleta"}

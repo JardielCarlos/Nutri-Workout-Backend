@@ -23,7 +23,7 @@ class CartaoCredito(db.Model):
   anoVencimento = db.Column(db.String, nullable=False)
   finalCartao = db.Column(db.String, nullable=False)
   pagamentoPadrao = db.Column(db.String, nullable=True)
-  atleta_id = db.Column(db.Integer ,db.ForeignKey("tb_atleta.usuario_id"), nullable=False)
+  atleta_id = db.Column(db.Integer ,db.ForeignKey("tb_atleta.usuario_id", ondelete='CASCADE'), nullable=False)
 
   def __init__(self, atleta_id):
     self.atleta_id = atleta_id
