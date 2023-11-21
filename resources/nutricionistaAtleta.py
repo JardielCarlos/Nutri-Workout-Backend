@@ -6,7 +6,7 @@ from helpers.logger import logger
 from model.atleta import Atleta, atletaFields
 from model.mensagem import Message, msgFields
 from model.notificacaoNutricionista import NotificacaoNutricionista
-from model.nutricionista import Nutricionista
+from model.nutricionista import Nutricionista, nutricionistaAtletasPaginationFields
 
 parser = reqparse.RequestParser()
 
@@ -23,10 +23,25 @@ class NutricionistaAtleta(Resource):
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     nutricionista = Nutricionista.query.get(user_id)
     return marshal(nutricionista.atletas, atletaFields), 200
-  
+
+class NutricionistaAtletaPagination(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, id, max_itens):
+    if tipo != "Nutricionista":
+      logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+
+    nutricionista = Nutricionista.query.get(user_id)
+    atletasPagination = Atleta.query.filter_by(nutricionista_id=user_id).paginate(page=id, per_page=max_itens, error_out=False)
+
+    data = {"atletasNutricionista": atletasPagination.items, "totalAtletas": len(nutricionista.atletas)}
+
+    return marshal(data, nutricionistaAtletasPaginationFields), 200
+
 
 class NutricionistaAtletaId(Resource):
   @token_verify
@@ -35,14 +50,14 @@ class NutricionistaAtletaId(Resource):
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     atleta = Atleta.query.get(id)
     if atleta is None:
       logger.error(f"Atleta de id: {id} nao encontrado")
 
       codigo = Message(1, f"Atleta de id: {id} não encontrado")
       return marshal(codigo, msgFields), 200
-    
+
     nutricionista = Nutricionista.query.get(user_id)
 
     if atleta not in nutricionista.atletas:
@@ -50,9 +65,9 @@ class NutricionistaAtletaId(Resource):
 
       codigo = Message(1, f"Atleta de id: {id} não associado ao nutricionista")
       return marshal(codigo, msgFields), 400
-    
+
     return marshal(atleta, atletaFields), 200
-  
+
   @token_verify
   def put(self, tipo, refreshToken, user_id, id):
     args = parser.parse_args()
@@ -68,7 +83,7 @@ class NutricionistaAtletaId(Resource):
 
         codigo = Message(1, f"Atleta de id: {id} não encontrado")
         return marshal(codigo, msgFields), 200
-      
+
       nutricionista = Nutricionista.query.get(user_id)
 
       if atleta not in nutricionista.atletas:
@@ -76,7 +91,7 @@ class NutricionistaAtletaId(Resource):
 
         codigo = Message(1, f"Atleta de id: {id} não associado ao nutricionista")
         return marshal(codigo, msgFields), 400
-      
+
       atleta.massaMagra = args["massaMagra"]
       atleta.massaGorda = args["massaGorda"]
       atleta.altura = args["altura"]
@@ -115,14 +130,14 @@ class NutricionistaAtletaId(Resource):
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     atleta = Atleta.query.get(id)
     if atleta is None:
       logger.error(f"Atleta de id: {id} nao encontrado")
 
       codigo = Message(1, f"Atleta de id: {id} não encontrado")
       return marshal(codigo, msgFields), 200
-    
+
     nutricionista = Nutricionista.query.get(user_id)
 
     if atleta not in nutricionista.atletas:
@@ -130,7 +145,7 @@ class NutricionistaAtletaId(Resource):
 
       codigo = Message(1, f"Atleta de id: {id} não associado ao nutricionista")
       return marshal(codigo, msgFields), 400
-    
+
     atleta.nutricionista_id = None
     notificacaoAtleta = NotificacaoNutricionista.query.filter_by(atleta_id=atleta.usuario_id).first()
     notificacaoAtleta.solicitacao= False

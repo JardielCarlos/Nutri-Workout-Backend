@@ -9,7 +9,8 @@ from helpers.logger import logger
 from model.atleta import Atleta, atletaAssociatedFields
 from model.mensagem import Message, msgFields
 from model.notificacaoPersonal import NotificacaoPersonal
-from model.personalTrainer import PersonalTrainer
+from model.personalTrainer import (PersonalTrainer,
+                                   personalAtletaPaginationFields)
 from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
 
 parser = reqparse.RequestParser()
@@ -32,29 +33,47 @@ parser.add_argument("atleta", type=int, help="atleta não informado", required=F
 class PersonalAtleta(Resource):
   @token_verify
   def get(self, tipo, refreshToken, user_id):
-    if tipo != "Personal Trainer":
+    print(tipo)
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     personal = PersonalTrainer.query.get(user_id)
     return marshal(personal.atletas, atletaAssociatedFields), 200
+
+class PersonalAtletaPagination(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, id, max_itens):
+    if tipo != "Personal":
+      logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+
+    personal = PersonalTrainer.query.get(user_id)
+    atletasPagination = Atleta.query.filter_by(personal_trainer_id=user_id).paginate(page=id, per_page=max_itens, error_out=False)
+
+    data = {"atletasPersonal": atletasPagination.items, "totalAtletas": len(personal.atletas)}
+
+    return marshal(data, personalAtletaPaginationFields), 200
+
+
 
 class PersonalAtletaId(Resource):
   @token_verify
   def get(self, tipo, refreshToken, user_id, id):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     atleta = Atleta.query.get(id)
     if atleta is None:
       logger.error(f"Atleta de id: {id} nao encontrado")
 
       codigo = Message(1, f"Atleta de id: {id} não encontrado")
       return marshal(codigo, msgFields), 200
-    
+
     personal = PersonalTrainer.query.get(user_id)
 
     if atleta not in personal.atletas:
@@ -62,36 +81,36 @@ class PersonalAtletaId(Resource):
 
       codigo = Message(1, f"Atleta de id: {id} não associado ao personal")
       return marshal(codigo, msgFields), 400
-    
+
     return marshal(atleta, atletaAssociatedFields), 200
-  
+
   @token_verify
   def delete(self, tipo, refreshToken, user_id, id):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     atleta = Atleta.query.get(id)
     if atleta is None:
       logger.error(f"Atleta de id: {id} nao encontrado")
 
       codigo = Message(1, f"Atleta de id: {id} não encontrado")
       return marshal(codigo, msgFields), 200
-    
+
     personal = PersonalTrainer.query.get(user_id)
-    
+
     if atleta not in personal.atletas:
       logger.error(f"Atleta de id:{id} associado a outro personal")
 
       codigo = Message(1, f"Atleta de id: {id} não associado ao personal")
       return marshal(codigo, msgFields), 400
-    
-    
+
+
     atleta.personal_trainer_id = None
     notificacaoAtleta = NotificacaoPersonal.query.filter_by(atleta_id=atleta.usuario_id).first()
     notificacaoAtleta.solicitacao= False
-    
+
     db.session.add(notificacaoAtleta)
     db.session.add(atleta)
     db.session.commit()
@@ -103,7 +122,7 @@ class TabelaTreinoAtleta(Resource):
   @token_verify
   def post(self, tipo, refreshToken, user_id):
     args = parser.parse_args()
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -112,10 +131,10 @@ class TabelaTreinoAtleta(Resource):
 
       if args["atleta"] is None:
         logger.error("atleta nao informado")
-        
+
         codigo = Message(1, "Atleta nao informado")
         return marshal(codigo, msgFields), 400
-      
+
       atleta = Atleta.query.get(args["atleta"])
 
       if len(args["musculoTrabalhado"]) <= 2:
@@ -123,7 +142,7 @@ class TabelaTreinoAtleta(Resource):
 
         codigo = Message(1, f"Escreva o nome de um musculo válido")
         return marshal(codigo, msgFields), 400
-      
+
       if len(args['nomeExercicio']) <= 2:
         logger.error(f"Escreva o nome de um exercicio valido")
 
@@ -135,10 +154,10 @@ class TabelaTreinoAtleta(Resource):
 
         codigo = Message(1, f"Atleta de id: {args['atleta']} não encontrado")
         return marshal(codigo, msgFields), 404
-      
+
       if atleta not in personal.atletas:
         logger.error(f"Atleta de id: {atleta.usuario_id} nao esta associado ao personal trainer de id: {user_id}")
-        
+
         codigo = Message(1, f"Atleta de id: {atleta.usuario_id} não está associado ao personal trainer de id: {user_id}")
         return marshal(codigo, msgFields), 403
 
@@ -157,15 +176,15 @@ class TabelaTreinoAtleta(Resource):
       logger.error(f"Erro ao cadastra a tabela de treino do atleta: {atleta.usuario_id}")
       codigo = Message(2, f"Erro ao cadastra a tabela de treino do atleta: {atleta.usuario_id}")
       return marshal(codigo, msgFields), 400
-    
+
 class TabelaTreinoAtletaId(Resource):
   @token_verify
   def get(self, tipo, refreshToken, user_id, id):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     tabelaTreino = TabelaTreino.query.filter_by(atleta=id, personal=user_id).first()
     if tabelaTreino is None:
       return [], 200
@@ -173,7 +192,7 @@ class TabelaTreinoAtletaId(Resource):
   @token_verify
   def put(self,tipo, refreshToken, user_id, id):
     args = parser.parse_args()
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -183,13 +202,13 @@ class TabelaTreinoAtletaId(Resource):
 
         codigo = Message(1, f"Escreva o nome de um musculo válido")
         return marshal(codigo, msgFields), 400
-      
+
       if len(args['nomeExercicio']) <= 2:
         logger.error(f"Escreva o nome de um exercicio valido")
 
         codigo = Message(1, f"Escreva o nome de um exercicio válido")
         return marshal(codigo, msgFields), 400
-      
+
       atleta = Atleta.query.get(id)
 
       if atleta is None:
@@ -197,16 +216,16 @@ class TabelaTreinoAtletaId(Resource):
 
         codigo = Message(1, f"Atleta de id: {id} nao encontrado")
         return marshal(codigo, msgFields), 400
-      
+
       tabelaTreino = TabelaTreino.query.filter_by(atleta=atleta.usuario_id).first()
       personal = PersonalTrainer.query.get(user_id)
-      
+
       if atleta not in personal.atletas:
         logger.error(f"Atleta de id: {atleta.usuario_id} nao esta associado ao personal trainer de id: {user_id}")
-        
+
         codigo = Message(1, f"Atleta de id: {atleta.usuario_id} não está associado ao personal trainer de id: {user_id}")
         return marshal(codigo, msgFields), 403
-      
+
       tabelaTreino.semanaInicio = args["semanaInicio"]
       tabelaTreino.semanaFim = args["semanaFim"]
       tabelaTreino.musculoTrabalhado = args["musculoTrabalhado"],

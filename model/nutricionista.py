@@ -40,6 +40,11 @@ nutricionistaPagination = {
   "totalNutricionistas": fields.Integer
 }
 
+nutricionistaAtletasPaginationFields = {
+  "atletasNutricionista": fields.Nested(atletaAssociatedFields),
+  "totalAtletas": fields.Integer
+}
+
 class Nutricionista(Usuario):
   __tablename__= "tb_nutricionista"
 

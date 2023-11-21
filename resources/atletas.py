@@ -586,7 +586,6 @@ class RequestPersonal(Resource):
     codigo = Message(0, "Solicitação do personal cancelada com sucesso")
     return marshal(codigo, msgFields), 200
 
-
 class AtletaPagination(Resource):
   def get(self, id, max_itens):
     atletas = Atleta.query.all()

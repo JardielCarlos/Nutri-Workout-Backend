@@ -24,17 +24,17 @@ class TabelaTreinoAtleta(Resource):
 
   @token_verify
   def get(self, tipo, refreshToken, user_id):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar a tabela de treino")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     tabelaTreino = TabelaTreino.query.filter_by(personal=user_id).all()
     return marshal(tabelaTreino, tabelaTreinoFields),200
   @token_verify
   def post(self, tipo, refreshToken, user_id):
     args = parser.parse_args()
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar a tabela de treino")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -43,23 +43,23 @@ class TabelaTreinoAtleta(Resource):
 
       if args["atleta"] is None:
         logger.error("atleta nao informado")
-        
+
         codigo = Message(1, "Atleta não informado")
         return marshal(codigo, msgFields), 400
-      
+
       atleta = Atleta.query.get(args["atleta"])
       if atleta is None:
         logger.error(f"Atleta de id: {args['atleta']} nao encotrado")
 
         codigo = Message(1, f"Atleta de id: {args['atleta']} não encontrado")
         return marshal(codigo, msgFields), 404
-      
+
       if atleta not in personal.atletas:
         logger.error(f"Atleta de id: {atleta.usuario_id} nao esta associado ao personal trainer de id: {user_id}")
-        
+
         codigo = Message(1, f"Atleta de id: {atleta.usuario_id} não está associado ao personal trainer de id: {user_id}")
         return marshal(codigo, msgFields), 403
-      
+
       tabelaTreino = TabelaTreino(args["semanaInicio"], args["semanaFim"], args["atleta"], personal.usuario_id)
 
       db.session.add(tabelaTreino)
@@ -67,7 +67,7 @@ class TabelaTreinoAtleta(Resource):
 
       logger.info(f"tabela de treino do atleta de id: {atleta.usuario_id} criado com sucesso")
       return marshal(tabelaTreino, tabelaTreinoFields), 201
-    
+
     except IntegrityError:
       logger.error(f"O atleta ja tem uma tabela de treino associada")
       codigo = Message(1, "O atleta já tem uma tabela de treino associada")
@@ -76,12 +76,12 @@ class TabelaTreinoAtleta(Resource):
       logger.error(f"Erro ao cadastra a tabela de treino do atleta: {atleta.usuario_id}")
       codigo = Message(2, f"Erro ao cadastra a tabela de treino do atleta: {atleta.usuario_id}")
       return marshal(codigo, msgFields), 400
-    
+
 class TabelaTreinoAtletaId(Resource):
   @token_verify
   def put(self, tipo, refreshToken, user_id, id):
     args = parser.parse_args()
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar a tabela de treino")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -93,7 +93,7 @@ class TabelaTreinoAtletaId(Resource):
 
         codigo = Message(1, f"Tabela de treino de id: {id} não encontrada")
         return marshal(codigo, msgFields), 400
-      
+
       tabelaTreino.semanaInicio = args["semanaInicio"]
       tabelaTreino.semanaFim = args["semanaFim"]
 
@@ -104,14 +104,14 @@ class TabelaTreinoAtletaId(Resource):
 
       codigo = Message(2, "Erro ao atualizar a tabela de treino")
       return marshal(codigo, msgFields), 400
-  
+
   @token_verify
   def delete(self, tipo, refreshToken, user_id, id):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar a tabela de treino")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     tabelaTreino = TabelaTreino.query.get(id)
     db.session.delete(tabelaTreino)
     db.session.commit()
