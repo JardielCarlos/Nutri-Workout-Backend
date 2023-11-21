@@ -1,12 +1,10 @@
-from flask_restful import Resource, reqparse, marshal
+from flask_restful import Resource, marshal, reqparse
 
 from helpers.auth.token_verifier import token_verify
-
 from helpers.database import db
 from helpers.logger import logger
-
-from model.mensagem import Message, msgFields
 from model.exercicioAtleta import ExercicioAtleta, exercicioFields
+from model.mensagem import Message, msgFields
 from model.tabelaTreino import TabelaTreino
 
 parser = reqparse.RequestParser()
@@ -24,7 +22,7 @@ parser.add_argument("observacoes", type=str, help="observações não informadas
 class ExerciciosAtleta(Resource):
   @token_verify
   def post(self, tipo, refreshToken, user_id):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os exercicios do atleta")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -40,13 +38,13 @@ class ExerciciosAtleta(Resource):
 
           codigo = Message(1, f"Escreva o nome de um musculo válido")
           return marshal(codigo, msgFields), 400
-        
+
       if len(args['nomeExercicio']) <= 2:
         logger.error(f"Escreva o nome de um exercicio valido")
 
         codigo = Message(1, f"Escreva o nome de um exercicio válido")
         return marshal(codigo, msgFields), 400
-      
+
       tabelaTreino = TabelaTreino.query.get(args["idTabela"])
 
       if tabelaTreino is None:
@@ -54,7 +52,7 @@ class ExerciciosAtleta(Resource):
 
         codigo = Message(1, f"Tabela de id: {args['idTabela']} não encontrado")
         return marshal(codigo, msgFields), 400
-      
+
       exercicio = ExercicioAtleta(tabelaTreino, args["musculoTrabalhado"], args["nomeExercicio"], args["series"], args["repeticao"], args["kg"], args["descanso"], args["unidadeDescanso"], args["observacoes"])
 
       tabelaTreino.exercicios.append(exercicio)
@@ -70,35 +68,35 @@ class ExerciciosAtleta(Resource):
 
       codigo = Message(2, "Erro ao cadastrar o exercicio")
       return marshal(codigo, msgFields), 400
-  
+
 class ExercicioAtletaId(Resource):
   @token_verify
   def put(self, tipo, refreshToken, user_id, id):
     args = parser.parse_args()
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os exercicios do atleta")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     exercicio = ExercicioAtleta.query.get(id)
     if exercicio is None:
       logger.error(f"Exercicio de id: {id} nao encontrado")
 
       codigo = Message(1, f"Exercicio de id: {id} não encontrado")
       return marshal(codigo, msgFields), 200
-    
+
     if len(args["musculoTrabalhado"]) <= 2:
         logger.error(f"Escreva o nome de um musculo valido")
 
         codigo = Message(1, f"Escreva o nome de um musculo válido")
         return marshal(codigo, msgFields), 400
-      
+
     if len(args['nomeExercicio']) <= 2:
       logger.error(f"Escreva o nome de um exercicio valido")
 
       codigo = Message(1, f"Escreva o nome de um exercicio válido")
       return marshal(codigo, msgFields), 400
-    
+
     exercicio.musculoTrabalhado = args["musculoTrabalhado"]
     exercicio.nomeExercicio = args["nomeExercicio"]
     exercicio.series = args["series"]
@@ -112,74 +110,73 @@ class ExercicioAtletaId(Resource):
     db.session.commit()
     logger.info(f"Exercicio de id: {id} atualizado com sucesso")
     return marshal(exercicio, exercicioFields)
-  
+
   @token_verify
   def delete(self, tipo, refreshToken, user_id, id):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os exercicios do atleta")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     exercicio = ExercicioAtleta.query.get(id)
     if exercicio is None:
       logger.error(f"Exercicio de id: {id} nao encontrado")
 
       codigo = Message(1, f"Exercicio de id: {id} não encontrado")
       return marshal(codigo, msgFields), 200
-    
+
     db.session.delete(exercicio)
     db.session.commit()
 
     logger.info(f"Exercicio de id: {id} nao encontrado")
     return {}, 200
-  
+
 class ExercicioAtletaTabela(Resource):
   @token_verify
   def get(self, tipo, refreshToken, user_id, id_tabela):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os exercicios do atleta")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-     
+
     tabelaTreino = TabelaTreino.query.get(id_tabela)
 
     if tabelaTreino is None:
       logger.error(f"Tabela de treino de id: {id_tabela} nao encontrada")
-    
+
       codigo = Message(1, f"Tabela de treino de id: {id_tabela} não encontrada")
       return marshal(codigo, msgFields), 200
-    
+
     return marshal(tabelaTreino.exercicios, exercicioFields), 200
-  
+
 class ExercicioAtletaTabelaId(Resource):
   @token_verify
   def get(self, tipo, refreshToken, user_id, id_tabela, id_exercicio):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os exercicios do atleta")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
-    
+
     tabelaTreino = TabelaTreino.query.get(id_tabela)
 
     if tabelaTreino is None:
       logger.error(f"Tabela de treino de id: {id_tabela} nao encontrada")
-    
+
       codigo = Message(1, f"Tabela de treino de id: {id_tabela} não encontrada")
       return marshal(codigo, msgFields), 200
-    
+
     exercicio = ExercicioAtleta.query.get(id_exercicio)
 
     if exercicio is None:
       logger.error(f"Exercicio de id: {id_exercicio} nao encontrada")
-  
+
       codigo = Message(1, f"Exercicio de id: {id_exercicio} não encontrada")
       return marshal(codigo, msgFields), 200
-    
+
     if exercicio not in tabelaTreino.exercicios:
       logger.error(f"Exercicio nao encontrado na tabela de treino")
-      
+
       codigo = Message(1, f"Exercicio não encontrado na tabela de treino")
       return marshal(codigo, msgFields), 200
-    
+
     return marshal(exercicio, exercicioFields), 200
-        

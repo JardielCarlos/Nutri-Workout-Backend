@@ -9,7 +9,8 @@ from helpers.logger import logger
 from model.atleta import Atleta, atletaAssociatedFields
 from model.mensagem import Message, msgFields
 from model.notificacaoPersonal import NotificacaoPersonal
-from model.personalTrainer import PersonalTrainer
+from model.personalTrainer import (PersonalTrainer,
+                                   personalAtletaPaginationFields)
 from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
 
 parser = reqparse.RequestParser()
@@ -32,18 +33,36 @@ parser.add_argument("atleta", type=int, help="atleta não informado", required=F
 class PersonalAtleta(Resource):
   @token_verify
   def get(self, tipo, refreshToken, user_id):
-    if tipo != "Personal Trainer":
+    print(tipo)
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
 
     personal = PersonalTrainer.query.get(user_id)
     return marshal(personal.atletas, atletaAssociatedFields), 200
-  
+
+class PersonalAtletaPagination(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, id, max_itens):
+    if tipo != "Personal":
+      logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+
+    personal = PersonalTrainer.query.get(user_id)
+    atletasPagination = Atleta.query.filter_by(personal_trainer_id=user_id).paginate(page=id, per_page=max_itens, error_out=False)
+
+    data = {"atletasPersonal": atletasPagination.items, "totalAtletas": len(personal.atletas)}
+
+    return marshal(data, personalAtletaPaginationFields), 200
+
+
+
 class PersonalAtletaId(Resource):
   @token_verify
   def get(self, tipo, refreshToken, user_id, id):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -67,7 +86,7 @@ class PersonalAtletaId(Resource):
 
   @token_verify
   def delete(self, tipo, refreshToken, user_id, id):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -103,7 +122,7 @@ class TabelaTreinoAtleta(Resource):
   @token_verify
   def post(self, tipo, refreshToken, user_id):
     args = parser.parse_args()
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -161,7 +180,7 @@ class TabelaTreinoAtleta(Resource):
 class TabelaTreinoAtletaId(Resource):
   @token_verify
   def get(self, tipo, refreshToken, user_id, id):
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
@@ -173,7 +192,7 @@ class TabelaTreinoAtletaId(Resource):
   @token_verify
   def put(self,tipo, refreshToken, user_id, id):
     args = parser.parse_args()
-    if tipo != "Personal Trainer":
+    if tipo != "Personal":
       logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403

@@ -41,6 +41,11 @@ personalTrainerPagination = {
   "totalPersonais": fields.Integer
 }
 
+personalAtletaPaginationFields = {
+  "atletasPersonal": fields.Nested(atletaAssociatedFields),
+  "totalAtletas":fields.Integer
+}
+
 class PersonalTrainer(Usuario):
   __tablename__="tb_personalTrainer"
 

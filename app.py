@@ -14,11 +14,11 @@ from resources.ingredienteAtleta import IngredienteAtleta, IngredienteAtletaId
 from resources.login import Login
 from resources.logout import Logout
 
-from resources.nutricionistaAtleta import NutricionistaAtleta, NutricionistaAtletaId
+from resources.nutricionistaAtleta import NutricionistaAtleta, NutricionistaAtletaId, NutricionistaAtletaPagination
 from resources.nutricionistas import NutricionistaId, NutricionistaImg, NutricionistaNome,NutricionistaNotificacaoState, NutricionistaNotificacoes, NutricionistaNotificacoesId,NutricionistaPagination, Nutricionistas
 
 from resources.PersonaisTrainer import PersonaisTrainer, PersonalImg, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerId, PersonalTrainerNome,PersonalTrainerNotificacaoState, PersonalTrainerPagination
-from resources.personalAtleta import PersonalAtleta, PersonalAtletaId
+from resources.personalAtleta import PersonalAtleta, PersonalAtletaId, PersonalAtletaPagination
 from resources.tabelaTreinoAtleta import TabelaTreinoAtleta, TabelaTreinoAtletaId
 from resources.ExercicioAtleta import ExerciciosAtleta, ExercicioAtletaId, ExercicioAtletaTabela, ExercicioAtletaTabelaId
 from resources.usuario import UsuarioId, UsuarioNome, Usuarios, UsuarioPagination
@@ -60,6 +60,7 @@ api.add_resource(PersonalTrainerPagination, '/personalTraineres/<int:id>/<int:ma
 api.add_resource(PersonalImg, '/personal/imagem/<int:id>')
 api.add_resource(PersonalAtleta, '/personal/atleta')
 api.add_resource(PersonalAtletaId, '/personal/atleta/<int:id>')
+api.add_resource(PersonalAtletaPagination, '/personal/atleta/<int:id>/<int:max_itens>')
 api.add_resource(TabelaTreinoAtleta, '/personal/atleta/tabelaTreino')
 api.add_resource(TabelaTreinoAtletaId, '/personal/atleta/tabelaTreino/<int:id>')
 api.add_resource(ExerciciosAtleta, '/personal/atleta/tabelaTreino/exercicio')
@@ -78,6 +79,7 @@ api.add_resource(NutricionistaPagination, "/nutricionistas/<int:id>/<int:max_ite
 api.add_resource(NutricionistaImg, '/nutricionista/imagem/<int:id>')
 api.add_resource(NutricionistaAtleta, '/nutricionista/atleta')
 api.add_resource(NutricionistaAtletaId, '/nutricionista/atleta/<int:id>')
+api.add_resource(NutricionistaAtletaPagination, '/nutricionista/atleta/<int:id>/<int:max_itens>')
 api.add_resource(CardapioAtletaNutri, '/nutricionista/atleta/cardapio')
 api.add_resource(CardapioAtletaNutriId, '/nutricionista/atleta/cardapio/<int:id>')
 api.add_resource(RefeicaoAtleta, '/nutricionista/atleta/refeicao/<int:id_cardapio>')
