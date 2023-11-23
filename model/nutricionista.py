@@ -1,7 +1,7 @@
 from flask_restful import fields
 
 from helpers.database import db
-from model.atleta import Atleta, atletaAssociatedFields
+from model.atleta import Atleta, atletaAssociatedFields, atletaFields
 from model.usuario import Usuario
 
 nutricionistaFields = {
@@ -41,7 +41,7 @@ nutricionistaPagination = {
 }
 
 nutricionistaAtletasPaginationFields = {
-  "atletasNutricionista": fields.Nested(atletaAssociatedFields),
+  "atletasNutricionista": fields.Nested(atletaFields),
   "totalAtletas": fields.Integer
 }
 

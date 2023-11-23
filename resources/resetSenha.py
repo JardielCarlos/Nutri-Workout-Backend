@@ -7,6 +7,8 @@ from model.mensagem import  Message, msgFields
 from model.usuario import Usuario
 from jwt import encode
 from datetime import datetime, timedelta
+
+
 parser = reqparse.RequestParser()
 
 parser.add_argument("email", type=str, help="Email não informado", required=False)

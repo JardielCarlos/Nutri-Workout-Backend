@@ -493,6 +493,11 @@ class RequestNutricionista(Resource):
 
       msg = f"O atleta {atleta.nome} esta solicitando um(a) nutricionista, você gostaria de aceitar?"
 
+      if atleta.nutricionista_id is not None:
+        logger.error("Atleta ja possui um nutricionista")
+        codigo = Message(1, "Atleta já possui um nutricionista")
+        return marshal(codigo, msgFields), 400
+
       notificacao = NotificacaoNutricionista(atleta.nome, atleta.email, msg, atleta)
 
       db.session.add(notificacao)
@@ -552,6 +557,11 @@ class RequestPersonal(Resource):
       atleta = Atleta.query.get(user_id)
 
       msg = f"O atleta {atleta.nome} esta solicitando um personal trainer, você gostaria de aceitar?"
+
+      if atleta.personal_trainer_id is not None:
+        logger.error("Atleta ja possui um Personal")
+        codigo = Message(1, "Atleta já possui um Personal")
+        return marshal(codigo, msgFields), 400
 
       notificacao = NotificacaoPersonal(atleta.nome, atleta.email, msg, atleta)
       db.session.add(notificacao)
