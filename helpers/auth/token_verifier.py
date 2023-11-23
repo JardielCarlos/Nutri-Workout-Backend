@@ -32,7 +32,7 @@ def token_verify(function: callable) -> callable:
     except ExpiredSignatureError:
       token = Token("Token Expirado")
       return marshal(token, tokenFields), 401
-    
+
     except DecodeError:
       token = Token("Token no formato errado")
       return marshal(token, tokenFields), 401

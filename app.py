@@ -1,7 +1,10 @@
 from flask import Flask
 from flask_restful import Api
+from helpers.mail import mail
 from helpers.configCORS import cors
 from helpers.database import db, migrate
+from dotenv import load_dotenv
+from os import getenv
 
 from resources.administradores import Administradores, AdministradorId, AdministradorImg, AdministradorNome
 
@@ -24,16 +27,27 @@ from resources.ExercicioAtleta import ExerciciosAtleta, ExercicioAtletaId, Exerc
 from resources.usuario import UsuarioId, UsuarioNome, Usuarios, UsuarioPagination
 
 from resources.produtosNutriWorkOut import ProdutosNutriWorkOut, ProdutosNutriWorkOutId
+from resources.planosNutriWorkOut import PlanosNutriWorkOut, PlanosNutriWorkOutId
+from resources.cartaoCredito import CartaoCreditoAtleta, CartaoCreditoAtletaId
+from resources.assinaturas import Assinaturas
+from resources.stripeWebHook import StripeWeebHook
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:senhasecreta@localhost:5432/NutriWorkout"
 app.config['SECRET_KEY'] = 'senhasecreta'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = getenv('EMAIL_USER')
+app.config['MAIL_PASSWORD'] = getenv('EMAIL_PASS')
 
 db.init_app(app)
 cors.init_app(app)
 migrate.__init__(app, db)
 api = Api(app)
+mail.init_app(app)
 
 api.add_resource(Atletas, '/atletas')
 api.add_resource(AtletaId, '/atleta/<int:id>')
@@ -44,6 +58,8 @@ api.add_resource(RequestPersonal, '/atleta/solicitar-personal')
 api.add_resource(RequestNutricionista, '/atleta/solicitar-nutricionista')
 api.add_resource(TabelaAtleta, '/atleta/tabelaTreino')
 api.add_resource(CardapioAtleta, '/atleta/cardapio')
+api.add_resource(CartaoCreditoAtleta, '/cartaoCredito')
+api.add_resource(CartaoCreditoAtletaId, '/cartaoCredito/<int:id>')
 
 api.add_resource(PersonaisTrainer, '/personalTrainer')
 api.add_resource(PersonalTrainerId, '/personalTrainer/<int:id>')
@@ -98,6 +114,11 @@ api.add_resource(Logout, '/logout')
 api.add_resource(ProdutosNutriWorkOut, '/produtos')
 api.add_resource(ProdutosNutriWorkOutId, '/produtos/<int:id>')
 
+api.add_resource(PlanosNutriWorkOut, '/planos')
+api.add_resource(PlanosNutriWorkOutId, '/planos/<int:id>')
+
+api.add_resource(Assinaturas, '/assinaturas')
+api.add_resource(StripeWeebHook, '/webhook')
 
 if __name__ == '__main__':
   app.run(debug=True)

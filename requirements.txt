@@ -12,3 +12,4 @@ validate_docbr==1.10.0
 Pillow==10.0.1
 psycopg2-binary===2.9.9
 stripe===7.4.0
+Flask-Mail===0.9.1
