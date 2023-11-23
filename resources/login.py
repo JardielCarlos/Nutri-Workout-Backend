@@ -26,15 +26,6 @@ class Login(Resource):
       codigo = Message(1, "Senha Incorreta ou inexistente")
       return marshal(codigo, msgFields), 404
 
-    # if user.tipo == 'Atleta':
-    #   atleta = Atleta.query.filter_by(email=args["email"]).first()
-    #   if atleta.statusPagamento != 'active' or atleta.statusPagamento != 'trialing':
-    #     logger.error("Atleta sem assinatura ou com pendencia na assinatura")
-    #     codigo = Message(1, "Atleta sem assinatura ou com pendências na assinatura")
-    #     return marshal(codigo, msgFields), 400
-
-
-
     inicialNome = user.nome[0] + user.sobrenome[0]
     token = token_creator.create(user.tipo, user.id)
 

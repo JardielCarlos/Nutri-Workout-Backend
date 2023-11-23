@@ -16,7 +16,6 @@ def subscribe_verifier(function: callable) -> callable:
 
     if tipo == "Atleta":
       atleta = Atleta.query.get(id)
-      print(atleta.statusPagamento)
       if atleta.statusPagamento != 'active' and atleta.statusPagamento != 'trialing':
         logger.error("Atleta sem assinatura ou com pendencia na assinatura")
         codigo = Message(1, "Atleta sem assinatura ou com pendências na assinatura")

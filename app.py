@@ -1,7 +1,10 @@
 from flask import Flask
 from flask_restful import Api
+from helpers.mail import mail
 from helpers.configCORS import cors
 from helpers.database import db, migrate
+from dotenv import load_dotenv
+from os import getenv
 
 from resources.administradores import Administradores, AdministradorId, AdministradorImg, AdministradorNome
 
@@ -28,15 +31,23 @@ from resources.planosNutriWorkOut import PlanosNutriWorkOut, PlanosNutriWorkOutI
 from resources.cartaoCredito import CartaoCreditoAtleta, CartaoCreditoAtletaId
 from resources.assinaturas import Assinaturas
 from resources.stripeWebHook import StripeWeebHook
+load_dotenv()
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:senhasecreta@localhost:5432/NutriWorkout"
 app.config['SECRET_KEY'] = 'senhasecreta'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = getenv('EMAIL_USER')
+app.config['MAIL_PASSWORD'] = getenv('EMAIL_PASS')
 
 db.init_app(app)
 cors.init_app(app)
 migrate.__init__(app, db)
 api = Api(app)
+mail.init_app(app)
 
 api.add_resource(Atletas, '/atletas')
 api.add_resource(AtletaId, '/atleta/<int:id>')
