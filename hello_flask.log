@@ -1,23 +1,2 @@
-2023-11-21 12:49:44,738 WARNING _internal _log  * Debugger is active!
-2023-11-21 12:49:44,742 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-11-21 12:49:46,173 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:49:46] "POST /login HTTP/1.1" 200 -
-2023-11-21 12:49:58,321 INFO atletas post Solicitação de nutricionista realizada com sucesso pelo atleta de id: 24 
-2023-11-21 12:49:58,322 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:49:58] "[35m[1mPOST /atleta/solicitar-nutricionista HTTP/1.1[0m" 201 -
-2023-11-21 12:49:59,912 ERROR atletas post O atleta ja tem um nutricionista ou ainda nao foi aceito por algum nutricionista
-2023-11-21 12:49:59,913 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:49:59] "[31m[1mPOST /atleta/solicitar-nutricionista HTTP/1.1[0m" 400 -
-2023-11-21 12:50:15,298 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:50:15] "POST /login HTTP/1.1" 200 -
-2023-11-21 12:50:25,345 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:50:25] "POST /login HTTP/1.1" 200 -
-2023-11-21 12:50:32,400 INFO atletas post Solicitação de nutricionista realizada com sucesso pelo atleta de id: 25 
-2023-11-21 12:50:32,401 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:50:32] "[35m[1mPOST /atleta/solicitar-nutricionista HTTP/1.1[0m" 201 -
-2023-11-21 12:50:45,603 INFO nutricionistas get Nutricionistas listados com sucesso
-2023-11-21 12:50:45,609 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:50:45] "GET /nutricionista HTTP/1.1" 200 -
-2023-11-21 12:50:54,630 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:50:54] "POST /login HTTP/1.1" 200 -
-2023-11-21 12:51:08,689 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:51:08] "POST /login HTTP/1.1" 200 -
-2023-11-21 12:51:11,540 INFO nutricionistas get Notificacoes dos nutricionista listado com sucesso
-2023-11-21 12:51:11,540 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:51:11] "GET /nutricionista/notificacoes HTTP/1.1" 200 -
-2023-11-21 12:51:25,497 INFO nutricionistas patch O nutricionista aceitou o atleta: lucas como seu aluno
-2023-11-21 12:51:25,499 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:51:25] "PATCH /nutricionista/notificacao HTTP/1.1" 200 -
-2023-11-21 12:51:27,853 INFO nutricionistas patch O nutricionista aceitou o atleta: pedro como seu aluno
-2023-11-21 12:51:27,855 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:51:27] "PATCH /nutricionista/notificacao HTTP/1.1" 200 -
-2023-11-21 12:51:40,929 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:51:40] "GET /nutricionista/atleta/1/1 HTTP/1.1" 200 -
-2023-11-21 12:51:44,303 INFO _internal _log 127.0.0.1 - - [21/Nov/2023 12:51:44] "GET /nutricionista/atleta/1/2 HTTP/1.1" 200 -
+2023-11-23 00:09:50,598 WARNING _internal _log  * Debugger is active!
+2023-11-23 00:09:50,602 INFO _internal _log  * Debugger PIN: 142-454-007
