@@ -31,6 +31,8 @@ from resources.planosNutriWorkOut import PlanosNutriWorkOut, PlanosNutriWorkOutI
 from resources.cartaoCredito import CartaoCreditoAtleta, CartaoCreditoAtletaId
 from resources.assinaturas import Assinaturas
 from resources.stripeWebHook import StripeWeebHook
+from resources.resetSenha import ResetSenha
+from resources.newSenha import NewSenha
 load_dotenv()
 
 app = Flask(__name__)
@@ -60,6 +62,8 @@ api.add_resource(TabelaAtleta, '/atleta/tabelaTreino')
 api.add_resource(CardapioAtleta, '/atleta/cardapio')
 api.add_resource(CartaoCreditoAtleta, '/cartaoCredito')
 api.add_resource(CartaoCreditoAtletaId, '/cartaoCredito/<int:id>')
+api.add_resource(ResetSenha, "/solicitar-recuperacao")
+api.add_resource(NewSenha, '/reset_password/<string:token>')
 
 api.add_resource(PersonaisTrainer, '/personalTrainer')
 api.add_resource(PersonalTrainerId, '/personalTrainer/<int:id>')
