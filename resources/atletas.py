@@ -413,7 +413,7 @@ class AtletaImg(Resource):
 
 class TabelaAtleta(Resource):
   @token_verify
-  @subscribe_verifier
+  # @subscribe_verifier
   def get(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a tabela do atleta")
@@ -439,7 +439,7 @@ class TabelaAtleta(Resource):
 
 class CardapioAtleta(Resource):
   @token_verify
-  @subscribe_verifier
+  # @subscribe_verifier
   def get(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a tabela do atleta")
@@ -481,7 +481,7 @@ class AtletaNome(Resource):
 
 class RequestNutricionista(Resource):
   @token_verify
-  @subscribe_verifier
+  # @subscribe_verifier
   def post(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a requisição de nutricionista")
