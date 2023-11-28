@@ -1,22 +1,6 @@
-2023-11-28 09:31:45,628 INFO _internal _log [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
- * Running on http://127.0.0.1:5000
-2023-11-28 09:31:45,629 INFO _internal _log [33mPress CTRL+C to quit[0m
-2023-11-28 09:37:40,344 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:37:40] "OPTIONS /login HTTP/1.1" 200 -
-2023-11-28 09:37:40,934 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:37:40] "POST /login HTTP/1.1" 200 -
-2023-11-28 09:37:40,962 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:37:40] "OPTIONS /atleta/6 HTTP/1.1" 200 -
-2023-11-28 09:37:41,280 INFO atletas get Atleta de id: 6 listado com sucesso
-2023-11-28 09:37:41,282 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:37:41] "GET /atleta/6 HTTP/1.1" 200 -
-2023-11-28 09:37:41,606 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:37:41] "GET /atleta/imagem/6 HTTP/1.1" 200 -
-2023-11-28 09:37:57,169 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:37:57] "GET /atleta/imagem/6 HTTP/1.1" 200 -
-2023-11-28 09:37:58,083 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:37:58] "OPTIONS /logout HTTP/1.1" 200 -
-2023-11-28 09:37:58,407 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:37:58] "[35m[1mPOST /logout HTTP/1.1[0m" 204 -
-2023-11-28 09:39:26,079 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:39:26] "OPTIONS /atletas HTTP/1.1" 200 -
-2023-11-28 09:39:26,352 INFO util log_info message='Request to Stripe api' method=post path=https://api.stripe.com/v1/customers
-2023-11-28 09:39:27,222 INFO util log_info message='Stripe API response' path=https://api.stripe.com/v1/customers response_code=200
-2023-11-28 09:39:27,403 INFO atletas post Atleta de id: 7 criado com sucesso
-2023-11-28 09:39:27,404 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:39:27] "[35m[1mPOST /atletas HTTP/1.1[0m" 201 -
-2023-11-28 09:40:56,227 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:40:56] "OPTIONS /atletas HTTP/1.1" 200 -
-2023-11-28 09:40:56,492 INFO util log_info message='Request to Stripe api' method=post path=https://api.stripe.com/v1/customers
-2023-11-28 09:40:57,302 INFO util log_info message='Stripe API response' path=https://api.stripe.com/v1/customers response_code=200
-2023-11-28 09:40:57,475 INFO atletas post Atleta de id: 8 criado com sucesso
-2023-11-28 09:40:57,476 INFO _internal _log 127.0.0.1 - - [28/Nov/2023 09:40:57] "[35m[1mPOST /atletas HTTP/1.1[0m" 201 -
+
+2023-11-26 19:08:09,207 WARNING _internal _log  * Debugger is active!
+2023-11-26 19:08:09,223 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-11-26 19:08:10,466 INFO cardapioAtleta delete O cardapio de id: 6 deletado com sucesso
+2023-11-26 19:08:10,508 INFO _internal _log 127.0.0.1 - - [26/Nov/2023 19:08:10] "DELETE /nutricionista/atleta/cardapio/6 HTTP/1.1" 200 -
+2023-11-26 19:08:17,281 INFO _internal _log 127.0.0.1 - - [26/Nov/2023 19:08:17] "GET /nutricionista/atleta/cardapio HTTP/1.1" 200 -
