@@ -96,6 +96,28 @@ class RefeicaoAtleta(Resource):
 
 class RefeicaoAtletaId(Resource):
   @token_verify
+  def get(self, tipo, refreshToken, user_id, id_cardapio, id):
+    if tipo != "Nutricionista":
+      logger.error("Usuario sem autorizacao para acessar o cardapio do atleta")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+
+    cardapio = Cardapio.query.get(id_cardapio)
+    if cardapio is None:
+      logger.error(f"Cardapio de id: {id_cardapio} nao encontrado")
+
+      codigo = Message(1, f"Cardapio de id: {id_cardapio} não encontrado")
+      return marshal(codigo, msgFields), 400
+
+    refeicao = Refeicao.query.get(id)
+    if refeicao is None:
+      logger.error(f"Refeicao de id: {id} nao encontrado")
+      codigo = Message(1, f"Refeição de id: {id} não encontrado")
+      return marshal(codigo, msgFields), 400
+
+    return marshal(refeicao, refeicaoFields), 200
+
+  @token_verify
   def put(self, tipo, refreshToken, user_id, id_cardapio, id):
     args = parser.parse_args()
     if tipo != "Nutricionista":
