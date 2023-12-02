@@ -364,3 +364,7 @@ class IngredienteAtletaPagination(Resource):
 
     logger.info("Ingredientes listado com sucesso")
     return marshal(data, ingredienteFieldsPagination), 200
+
+class test(Resource):
+  def get(self):
+    pass
