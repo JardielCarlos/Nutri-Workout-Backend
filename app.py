@@ -12,16 +12,16 @@ from resources.atletas import AtletaId, AtletaImg, AtletaNome, AtletaPagination,
 
 from resources.cardapioAtleta import CardapioAtletaNutri, CardapioAtletaNutriId
 from resources.refeicaoAtleta import RefeicaoAtleta, RefeicaoAtletaId
-from resources.ingredienteAtleta import IngredienteAtleta, IngredienteAtletaId
+from resources.ingredienteAtleta import IngredienteAtleta, IngredienteAtletaId, IngredienteAtletaPagination
 
 from resources.login import Login
 from resources.logout import Logout
 
-from resources.nutricionistaAtleta import NutricionistaAtleta, NutricionistaAtletaId, NutricionistaAtletaPagination
+from resources.nutricionistaAtleta import NutricionistaAtleta, NutricionistaAtletaId, NutricionistaAtletaPagination, NutricionistaAtletaNome
 from resources.nutricionistas import NutricionistaId, NutricionistaImg, NutricionistaNome,NutricionistaNotificacaoState, NutricionistaNotificacoes, NutricionistaNotificacoesId,NutricionistaPagination, Nutricionistas
 
 from resources.PersonaisTrainer import PersonaisTrainer, PersonalImg, PersonalNotificacoes, PersonalNotificacoesId, PersonalTrainerId, PersonalTrainerNome,PersonalTrainerNotificacaoState, PersonalTrainerPagination
-from resources.personalAtleta import PersonalAtleta, PersonalAtletaId, PersonalAtletaPagination
+from resources.personalAtleta import PersonalAtleta, PersonalAtletaId, PersonalAtletaPagination, PersonalAtletaNome
 from resources.tabelaTreinoAtleta import TabelaTreinoAtleta, TabelaTreinoAtletaId
 from resources.ExercicioAtleta import ExerciciosAtleta, ExercicioAtletaId, ExercicioAtletaTabela, ExercicioAtletaTabelaId
 from resources.usuario import UsuarioId, UsuarioNome, Usuarios, UsuarioPagination
@@ -31,6 +31,7 @@ from resources.planosNutriWorkOut import PlanosNutriWorkOut, PlanosNutriWorkOutI
 from resources.cartaoCredito import CartaoCreditoAtleta, CartaoCreditoAtletaId
 from resources.assinaturas import Assinaturas
 from resources.stripeWebHook import StripeWeebHook
+
 from resources.resetSenha import ResetSenha
 from resources.newSenha import NewSenha
 load_dotenv()
@@ -74,6 +75,7 @@ api.add_resource(PersonalTrainerNotificacaoState, '/personalTrainer/notificacao'
 api.add_resource(PersonalTrainerPagination, '/personalTraineres/<int:id>/<int:max_itens>')
 api.add_resource(PersonalImg, '/personal/imagem/<int:id>')
 api.add_resource(PersonalAtleta, '/personal/atleta')
+api.add_resource(PersonalAtletaNome, '/personal/atleta/<string:nome>')
 api.add_resource(PersonalAtletaId, '/personal/atleta/<int:id>')
 api.add_resource(PersonalAtletaPagination, '/personal/atleta/<int:id>/<int:max_itens>')
 api.add_resource(TabelaTreinoAtleta, '/personal/atleta/tabelaTreino')
@@ -94,12 +96,14 @@ api.add_resource(NutricionistaPagination, "/nutricionistas/<int:id>/<int:max_ite
 api.add_resource(NutricionistaImg, '/nutricionista/imagem/<int:id>')
 api.add_resource(NutricionistaAtleta, '/nutricionista/atleta')
 api.add_resource(NutricionistaAtletaId, '/nutricionista/atleta/<int:id>')
+api.add_resource(NutricionistaAtletaNome, '/nutricionista/atleta/<string:nome>')
 api.add_resource(NutricionistaAtletaPagination, '/nutricionista/atleta/<int:id>/<int:max_itens>')
 api.add_resource(CardapioAtletaNutri, '/nutricionista/atleta/cardapio')
 api.add_resource(CardapioAtletaNutriId, '/nutricionista/atleta/cardapio/<int:id>')
 api.add_resource(RefeicaoAtleta, '/nutricionista/atleta/refeicao/<int:id_cardapio>')
 api.add_resource(RefeicaoAtletaId, '/nutricionista/atleta/refeicao/<int:id_cardapio>/<int:id>')
 api.add_resource(IngredienteAtleta, '/nutricionista/atleta/ingrediente/<int:id_cardapio>/<int:id_refeicao>')
+api.add_resource(IngredienteAtletaPagination, '/nutricionista/atleta/ingrediente/<int:id_cardapio>/<int:id_refeicao>/<int:id_page>/<int:max_itens>')
 api.add_resource(IngredienteAtletaId, '/nutricionista/atleta/ingrediente/<int:id_cardapio>/<int:id_refeicao>/<int:id>')
 
 api.add_resource(Administradores, '/administradores')

@@ -7,6 +7,11 @@ ingredienteFields = {
   "quantidade": fields.String,
 }
 
+ingredienteFieldsPagination = {
+  "ingredientes": fields.Nested(ingredienteFields),
+  "total": fields.Integer,
+}
+
 class Ingrediente(db.Model):
   __tablename__ = "tb_ingrediente"
 

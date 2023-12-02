@@ -27,6 +27,17 @@ class NutricionistaAtleta(Resource):
     nutricionista = Nutricionista.query.get(user_id)
     return marshal(nutricionista.atletas, atletaFields), 200
 
+class NutricionistaAtletaNome(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, nome):
+    if tipo != "Nutricionista":
+      logger.error("Usuario sem autorizacao para acessar os atletas associados ao nutricionista")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+
+    atletas = Atleta.query.filter(db.and_(Atleta.nome.ilike(f"%{nome}%"), Atleta.nutricionista_id == user_id)).all()
+    return marshal(atletas, atletaFields), 200
+
 class NutricionistaAtletaPagination(Resource):
   @token_verify
   def get(self, tipo, refreshToken, user_id, id, max_itens):
@@ -41,7 +52,6 @@ class NutricionistaAtletaPagination(Resource):
     data = {"atletasNutricionista": atletasPagination.items, "totalAtletas": len(nutricionista.atletas)}
 
     return marshal(data, nutricionistaAtletasPaginationFields), 200
-
 
 class NutricionistaAtletaId(Resource):
   @token_verify
@@ -124,6 +134,7 @@ class NutricionistaAtletaId(Resource):
 
       codigo = Message(2, f"Não foi possível atualizar as informaçõesdo atleta de id: {id}")
       return marshal(codigo, msgFields), 400
+
   @token_verify
   def delete(self, tipo, refreshToken, user_id, id):
     if tipo != "Nutricionista":

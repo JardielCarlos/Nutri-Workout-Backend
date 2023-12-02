@@ -28,7 +28,6 @@ class CartaoCreditoAtleta(Resource):
       return marshal(codigo, msgFields), 403
 
     atleta = Atleta.query.get(user_id)
-
     return marshal(atleta.cartoes, cartaoCreditoFields), 200
 
   @token_verify
@@ -61,7 +60,7 @@ class CartaoCreditoAtleta(Resource):
           atleta.stripe_id,
           source=args["token"]
         )
-
+        print(cartao)
         cartaoCredito.id_cartaoCredito = cartao.id
         cartaoCredito.nomeTitular = cartao.name
         cartaoCredito.bandeira = cartao.brand

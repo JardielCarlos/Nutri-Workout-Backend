@@ -9,8 +9,7 @@ from helpers.logger import logger
 from model.atleta import Atleta, atletaAssociatedFields
 from model.mensagem import Message, msgFields
 from model.notificacaoPersonal import NotificacaoPersonal
-from model.personalTrainer import (PersonalTrainer,
-                                   personalAtletaPaginationFields)
+from model.personalTrainer import PersonalTrainer, personalAtletaPaginationFields
 from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
 
 parser = reqparse.RequestParser()
@@ -57,7 +56,16 @@ class PersonalAtletaPagination(Resource):
 
     return marshal(data, personalAtletaPaginationFields), 200
 
+class PersonalAtletaNome(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, nome):
+    if tipo != "Personal":
+      logger.error("Usuario sem autorizacao para acessar os atletas associados ao personal trainer")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
 
+    atletas = Atleta.query.filter(db.and_(Atleta.nome.ilike(f"%{nome}%"), Atleta.personal_trainer_id == user_id)).all()
+    return marshal(atletas, atletaAssociatedFields), 200
 
 class PersonalAtletaId(Resource):
   @token_verify
