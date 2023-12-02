@@ -19,7 +19,7 @@ class Refeicao(db.Model):
   diaSemana = db.Column(db.Enum('segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sabado', 'domingo', name='dia_da_semana'), nullable=False)
   tipoRefeicao = db.Column(db.Enum('cafeManha', 'lancheManha', 'almoco', 'lancheTarde', 'janta', 'lancheNoite', name='tipo_refeicao'), nullable=False)
 
-  ingredientes = db.relationship("Ingrediente", backref="ingrediente_backref", foreign_keys=[Ingrediente.refeicao])
+  ingredientes = db.relationship("Ingrediente", backref="ingrediente_backref", foreign_keys=[Ingrediente.refeicao], cascade="all,delete")
 
   cardapio = db.Column(db.Integer, db.ForeignKey("tb_cardapio.id", ondelete='CASCADE'), nullable=False)
 

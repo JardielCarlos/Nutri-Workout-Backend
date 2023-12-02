@@ -10,7 +10,7 @@ from resources.administradores import Administradores, AdministradorId, Administ
 
 from resources.atletas import AtletaId, AtletaImg, AtletaNome, AtletaPagination, Atletas, RequestNutricionista, RequestPersonal, TabelaAtleta, CardapioAtleta
 
-from resources.cardapioAtleta import CardapioAtletaNutri, CardapioAtletaNutriId
+from resources.cardapioAtleta import CardapioAtletaNutri, CardapioAtletaNutriId, CardapioId
 from resources.refeicaoAtleta import RefeicaoAtleta, RefeicaoAtletaId
 from resources.ingredienteAtleta import IngredienteAtleta, IngredienteAtletaId, IngredienteAtletaPagination
 
@@ -100,6 +100,7 @@ api.add_resource(NutricionistaAtletaNome, '/nutricionista/atleta/<string:nome>')
 api.add_resource(NutricionistaAtletaPagination, '/nutricionista/atleta/<int:id>/<int:max_itens>')
 api.add_resource(CardapioAtletaNutri, '/nutricionista/atleta/cardapio')
 api.add_resource(CardapioAtletaNutriId, '/nutricionista/atleta/cardapio/<int:id>')
+api.add_resource(CardapioId, '/nutricionista/atleta/cardapioId/<int:id>')
 api.add_resource(RefeicaoAtleta, '/nutricionista/atleta/refeicao/<int:id_cardapio>')
 api.add_resource(RefeicaoAtletaId, '/nutricionista/atleta/refeicao/<int:id_cardapio>/<int:id>')
 api.add_resource(IngredienteAtleta, '/nutricionista/atleta/ingrediente/<int:id_cardapio>/<int:id_refeicao>')

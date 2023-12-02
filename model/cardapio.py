@@ -19,7 +19,7 @@ class Cardapio(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   nome = db.Column(db.String, nullable=False)
 
-  refeicoes = db.relationship("Refeicao", backref="refeicao_backref", foreign_keys=[Refeicao.cardapio])
+  refeicoes = db.relationship("Refeicao", backref="refeicao_backref", foreign_keys=[Refeicao.cardapio], cascade="all,delete")
 
   atleta = db.Column(db.Integer, db.ForeignKey('tb_atleta.usuario_id', ondelete='CASCADE'), unique=True)
   nutricionista = db.Column(db.Integer, db.ForeignKey('tb_nutricionista.usuario_id'))
