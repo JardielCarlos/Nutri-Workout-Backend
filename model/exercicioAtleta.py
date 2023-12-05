@@ -3,6 +3,7 @@ from flask_restful import fields
 
 exercicioFields = {
   "id": fields.Integer,
+  "diaSemana": fields.String,
   "musculoTrabalhado": fields.String,
   "nomeExercicio": fields.String,
   "series": fields.Integer,
@@ -17,6 +18,7 @@ class ExercicioAtleta(db.Model):
   __tablename__= "tb_exercicioAtleta"
 
   id = db.Column(db.Integer, primary_key=True)
+  diaSemana = db.Column(db.Enum('segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sabado', name='dia_da_semana_exercicio'), nullable=False)
   musculoTrabalhado = db.Column(db.String, nullable=False)
   nomeExercicio = db.Column(db.String, nullable=False)
   series = db.Column(db.Integer, nullable=False)
@@ -28,8 +30,9 @@ class ExercicioAtleta(db.Model):
 
   tabelaTreino = db.Column(db.Integer, db.ForeignKey("tb_tabelaTreino.id", ondelete='CASCADE'), nullable=False)
 
-  def __init__(self, tabelaTreino, musculoTrabalhado, nomeExercicio, series, repeticao, kg, descanso, unidadeDescanso, observacoes):
+  def __init__(self, tabelaTreino, diaSemana, musculoTrabalhado, nomeExercicio, series, repeticao, kg, descanso, unidadeDescanso, observacoes):
     self.tabelaTreino = tabelaTreino
+    self.diaSemana = diaSemana
     self.musculoTrabalhado = musculoTrabalhado
     self.nomeExercicio = nomeExercicio
     self.series = series

@@ -22,7 +22,7 @@ class Cardapio(db.Model):
   refeicoes = db.relationship("Refeicao", backref="refeicao_backref", foreign_keys=[Refeicao.cardapio], cascade="all,delete")
 
   atleta = db.Column(db.Integer, db.ForeignKey('tb_atleta.usuario_id', ondelete='CASCADE'), unique=True)
-  nutricionista = db.Column(db.Integer, db.ForeignKey('tb_nutricionista.usuario_id'))
+  nutricionista = db.Column(db.Integer, db.ForeignKey('tb_nutricionista.usuario_id', ondelete='CASCADE'))
 
   def __init__(self, nome, atleta):
     self.nome = nome,

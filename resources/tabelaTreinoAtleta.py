@@ -79,6 +79,37 @@ class TabelaTreinoAtleta(Resource):
 
 class TabelaTreinoAtletaId(Resource):
   @token_verify
+  def get(self, tipo, refreshToken, user_id, id):
+    if tipo != "Personal":
+      logger.error("Usuario sem autorizacao para acessar a tabela de treino")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+
+    atleta = Atleta.query.get(id)
+
+    if atleta is None:
+      logger.error("Atleta nao encontrada")
+      codigo = Message(1, "Atleta não encontrada")
+      return marshal(codigo, msgFields), 404
+
+    tabelaTreino = TabelaTreino.query.filter_by(atleta=atleta.usuario_id).first()
+    if tabelaTreino is None:
+      logger.error(f"Tabela de treino do atleta de id:{atleta.usuario_id} nao encontrada")
+      codigo = Message(1, f"Tabela de treino do atleta de id: {atleta.usuario_id} não encontrada")
+      return marshal(codigo, msgFields), 404
+
+    personal = PersonalTrainer.query.get(user_id)
+
+    idAtletas = [atleta.usuario_id for atleta in personal.atletas]
+    if tabelaTreino.atleta not in idAtletas:
+      logger.error(f"Tabela de treino de id: {tabelaTreino.id} nao associada ao personal de id:{personal.usuario_id}")
+
+      codigo = Message(1, f"Tabela de treino não encontrada")
+      return marshal(codigo, msgFields), 404
+
+    return marshal(tabelaTreino, tabelaTreinoFields), 200
+
+  @token_verify
   def put(self, tipo, refreshToken, user_id, id):
     args = parser.parse_args()
     if tipo != "Personal":
@@ -86,13 +117,18 @@ class TabelaTreinoAtletaId(Resource):
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
     try:
-      tabelaTreino = TabelaTreino.query.get(id)
+      atleta = Atleta.query.get(id)
 
+      if atleta is None:
+        logger.error("Atleta nao encontrada")
+        codigo = Message(1, "Atleta não encontrada")
+        return marshal(codigo, msgFields), 404
+
+      tabelaTreino = TabelaTreino.query.filter_by(atleta=atleta.usuario_id).first()
       if tabelaTreino is None:
-        logger.error(f"tabela de treino de id: {id} nao encontrada")
-
-        codigo = Message(1, f"Tabela de treino de id: {id} não encontrada")
-        return marshal(codigo, msgFields), 400
+        logger.error(f"Tabela de treino do atleta de id:{atleta.usuario_id} nao encontrada")
+        codigo = Message(1, f"Tabela de treino do atleta de id: {atleta.usuario_id} não encontrada")
+        return marshal(codigo, msgFields), 404
 
       tabelaTreino.semanaInicio = args["semanaInicio"]
       tabelaTreino.semanaFim = args["semanaFim"]
@@ -112,7 +148,19 @@ class TabelaTreinoAtletaId(Resource):
       codigo = Message(1, "Usuario sem autorização suficiente!")
       return marshal(codigo, msgFields), 403
 
-    tabelaTreino = TabelaTreino.query.get(id)
+    atleta = Atleta.query.get(id)
+
+    if atleta is None:
+      logger.error("Atleta nao encontrada")
+      codigo = Message(1, "Atleta não encontrada")
+      return marshal(codigo, msgFields), 404
+
+    tabelaTreino = TabelaTreino.query.filter_by(atleta=atleta.usuario_id).first()
+    if tabelaTreino is None:
+      logger.error(f"Tabela de treino do atleta de id:{atleta.usuario_id} nao encontrada")
+      codigo = Message(1, f"Tabela de treino do atleta de id: {atleta.usuario_id} não encontrada")
+      return marshal(codigo, msgFields), 404
+    
     db.session.delete(tabelaTreino)
     db.session.commit()
 
