@@ -24,7 +24,7 @@ class TabelaTreino(db.Model):
   semanaInicio = db.Column(db.Date, nullable=False)
   semanaFim = db.Column(db.Date, nullable=False)
 
-  exercicios = db.relationship("ExercicioAtleta", backref="tabelaTreino_backref", foreign_keys=[ExercicioAtleta.tabelaTreino])
+  exercicios = db.relationship("ExercicioAtleta", backref="tabelaTreino_backref", cascade="all,delete", foreign_keys=[ExercicioAtleta.tabelaTreino])
 
   atleta = db.Column(db.Integer, db.ForeignKey('tb_atleta.usuario_id', ondelete='CASCADE'), unique=True)
   personal = db.Column(db.Integer, db.ForeignKey('tb_personalTrainer.usuario_id'))

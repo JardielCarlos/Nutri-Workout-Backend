@@ -6,10 +6,11 @@ from helpers.logger import logger
 from model.exercicioAtleta import ExercicioAtleta, exercicioFields
 from model.mensagem import Message, msgFields
 from model.tabelaTreino import TabelaTreino
-
+from sqlalchemy.exc import DataError
 parser = reqparse.RequestParser()
 
 parser.add_argument("idTabela", type=int, help="id da tabela não informada", required=False)
+parser.add_argument("diaSemana", type=str, help="dia da semana não informado", required=True)
 parser.add_argument("musculoTrabalhado", type=str, help="musculo trabalhado não informado", required=True)
 parser.add_argument("nomeExercicio", type=str, help="Nome do exercicio informado", required=True)
 parser.add_argument("series", type=int, help="Séries não informada", required=True)
@@ -53,7 +54,7 @@ class ExerciciosAtleta(Resource):
         codigo = Message(1, f"Tabela de id: {args['idTabela']} não encontrado")
         return marshal(codigo, msgFields), 400
 
-      exercicio = ExercicioAtleta(tabelaTreino, args["musculoTrabalhado"], args["nomeExercicio"], args["series"], args["repeticao"], args["kg"], args["descanso"], args["unidadeDescanso"], args["observacoes"])
+      exercicio = ExercicioAtleta(tabelaTreino, args["diaSemana"], args["musculoTrabalhado"], args["nomeExercicio"], args["series"], args["repeticao"], args["kg"], args["descanso"], args["unidadeDescanso"], args["observacoes"])
 
       tabelaTreino.exercicios.append(exercicio)
 
@@ -63,6 +64,10 @@ class ExerciciosAtleta(Resource):
 
       logger.info(f"Exercicio adicionado a tabela de treino")
       return marshal(exercicio, exercicioFields), 201
+    except DataError:
+      logger.error("Dia da semana informado invalido")
+      codigo = Message(1, "Dia da semana informado não válido")
+      return marshal(codigo, msgFields), 400
     except:
       logger.error("Erro ao cadastrar o exercicio")
 

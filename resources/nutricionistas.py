@@ -355,7 +355,7 @@ class NutricionistaId(Resource):
         codigo = Message(1, f"Nutricionista de id: {id} não encontrado")
         return marshal(codigo, msgFields), 404
 
-    for atleta in Nutricionista.atletas:
+    for atleta in nutricionista.atletas:
       notificacaoAtleta = NotificacaoNutricionista.query.filter_by(atleta_id=atleta.usuario_id).first()
       notificacaoAtleta.solicitacao= False
       db.session.add(notificacaoAtleta)

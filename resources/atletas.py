@@ -546,7 +546,7 @@ class RequestNutricionista(Resource):
 class RequestPersonal(Resource):
 
   @token_verify
-  @subscribe_verifier
+  # @subscribe_verifier
   def post(self, tipo, refreshToken, user_id):
     if tipo != "Atleta":
       logger.error("Usuario sem autorizacao para acessar a requisição de personal")
