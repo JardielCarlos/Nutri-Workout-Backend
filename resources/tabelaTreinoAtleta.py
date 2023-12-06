@@ -14,7 +14,8 @@ from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
 parser = reqparse.RequestParser()
 
 def parse_date(date_string):
-  return datetime.strptime(date_string, '%d/%m/%Y')
+  print(date_string)
+  return datetime.strptime(date_string, '%Y-%m-%d')
 
 parser.add_argument("semanaInicio", type=parse_date, help="semana de inicio não informada", required=True)
 parser.add_argument("semanaFim", type=parse_date, help="semana fim não informada", required=True)
@@ -132,6 +133,9 @@ class TabelaTreinoAtletaId(Resource):
 
       tabelaTreino.semanaInicio = args["semanaInicio"]
       tabelaTreino.semanaFim = args["semanaFim"]
+      
+      db.session.add(tabelaTreino)
+      db.session.commit()
 
       logger.info(f"Tabela de treino de id: {id} atualizada com sucesso")
       return marshal(tabelaTreino, tabelaTreinoFields), 200
@@ -160,7 +164,7 @@ class TabelaTreinoAtletaId(Resource):
       logger.error(f"Tabela de treino do atleta de id:{atleta.usuario_id} nao encontrada")
       codigo = Message(1, f"Tabela de treino do atleta de id: {atleta.usuario_id} não encontrada")
       return marshal(codigo, msgFields), 404
-    
+
     db.session.delete(tabelaTreino)
     db.session.commit()
 

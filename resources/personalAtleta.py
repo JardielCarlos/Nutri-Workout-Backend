@@ -15,7 +15,7 @@ from model.tabelaTreino import TabelaTreino, tabelaTreinoFields
 parser = reqparse.RequestParser()
 
 def parse_date(date_string):
-  return datetime.strptime(date_string, '%d/%m/%Y')
+  return datetime.strptime(date_string, '%Y-%m-%d')
 
 parser.add_argument("semanaInicio", type=parse_date, help="semana de inicio não informada", required=True)
 parser.add_argument("semanaFim", type=parse_date, help="semana fim não informada", required=True)
