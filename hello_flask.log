@@ -1,13 +1,12 @@
-2023-12-05 15:49:57,061 WARNING _internal _log  * Debugger is active!
-2023-12-05 15:49:57,064 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-12-05 15:49:57,303 INFO nutricionistas delete Nutricionista de id: 4 deletado com sucesso
-2023-12-05 15:49:57,305 INFO _internal _log 127.0.0.1 - - [05/Dec/2023 15:49:57] "DELETE /nutricionista/4 HTTP/1.1" 200 -
-2023-12-05 15:50:15,658 INFO nutricionistas post Nutricionista de id: 8 criado com sucesso
-2023-12-05 15:50:15,659 INFO _internal _log 127.0.0.1 - - [05/Dec/2023 15:50:15] "[35m[1mPOST /nutricionista HTTP/1.1[0m" 201 -
-2023-12-05 15:50:22,891 INFO _internal _log 127.0.0.1 - - [05/Dec/2023 15:50:22] "POST /login HTTP/1.1" 200 -
-2023-12-05 15:50:36,753 INFO nutricionistas get Notificacoes dos nutricionista listado com sucesso
-2023-12-05 15:50:36,755 INFO _internal _log 127.0.0.1 - - [05/Dec/2023 15:50:36] "GET /nutricionista/notificacoes HTTP/1.1" 200 -
-2023-12-05 15:50:42,128 INFO nutricionistas patch O nutricionista aceitou o atleta: Jardiel como seu aluno
-2023-12-05 15:50:42,129 INFO _internal _log 127.0.0.1 - - [05/Dec/2023 15:50:42] "PATCH /nutricionista/notificacao HTTP/1.1" 200 -
-2023-12-05 15:50:44,642 INFO nutricionistas patch O nutricionista aceitou o atleta: Diego como seu aluno
-2023-12-05 15:50:44,643 INFO _internal _log 127.0.0.1 - - [05/Dec/2023 15:50:44] "PATCH /nutricionista/notificacao HTTP/1.1" 200 -
+2023-12-06 12:22:15,154 WARNING _internal _log  * Debugger is active!
+2023-12-06 12:22:15,157 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-12-06 12:22:20,605 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:22:20] "OPTIONS /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
+2023-12-06 12:22:20,975 INFO tabelaTreinoAtleta put Tabela de treino de id: 1 atualizada com sucesso
+2023-12-06 12:22:20,980 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:22:20] "PUT /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
+2023-12-06 12:22:20,994 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:22:20] "GET /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
+2023-12-06 12:23:00,118 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:23:00] "OPTIONS /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
+2023-12-06 12:23:00,387 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:23:00] "GET /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
+2023-12-06 12:23:06,945 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:23:06] "OPTIONS /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
+2023-12-06 12:23:07,257 INFO tabelaTreinoAtleta put Tabela de treino de id: 1 atualizada com sucesso
+2023-12-06 12:23:07,259 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:23:07] "PUT /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
+2023-12-06 12:23:07,523 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:23:07] "GET /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -

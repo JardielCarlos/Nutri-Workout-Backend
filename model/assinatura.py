@@ -3,7 +3,7 @@ from flask_restful import fields
 
 class DateField(fields.Raw):
   def format(self, value):
-    return value.strftime('%d/%m/%Y')
+    return value.strftime('%Y-%m-%d')
 
 assinaturaFields = {
   "id": fields.Integer,
