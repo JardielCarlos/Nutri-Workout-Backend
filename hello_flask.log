@@ -1,12 +1,372 @@
-2023-12-06 12:22:15,154 WARNING _internal _log  * Debugger is active!
-2023-12-06 12:22:15,157 INFO _internal _log  * Debugger PIN: 142-454-007
-2023-12-06 12:22:20,605 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:22:20] "OPTIONS /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
-2023-12-06 12:22:20,975 INFO tabelaTreinoAtleta put Tabela de treino de id: 1 atualizada com sucesso
-2023-12-06 12:22:20,980 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:22:20] "PUT /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
-2023-12-06 12:22:20,994 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:22:20] "GET /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
-2023-12-06 12:23:00,118 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:23:00] "OPTIONS /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
-2023-12-06 12:23:00,387 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:23:00] "GET /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
-2023-12-06 12:23:06,945 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:23:06] "OPTIONS /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
-2023-12-06 12:23:07,257 INFO tabelaTreinoAtleta put Tabela de treino de id: 1 atualizada com sucesso
-2023-12-06 12:23:07,259 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:23:07] "PUT /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
-2023-12-06 12:23:07,523 INFO _internal _log 127.0.0.1 - - [06/Dec/2023 12:23:07] "GET /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
+2023-12-09 19:17:00,236 WARNING _internal _log  * Debugger is active!
+2023-12-09 19:17:00,244 INFO _internal _log  * Debugger PIN: 142-454-007
+2023-12-09 19:17:21,068 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:21] "OPTIONS /personal/atleta/1/3 HTTP/1.1" 200 -
+2023-12-09 19:17:21,069 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:21] "OPTIONS /personalTrainer/3 HTTP/1.1" 200 -
+2023-12-09 19:17:21,436 INFO PersonaisTrainer get Personal Trainer de id: 3 listado com sucesso
+2023-12-09 19:17:21,442 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:21] "GET /personalTrainer/3 HTTP/1.1" 200 -
+2023-12-09 19:17:21,571 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:21] "GET /personal/atleta/1/3 HTTP/1.1" 200 -
+2023-12-09 19:17:21,756 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:21] "GET /personal/imagem/3 HTTP/1.1" 200 -
+2023-12-09 19:17:21,897 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:21] "GET /atleta/imagem/2 HTTP/1.1" 200 -
+2023-12-09 19:17:21,897 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:21] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:17:23,395 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:23] "GET /personal/imagem/3 HTTP/1.1" 200 -
+2023-12-09 19:17:23,999 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:23] "OPTIONS /logout HTTP/1.1" 200 -
+2023-12-09 19:17:24,309 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:24] "[35m[1mPOST /logout HTTP/1.1[0m" 204 -
+2023-12-09 19:17:35,594 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:35] "OPTIONS /login HTTP/1.1" 200 -
+2023-12-09 19:17:36,091 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:36] "POST /login HTTP/1.1" 200 -
+2023-12-09 19:17:36,152 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:36] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:17:36,422 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:17:36,424 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:36] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:17:36,733 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:17:36] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:18:22,413 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:18:22] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:18:22,731 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:18:22,733 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:18:22] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:18:32,632 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:18:32] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:18:32,938 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:18:32,939 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:18:32] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:21:01,943 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:21:01] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:21:02,545 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:21:02,546 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:21:02] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:21:02,858 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:21:02] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:21:06,963 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:21:06,964 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:21:06] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:21:16,634 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:21:16] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:21:16,942 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:21:16,944 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:21:16] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:21:25,639 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:21:25] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:21:25,960 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:21:25,961 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:21:25] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:21:34,640 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:21:34] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:21:34,947 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:21:34,948 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:21:34] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:25:17,445 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:25:17] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:25:17,708 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:25:17,709 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:25:17] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:25:18,020 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:25:18] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:25:39,689 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:25:39] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:25:39,998 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:25:39,999 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:25:39] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:25:41,023 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:25:41,024 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:25:41] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:25:41,035 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:25:41] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:27:49,969 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:27:49] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:27:50,219 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:27:50,220 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:27:50] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:27:50,532 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:27:50] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:28:44,719 INFO atletas get Atletas listados com sucesso
+2023-12-09 19:28:44,720 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:28:44] "GET /atletas HTTP/1.1" 200 -
+2023-12-09 19:29:03,491 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:29:03] "POST /login HTTP/1.1" 200 -
+2023-12-09 19:29:17,464 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:29:17] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:33:18,387 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:18] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:33:18,387 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:18] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:33:18,388 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:18] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:33:18,389 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:18] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:33:18,643 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:18] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:33:18,702 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:18] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:33:18,957 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:18] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:33:19,016 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:19] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:33:30,639 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:30] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:33:30,957 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:33:30,959 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:30] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:33:31,288 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:33:31] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:34:08,964 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:34:08] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:34:09,276 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:34:09] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:34:09,276 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:34:09] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:34:09,277 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:34:09] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:34:09,283 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:34:09] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:34:09,605 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:34:09] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:34:09,855 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:34:09] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:34:09,915 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:34:09] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:35:04,647 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:04] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:35:04,955 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:35:04,957 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:04] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:35:05,281 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:05] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:35:11,881 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:11] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:35:12,185 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:12] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:35:12,190 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:12] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:35:12,504 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:12] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:35:12,769 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:12] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:35:12,833 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:12] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:35:44,655 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:44] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:35:44,969 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:35:44,970 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:44] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:35:44,976 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:35:44] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:36:09,517 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:09] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:09,828 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:09] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:09,829 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:09] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:09,830 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:09] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:09,835 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:09] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:10,144 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:10] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:10,405 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:10] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:10,470 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:10] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:40,546 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:40] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:36:40,857 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:36:40,858 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:40] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:36:41,170 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:41] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:36:44,789 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:44] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:45,093 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:45] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:45,094 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:45] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:45,095 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:45] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:45,104 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:45] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:45,429 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:45] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:45,691 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:45] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:36:45,752 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:36:45] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:37:06,659 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:37:06] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:37:06,971 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:37:06,972 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:37:06] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:37:06,979 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:37:06] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:40:45,258 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:40:45] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:40:45,258 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:40:45] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:40:45,259 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:40:45] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:40:45,259 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:40:45] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:40:45,527 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:40:45] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:40:45,575 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:40:45] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:40:45,839 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:40:45] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:40:45,887 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:40:45] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:41:31,655 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:41:31] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:41:31,962 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:41:31,963 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:41:31] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:41:32,274 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:41:32] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:41:41,748 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:41:41] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:41:42,054 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:41:42,055 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:41:42] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:41:42,065 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:41:42] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:41:43,975 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:41:43,977 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:41:43] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:41:44,292 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:41:44] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:42:39,968 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:42:39] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:42:40,219 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:42:40,220 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:42:40] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:42:40,229 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:42:40] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:42:44,049 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:42:44,051 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:42:44] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:42:44,427 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:42:44] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:43:47,965 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:43:47] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:43:48,215 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:43:48,216 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:43:48] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:43:48,539 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:43:48] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:43:58,645 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:43:58] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:43:58,952 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:43:58,954 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:43:58] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:43:58,963 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:43:58] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:44:03,652 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:44:03] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:44:03,968 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:44:03,969 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:44:03] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:44:04,282 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:44:04] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:46:21,914 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:46:21] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:46:22,169 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:46:22,170 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:46:22] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:46:22,406 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:46:22] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:46:22,490 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:46:22] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:46:22,731 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:46:22] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:47:17,644 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:47:17] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:47:17,968 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:47:17] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:47:18,597 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:47:18] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:47:21,648 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:47:21] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:47:41,626 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:47:41] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:47:41,938 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:47:41] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:47:42,780 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:47:42] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:47:59,946 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:47:59] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:48:00,215 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:48:00] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:48:01,111 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:48:01] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:50:59,939 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:50:59] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:51:00,209 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:51:00] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:52:12,945 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:12] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:52:13,212 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:13] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:52:23,631 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:23] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:52:23,943 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:23] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:52:24,393 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:24] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:52:39,937 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:39] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:52:40,204 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:40] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:52:49,668 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:49] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:52:49,981 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:52:49,982 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:49] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:52:50,304 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:50] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:52:50,999 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:50] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:52:51,320 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:52:51] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:53:04,257 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:53:04] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:53:04,879 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:53:04] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:53:05,192 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:53:05,193 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:53:05] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:53:05,200 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:53:05] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:53:05,795 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:53:05] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:53:36,932 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:53:36] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:53:37,201 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:53:37] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:55:43,946 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:55:43] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:55:44,217 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:55:44,218 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:55:44] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:55:45,640 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:55:45,640 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:55:45] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:55:52,552 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:55:52] "OPTIONS /personal/atleta/1/3 HTTP/1.1" 200 -
+2023-12-09 19:55:52,553 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:55:52] "OPTIONS /personalTrainer/1 HTTP/1.1" 200 -
+2023-12-09 19:55:52,818 ERROR personalAtleta get Usuario sem autorizacao para acessar os atletas associados ao personal trainer
+2023-12-09 19:55:52,819 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:55:52] "[31m[1mGET /personal/atleta/1/3 HTTP/1.1[0m" 403 -
+2023-12-09 19:55:52,865 ERROR PersonaisTrainer get Personal Trainer de id: 1 nao encotrado
+2023-12-09 19:55:52,866 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:55:52] "[33mGET /personalTrainer/1 HTTP/1.1[0m" 404 -
+2023-12-09 19:56:03,642 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:03] "OPTIONS /personalTrainer/1 HTTP/1.1" 200 -
+2023-12-09 19:56:03,960 ERROR PersonaisTrainer get Personal Trainer de id: 1 nao encotrado
+2023-12-09 19:56:03,961 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:03] "[33mGET /personalTrainer/1 HTTP/1.1[0m" 404 -
+2023-12-09 19:56:06,639 ERROR PersonaisTrainer get Personal Trainer de id: 1 nao encotrado
+2023-12-09 19:56:06,640 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:06] "[33mGET /personalTrainer/1 HTTP/1.1[0m" 404 -
+2023-12-09 19:56:40,749 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:40] "OPTIONS /login HTTP/1.1" 200 -
+2023-12-09 19:56:41,214 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:41] "POST /login HTTP/1.1" 200 -
+2023-12-09 19:56:41,243 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:41] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:56:41,558 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:56:41,559 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:41] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:56:41,871 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:41] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:56:49,292 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:49] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:56:49,605 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:49] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:56:55,410 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:55] "OPTIONS /personal/atleta/1/3 HTTP/1.1" 200 -
+2023-12-09 19:56:55,720 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:55] "OPTIONS /personalTrainer/1 HTTP/1.1" 200 -
+2023-12-09 19:56:55,722 ERROR personalAtleta get Usuario sem autorizacao para acessar os atletas associados ao personal trainer
+2023-12-09 19:56:55,724 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:55] "[31m[1mGET /personal/atleta/1/3 HTTP/1.1[0m" 403 -
+2023-12-09 19:56:56,031 ERROR PersonaisTrainer get Personal Trainer de id: 1 nao encotrado
+2023-12-09 19:56:56,033 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:56:56] "[33mGET /personalTrainer/1 HTTP/1.1[0m" 404 -
+2023-12-09 19:57:26,520 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:26] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:57:26,770 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:57:26,771 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:26] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:57:26,779 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:26] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:57:26,944 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:26] "OPTIONS /personal/atleta/1/3 HTTP/1.1" 200 -
+2023-12-09 19:57:27,249 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:27] "OPTIONS /personalTrainer/1 HTTP/1.1" 200 -
+2023-12-09 19:57:27,252 ERROR personalAtleta get Usuario sem autorizacao para acessar os atletas associados ao personal trainer
+2023-12-09 19:57:27,254 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:27] "[31m[1mGET /personal/atleta/1/3 HTTP/1.1[0m" 403 -
+2023-12-09 19:57:27,559 ERROR PersonaisTrainer get Personal Trainer de id: 1 nao encotrado
+2023-12-09 19:57:27,560 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:27] "[33mGET /personalTrainer/1 HTTP/1.1[0m" 404 -
+2023-12-09 19:57:27,821 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:57:27,823 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:27] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:57:28,143 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:28] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:57:29,478 ERROR personalAtleta get Usuario sem autorizacao para acessar os atletas associados ao personal trainer
+2023-12-09 19:57:29,479 ERROR PersonaisTrainer get Personal Trainer de id: 1 nao encotrado
+2023-12-09 19:57:29,479 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:29] "[31m[1mGET /personal/atleta/1/3 HTTP/1.1[0m" 403 -
+2023-12-09 19:57:29,479 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:29] "[33mGET /personalTrainer/1 HTTP/1.1[0m" 404 -
+2023-12-09 19:57:30,111 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:57:30,113 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:30] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:57:30,120 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:57:30] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:58:02,483 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:58:02] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:58:02,750 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 19:58:02,751 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:58:02] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 19:58:03,627 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:58:03] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:58:03,949 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:58:03] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:58:06,070 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:58:06] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:58:08,808 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:58:08] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:58:29,164 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:58:29] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:58:29,488 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:58:29] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 19:59:24,993 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:24] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:59:25,729 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:25] "OPTIONS /logout HTTP/1.1" 200 -
+2023-12-09 19:59:26,046 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:26] "[35m[1mPOST /logout HTTP/1.1[0m" 204 -
+2023-12-09 19:59:36,376 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:36] "OPTIONS /login HTTP/1.1" 200 -
+2023-12-09 19:59:36,923 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:36] "POST /login HTTP/1.1" 200 -
+2023-12-09 19:59:36,949 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:36] "OPTIONS /personal/atleta/1/3 HTTP/1.1" 200 -
+2023-12-09 19:59:37,249 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:37] "OPTIONS /personalTrainer/3 HTTP/1.1" 200 -
+2023-12-09 19:59:37,256 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:37] "GET /personal/atleta/1/3 HTTP/1.1" 200 -
+2023-12-09 19:59:37,259 INFO PersonaisTrainer get Personal Trainer de id: 3 listado com sucesso
+2023-12-09 19:59:37,262 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:37] "GET /personalTrainer/3 HTTP/1.1" 200 -
+2023-12-09 19:59:37,269 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:37] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 19:59:37,569 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:37] "GET /atleta/imagem/2 HTTP/1.1" 200 -
+2023-12-09 19:59:37,578 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:37] "GET /personal/imagem/3 HTTP/1.1" 200 -
+2023-12-09 19:59:38,599 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:38] "OPTIONS /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
+2023-12-09 19:59:38,919 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 19:59:38] "GET /personal/atleta/tabelaTreino/1 HTTP/1.1" 200 -
+2023-12-09 20:01:20,026 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:20] "OPTIONS /personal/atleta/tabelaTreino/exercicio HTTP/1.1" 200 -
+2023-12-09 20:01:20,308 INFO ExercicioAtleta post Exercicio adicionado a tabela de treino
+2023-12-09 20:01:20,313 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:20] "[35m[1mPOST /personal/atleta/tabelaTreino/exercicio HTTP/1.1[0m" 201 -
+2023-12-09 20:01:25,235 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:25] "GET /personal/imagem/3 HTTP/1.1" 200 -
+2023-12-09 20:01:25,903 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:25] "OPTIONS /logout HTTP/1.1" 200 -
+2023-12-09 20:01:26,222 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:26] "[35m[1mPOST /logout HTTP/1.1[0m" 204 -
+2023-12-09 20:01:38,613 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:38] "OPTIONS /login HTTP/1.1" 200 -
+2023-12-09 20:01:39,139 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:39] "POST /login HTTP/1.1" 200 -
+2023-12-09 20:01:39,194 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:39] "OPTIONS /atleta/1 HTTP/1.1" 200 -
+2023-12-09 20:01:39,475 INFO atletas get Atleta de id: 1 listado com sucesso
+2023-12-09 20:01:39,476 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:39] "GET /atleta/1 HTTP/1.1" 200 -
+2023-12-09 20:01:39,486 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:39] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 20:01:41,805 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:41] "OPTIONS /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 20:01:42,114 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:01:42] "GET /atleta/tabelaTreino HTTP/1.1" 200 -
+2023-12-09 20:02:25,756 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:02:25] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 20:02:27,225 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:02:27] "OPTIONS /logout HTTP/1.1" 200 -
+2023-12-09 20:02:27,533 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:02:27] "[35m[1mPOST /logout HTTP/1.1[0m" 204 -
+2023-12-09 20:03:15,258 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:15] "OPTIONS /login HTTP/1.1" 200 -
+2023-12-09 20:03:15,750 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:15] "POST /login HTTP/1.1" 200 -
+2023-12-09 20:03:15,825 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:15] "OPTIONS /administradores/5 HTTP/1.1" 200 -
+2023-12-09 20:03:16,083 INFO administradores get Administrador de id: 5 listado com sucesso
+2023-12-09 20:03:16,084 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:16] "GET /administradores/5 HTTP/1.1" 200 -
+2023-12-09 20:03:16,090 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:16] "GET /administrador/imagem/5 HTTP/1.1" 200 -
+2023-12-09 20:03:24,947 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:24] "OPTIONS /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:03:25,260 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:03:25,261 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:25] "GET /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:03:25,581 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:25] "GET /personal/imagem/6 HTTP/1.1" 200 -
+2023-12-09 20:03:25,581 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:25] "GET /personal/imagem/3 HTTP/1.1" 200 -
+2023-12-09 20:03:25,629 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:25] "GET /atleta/imagem/2 HTTP/1.1" 200 -
+2023-12-09 20:03:25,633 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:25] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 20:03:25,636 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:03:25] "GET /administrador/imagem/5 HTTP/1.1" 200 -
+2023-12-09 20:04:23,061 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:23] "OPTIONS /personalTrainer HTTP/1.1" 200 -
+2023-12-09 20:04:23,564 INFO PersonaisTrainer post Personal Trainer de id: 9 criado com sucesso
+2023-12-09 20:04:23,565 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:23] "[35m[1mPOST /personalTrainer HTTP/1.1[0m" 201 -
+2023-12-09 20:04:31,168 INFO PersonaisTrainer get Personais Trainer listados com sucesso
+2023-12-09 20:04:31,172 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:31] "GET /personalTrainer HTTP/1.1" 200 -
+2023-12-09 20:04:53,394 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:53] "OPTIONS /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:04:53,713 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:04:53,715 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:53] "GET /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:04:54,040 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:54] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 20:04:54,040 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:54] "GET /atleta/imagem/2 HTTP/1.1" 200 -
+2023-12-09 20:04:54,041 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:54] "GET /personal/imagem/3 HTTP/1.1" 200 -
+2023-12-09 20:04:54,043 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:54] "GET /administrador/imagem/5 HTTP/1.1" 200 -
+2023-12-09 20:04:54,044 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:54] "GET /personal/imagem/6 HTTP/1.1" 200 -
+2023-12-09 20:04:59,692 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:04:59] "OPTIONS /usuarios/2/5 HTTP/1.1" 200 -
+2023-12-09 20:05:00,003 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:05:00,004 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:00] "GET /usuarios/2/5 HTTP/1.1" 200 -
+2023-12-09 20:05:00,011 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:00] "GET /atleta/imagem/7 HTTP/1.1" 200 -
+2023-12-09 20:05:00,328 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:00] "GET /nutricionista/imagem/8 HTTP/1.1" 200 -
+2023-12-09 20:05:00,328 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:00] "GET /personal/imagem/9 HTTP/1.1" 200 -
+2023-12-09 20:05:02,153 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:02] "OPTIONS /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:02,475 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:05:02,477 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:02] "GET /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:02,803 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:02] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 20:05:02,804 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:02] "GET /atleta/imagem/2 HTTP/1.1" 200 -
+2023-12-09 20:05:02,805 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:02] "GET /personal/imagem/3 HTTP/1.1" 200 -
+2023-12-09 20:05:02,809 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:02] "GET /administrador/imagem/5 HTTP/1.1" 200 -
+2023-12-09 20:05:02,811 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:02] "GET /personal/imagem/6 HTTP/1.1" 200 -
+2023-12-09 20:05:10,476 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:10] "OPTIONS /usuarios/2/5 HTTP/1.1" 200 -
+2023-12-09 20:05:10,796 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:05:10,797 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:10] "GET /usuarios/2/5 HTTP/1.1" 200 -
+2023-12-09 20:05:10,806 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:10] "GET /atleta/imagem/7 HTTP/1.1" 200 -
+2023-12-09 20:05:11,125 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:11] "GET /nutricionista/imagem/8 HTTP/1.1" 200 -
+2023-12-09 20:05:11,125 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:11] "GET /personal/imagem/9 HTTP/1.1" 200 -
+2023-12-09 20:05:15,859 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:15] "OPTIONS /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:16,169 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:05:16,169 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:16] "GET /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:16,498 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:16] "GET /personal/imagem/3 HTTP/1.1" 200 -
+2023-12-09 20:05:16,498 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:16] "GET /atleta/imagem/2 HTTP/1.1" 200 -
+2023-12-09 20:05:16,499 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:16] "GET /administrador/imagem/5 HTTP/1.1" 200 -
+2023-12-09 20:05:16,499 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:16] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 20:05:16,500 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:16] "GET /personal/imagem/6 HTTP/1.1" 200 -
+2023-12-09 20:05:35,858 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:35] "OPTIONS /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:36,169 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:05:36,170 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:36] "GET /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:36,178 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:36] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 20:05:36,482 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:36] "GET /personal/imagem/3 HTTP/1.1" 200 -
+2023-12-09 20:05:36,483 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:36] "GET /administrador/imagem/5 HTTP/1.1" 200 -
+2023-12-09 20:05:36,483 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:36] "GET /atleta/imagem/2 HTTP/1.1" 200 -
+2023-12-09 20:05:36,483 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:36] "GET /personal/imagem/6 HTTP/1.1" 200 -
+2023-12-09 20:05:39,483 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:39] "OPTIONS /usuarios/2/5 HTTP/1.1" 200 -
+2023-12-09 20:05:39,800 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:05:39,801 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:39] "GET /usuarios/2/5 HTTP/1.1" 200 -
+2023-12-09 20:05:40,125 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:40] "GET /atleta/imagem/7 HTTP/1.1" 200 -
+2023-12-09 20:05:40,125 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:40] "GET /nutricionista/imagem/8 HTTP/1.1" 200 -
+2023-12-09 20:05:40,127 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:40] "GET /personal/imagem/9 HTTP/1.1" 200 -
+2023-12-09 20:05:41,626 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:41] "OPTIONS /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:41,944 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:05:41,945 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:41] "GET /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:41,953 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:41] "GET /atleta/imagem/1 HTTP/1.1" 200 -
+2023-12-09 20:05:42,256 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:42] "GET /atleta/imagem/2 HTTP/1.1" 200 -
+2023-12-09 20:05:42,257 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:42] "GET /personal/imagem/3 HTTP/1.1" 200 -
+2023-12-09 20:05:42,257 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:42] "GET /administrador/imagem/5 HTTP/1.1" 200 -
+2023-12-09 20:05:42,259 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:42] "GET /personal/imagem/6 HTTP/1.1" 200 -
+2023-12-09 20:05:48,016 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:48] "OPTIONS /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:48,336 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:05:48,338 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:48] "GET /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:52,123 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:05:52,124 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:52] "GET /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:54,662 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:54] "OPTIONS /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:54,915 INFO usuario get Usuarios listados com sucesso
+2023-12-09 20:05:54,916 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:54] "GET /usuarios/1/5 HTTP/1.1" 200 -
+2023-12-09 20:05:55,909 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:55] "GET /administrador/imagem/5 HTTP/1.1" 200 -
+2023-12-09 20:05:56,353 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:56] "OPTIONS /logout HTTP/1.1" 200 -
+2023-12-09 20:05:56,677 INFO _internal _log 127.0.0.1 - - [09/Dec/2023 20:05:56] "[35m[1mPOST /logout HTTP/1.1[0m" 204 -
