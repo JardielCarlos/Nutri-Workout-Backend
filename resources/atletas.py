@@ -78,88 +78,87 @@ class Atletas(Resource):
     #   return marshal(codigo, msgFields), 403
     args = parser.parse_args()
 
-    # try:
-    with db.session.begin():
-      fotoPerfil = None
-      if len(args["nome"]) == 0:
-        logger.info("Nome não informado")
+    try:
+      with db.session.begin():
+        fotoPerfil = None
+        if len(args["nome"]) == 0:
+          logger.info("Nome não informado")
 
-        codigo = Message(1, "Nome não informado")
+          codigo = Message(1, "Nome não informado")
+          return marshal(codigo, msgFields), 400
+
+        if len(args["sobrenome"]) == 0:
+          logger.info("Sobrenome não informado")
+
+          codigo = Message(1, "Sobrenome não informado")
+          return marshal(codigo, msgFields), 400
+
+        if not args['email']:
+          codigo = Message(1, "email não informada")
+          return marshal(codigo, msgFields), 400
+
+        if re.match(padrao_email, args['email']) == None:
+          codigo = Message(1, "Email no formato errado")
+          return marshal(codigo, msgFields), 400
+
+        if not args["cpf"]:
+          codigo = Message(1, "cpf não informado")
+          return marshal(codigo, msgFields), 400
+
+        if not cpfValidate.validate(args["cpf"]):
+          logger.error(f"CPF {args['cpf']} não valido")
+
+          codigo = Message(1, f"CPF {args['cpf']} não valido")
+          return marshal(codigo, msgFields), 400
+
+        if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
+          logger.error(f"CPF {args['cpf']} no formato errado")
+
+          codigo = Message(1, "CPF no formato errado")
+          return marshal(codigo, msgFields), 400
+
+        if not args['senha']:
+          codigo = Message(1, "Senha não informada")
+          return marshal(codigo, msgFields), 400
+
+        verifySenha = policy.test(args['senha'])
+        if len(verifySenha) != 0:
+          codigo = Message(1, "Senha no formato errado")
+          return marshal(codigo, msgFields), 400
+
+        clienteStripe = stripe.Customer.create(
+          name=args["nome"]+" "+args["sobrenome"],
+          email=args["email"],
+        )
+
+        atleta = Atleta(args["nome"], args["sobrenome"], args["email"], args["senha"], args["cpf"])
+        atleta.stripe_id = clienteStripe.id
+
+        db.session.add(atleta)
+        db.session.flush()
+
+        imgUsuario = ImgUsuarios(fotoPerfil, atleta.usuario_id)
+
+        db.session.add(imgUsuario)
+
+      data = {"atleta": atleta, "token": None}
+
+      logger.info(f"Atleta de id: {atleta.usuario_id} criado com sucesso")
+      return marshal(data, atletaFieldsToken), 201
+    except IntegrityError as e:
+      if 'cpf' in str(e.orig):
+        codigo = Message(1, "CPF já cadastrado no sistema")
         return marshal(codigo, msgFields), 400
 
-      if len(args["sobrenome"]) == 0:
-        logger.info("Sobrenome não informado")
-
-        codigo = Message(1, "Sobrenome não informado")
+      elif 'email' in str(e.orig):
+        codigo = Message(1, "Email já cadastrado no sistema")
         return marshal(codigo, msgFields), 400
 
-      if not args['email']:
-        codigo = Message(1, "email não informada")
-        return marshal(codigo, msgFields), 400
+    except:
+      logger.error("Erro ao cadastrar o Atleta")
 
-      if re.match(padrao_email, args['email']) == None:
-        codigo = Message(1, "Email no formato errado")
-        return marshal(codigo, msgFields), 400
-
-      if not args["cpf"]:
-        codigo = Message(1, "cpf não informado")
-        return marshal(codigo, msgFields), 400
-
-      if not cpfValidate.validate(args["cpf"]):
-        logger.error(f"CPF {args['cpf']} não valido")
-
-        codigo = Message(1, f"CPF {args['cpf']} não valido")
-        return marshal(codigo, msgFields), 400
-
-      if not re.match(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$', args["cpf"]):
-        logger.error(f"CPF {args['cpf']} no formato errado")
-
-        codigo = Message(1, "CPF no formato errado")
-        return marshal(codigo, msgFields), 400
-
-      if not args['senha']:
-        codigo = Message(1, "Senha não informada")
-        return marshal(codigo, msgFields), 400
-
-      verifySenha = policy.test(args['senha'])
-      if len(verifySenha) != 0:
-        codigo = Message(1, "Senha no formato errado")
-        return marshal(codigo, msgFields), 400
-
-      clienteStripe = stripe.Customer.create(
-        name=args["nome"]+" "+args["sobrenome"],
-        email=args["email"],
-      )
-
-      atleta = Atleta(args["nome"], args["sobrenome"], args["email"], args["senha"], args["cpf"])
-      atleta.stripe_id = clienteStripe.id
-
-      db.session.add(atleta)
-      db.session.flush()
-
-      imgUsuario = ImgUsuarios(fotoPerfil, atleta.usuario_id)
-
-      db.session.add(imgUsuario)
-
-    data = {"atleta": atleta, "token": None}
-
-    logger.info(f"Atleta de id: {atleta.usuario_id} criado com sucesso")
-    return marshal(data, atletaFieldsToken), 201
-
-    # except IntegrityError as e:
-    #   if 'cpf' in str(e.orig):
-    #     codigo = Message(1, "CPF já cadastrado no sistema")
-    #     return marshal(codigo, msgFields), 400
-
-    #   elif 'email' in str(e.orig):
-    #     codigo = Message(1, "Email já cadastrado no sistema")
-        # return marshal(codigo, msgFields), 400
-
-    # except:
-    #   logger.error("Erro ao cadastrar o Atleta")
-
-    #   codigo = Message(2, "Erro ao cadastrar o Atleta")
-    #   return marshal(codigo, msgFields), 400
+      codigo = Message(2, "Erro ao cadastrar o Atleta")
+      return marshal(codigo, msgFields), 400
 
 class AtletaId(Resource):
   # @token_verify

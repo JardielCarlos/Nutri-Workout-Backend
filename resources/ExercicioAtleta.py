@@ -10,7 +10,7 @@ from sqlalchemy.exc import DataError
 parser = reqparse.RequestParser()
 
 parser.add_argument("idTabela", type=int, help="id da tabela não informada", required=False)
-parser.add_argument("diaSemana", type=str, help="dia da semana não informado", required=True)
+parser.add_argument("diaSemana", type=str, help="dia da semana não informado", required=False)
 parser.add_argument("musculoTrabalhado", type=str, help="musculo trabalhado não informado", required=True)
 parser.add_argument("nomeExercicio", type=str, help="Nome do exercicio informado", required=True)
 parser.add_argument("series", type=int, help="Séries não informada", required=True)
@@ -39,6 +39,11 @@ class ExerciciosAtleta(Resource):
 
           codigo = Message(1, f"Escreva o nome de um musculo válido")
           return marshal(codigo, msgFields), 400
+
+      if args["diaSemana"] is None:
+        logger.error("Dia da semana nao informada")
+        codigo = Message(1, "Dia da semana não informada")
+        return marshal(codigo, msgFields), 404
 
       if len(args['nomeExercicio']) <= 2:
         logger.error(f"Escreva o nome de um exercicio valido")
