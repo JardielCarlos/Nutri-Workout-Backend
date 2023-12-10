@@ -8,7 +8,7 @@ from os import getenv
 
 from resources.administradores import Administradores, AdministradorId, AdministradorImg, AdministradorNome
 
-from resources.atletas import AtletaId, AtletaImg, AtletaNome, AtletaPagination, Atletas, RequestNutricionista, RequestPersonal, TabelaAtleta, CardapioAtleta
+from resources.atletas import AtletaId, AtletaImg, AtletaNome, AtletaPagination, Atletas, RequestNutricionista, RequestPersonal, TabelaAtleta, CardapioAtleta, AtletaIngredientePagination
 
 from resources.cardapioAtleta import CardapioAtletaNutri, CardapioAtletaNutriId, CardapioId
 from resources.refeicaoAtleta import RefeicaoAtleta, RefeicaoAtletaId
@@ -65,6 +65,8 @@ api.add_resource(CartaoCreditoAtleta, '/cartaoCredito')
 api.add_resource(CartaoCreditoAtletaId, '/cartaoCredito/<int:id>')
 api.add_resource(ResetSenha, "/solicitar-recuperacao")
 api.add_resource(NewSenha, '/reset_password/<string:token>')
+
+api.add_resource(AtletaIngredientePagination, '/atleta/ingrediente/<int:id_cardapio>/<int:id_refeicao>/<int:id_page>/<int:max_itens>/<int:id_nutri>')
 
 api.add_resource(PersonaisTrainer, '/personalTrainer')
 api.add_resource(PersonalTrainerId, '/personalTrainer/<int:id>')
