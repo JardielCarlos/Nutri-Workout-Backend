@@ -28,8 +28,10 @@ from model.assinatura import Assinatura
 from model.cartaoCredito import CartaoCredito
 parser = reqparse.RequestParser()
 parserFiles = reqparse.RequestParser()
-# rabbitmqPublisher = RabbitmqPublisher()
 
+from model.nutricionista import Nutricionista
+from model.refeicao import Refeicao
+from model.ingrediente import Ingrediente, ingredienteFieldsPagination
 
 parser.add_argument("nome", type=str, help="Nome não informado", required=False)
 parser.add_argument("sobrenome", type=str, help="Sobrenome não informado", required=False)
@@ -616,3 +618,50 @@ class AtletaPagination(Resource):
     return marshal(data, atletasFieldsPagination), 200
 
 
+class AtletaIngredientePagination(Resource):
+  @token_verify
+  def get(self, tipo, refreshToken, user_id, id_cardapio, id_refeicao, id_page, max_itens, id_nutri):
+    if tipo != "Atleta":
+      logger.error("Usuario sem autorizacao")
+      codigo = Message(1, "Usuario sem autorização suficiente!")
+      return marshal(codigo, msgFields), 403
+
+    cardapio = Cardapio.query.get(id_cardapio)
+    if cardapio is None:
+      logger.error(f"Cardapio de id: {id_cardapio} nao encontrado")
+
+      codigo = Message(1, f"Cardapio de id: {id_cardapio} não encontrado")
+      return marshal(codigo, msgFields), 404
+    
+    nutricionista = Nutricionista.query.get(id_nutri)
+    print(f"id nutri {nutricionista}")
+
+    idAtletas = [atleta.usuario_id for atleta in nutricionista.atletas]
+
+    if cardapio.atleta not in idAtletas:
+      logger.error(f"Cardapio de id: {id_cardapio} nao associado ao nutricionista de id: {nutricionista.usuario_id}")
+
+      codigo = Message(1, f"Cardapio de id: {id_cardapio} não encontrado")
+      return marshal(codigo, msgFields), 404
+
+    refeicao = Refeicao.query.get(id_refeicao)
+
+    if refeicao is None:
+      logger.error(f"Refeicao de id: {id_refeicao} nao encontrado")
+
+      codigo = Message(1, f"Refeição de id: {id_refeicao} não encontrada")
+      return marshal(codigo, msgFields), 404
+
+    if refeicao not in cardapio.refeicoes:
+      logger.error(f"Refeicao de id: {id_refeicao} nao associado ao cardapio de id: {cardapio.id}")
+
+      codigo = Message(1, f"Refeição de id: {id_refeicao} não encontrada")
+      return marshal(codigo, msgFields), 404
+
+    ingrediente = Ingrediente.query.filter_by(refeicao=refeicao.id).count()
+    ingredientePagination = Ingrediente.query.filter_by(refeicao=refeicao.id).paginate(page=id_page, per_page=max_itens, error_out=False)
+
+    data = {"ingredientes": ingredientePagination.items, "total": ingrediente}
+
+    logger.info("Ingredientes listado com sucesso")
+    return marshal(data, ingredienteFieldsPagination), 200
