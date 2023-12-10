@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from helpers.auth.token_verifier import token_verify
 from helpers.database import db
 from helpers.logger import logger
-from model.atleta import Atleta, atletaAssociatedFields
+from model.atleta import Atleta, atletaAssociatedFields, atletaFields
 from model.mensagem import Message, msgFields
 from model.notificacaoPersonal import NotificacaoPersonal
 from model.personalTrainer import PersonalTrainer, personalAtletaPaginationFields
@@ -65,7 +65,7 @@ class PersonalAtletaNome(Resource):
       return marshal(codigo, msgFields), 403
 
     atletas = Atleta.query.filter(db.and_(Atleta.nome.ilike(f"%{nome}%"), Atleta.personal_trainer_id == user_id)).all()
-    return marshal(atletas, atletaAssociatedFields), 200
+    return marshal(atletas, atletaFields), 200
 
 class PersonalAtletaId(Resource):
   @token_verify
