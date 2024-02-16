@@ -632,7 +632,7 @@ class AtletaIngredientePagination(Resource):
 
       codigo = Message(1, f"Cardapio de id: {id_cardapio} não encontrado")
       return marshal(codigo, msgFields), 404
-    
+
     nutricionista = Nutricionista.query.get(id_nutri)
     print(f"id nutri {nutricionista}")
 
