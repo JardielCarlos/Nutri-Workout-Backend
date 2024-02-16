@@ -189,18 +189,18 @@ lista de algumas rotas da API e quais são os corpos de solicitação esperados.
 			"unidadeDescanso": "segundos",
 			"observacoes": "Manter os cotovelos próximos ao corpo"
 		},
-        {
-          "id": 4,
-          "diaSemana": "terça",
-          "musculoTrabalhado": "Peito",
-          "nomeExercicio": "Supino Reto",
-          "series": 3,
-          "kg": 50,
-          "repeticao": 10,
-          "descanso": 60,
-          "unidadeDescanso": "",
-          "observacoes": "Mantenha a postura correta para evitar lesões."
-        },
+                {
+                        "id": 4,
+                        "diaSemana": "terça",
+                        "musculoTrabalhado": "Peito",
+                        "nomeExercicio": "Supino Reto",
+                        "series": 3,
+                        "kg": 50,
+                        "repeticao": 10,
+                        "descanso": 60,
+                        "unidadeDescanso": "",
+                        "observacoes": "Mantenha a postura correta para evitar lesões."
+                },
 	],
 	"atleta": 1,
 	"personal": 3
@@ -222,7 +222,7 @@ lista de algumas rotas da API e quais são os corpos de solicitação esperados.
 			"diaSemana": "segunda",
 			"tipoRefeicao": "lancheManha",
 			"ingredientes": [
-                {
+                                {
 					"id": 3,
 					"nome": "ovo",
 					"quantidade": "1 unidade"
@@ -232,7 +232,7 @@ lista de algumas rotas da API e quais são os corpos de solicitação esperados.
 					"nome": "pão brioche",
 					"quantidade": "1 unidade"
 				},
-            ]
+                        ]
 		}
 	],
 	"atleta": 1,
