@@ -261,7 +261,7 @@ Participantes do Projeto
 
 Para contribuir para este projeto, siga os passos abaixo:
 
-1. `git clone https://github.com/JardielCarlos/API-Spring-Boot-JPA.git`
+1. `git clone https://github.com/JardielCarlos/Nutri-Workout-Backend.git`
 2. `git checkout -b feature/NAME`
 3. Abra um Pull Request explicando o problema resolvido ou recurso realizado, se existir, anexe screenshot das modificações visuais e aguarde a revisão!
 
